@@ -5,11 +5,11 @@ import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-objectifs',
+  templateUrl: 'objectifs.html',
   providers: [ DateService ]
 })
-export class HomePage {
+export class ObjectifsPage {
   objectifs: any[];
   days: any[];
 

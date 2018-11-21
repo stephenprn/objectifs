@@ -1,3 +1,4 @@
+import { ObjectifsPage } from './../pages/objectifs/objectifs';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -6,14 +7,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { ObjectifsService } from '../services/objectifs.service';
 import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    ObjectifsPage,
     AddObjectifPage
   ],
   imports: [
@@ -24,7 +24,7 @@ import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    ObjectifsPage,
     AddObjectifPage
   ],
   providers: [
