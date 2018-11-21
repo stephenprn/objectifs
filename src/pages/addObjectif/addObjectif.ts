@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { DateService } from '../../services/date.service';
 
 @Component({
-  selector: 'add-objectif',
+  selector: 'page-add-objectif',
   templateUrl: 'addObjectif.html',
   providers: [DateService]
 })
