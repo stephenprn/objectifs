@@ -21,9 +21,11 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/core": "~4.15.0",
+    "@ionic-native/date-picker": "^4.17.0",
     "@ionic-native/splash-screen": "~4.15.0",
     "@ionic-native/status-bar": "~4.15.0",
     "@ionic/storage": "^2.2.0",
+    "cordova-plugin-datepicker": "0.9.3",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "lodash": "^4.17.11",
@@ -38,6 +40,8 @@
   },
   "description": "An Ionic project",
   "cordova": {
-    "plugins": {}
+    "plugins": {
+      "cordova-plugin-datepicker": {}
+    }
   }
 }

@@ -23,17 +23,18 @@ export class AddObjectifPage {
       title: ['', [Validators.required]],
       date: ['', [Validators.required]],
       color: ['#2196F3', [Validators.required]],
-      description: ['', [Validators.required]]
+      description: ['', [Validators.required]],
+      reportable: [true, [Validators.required]]
     });
 
     this.colors = AppConstants.colors;
   }
 
-  dismiss() {
+  dismiss(): void {
     this.viewCtrl.dismiss(null);
   }
 
-  submit() {
+  submit(): void {
     if (!this.formGroup.valid) {
       this.submitAttempted = true;
       console.log('not valid');
@@ -43,6 +44,11 @@ export class AddObjectifPage {
     let objectif = _.cloneDeep(this.formGroup.value);
 
     objectif.date = this.dateService.reformatDate(objectif.date);
+    objectif.done = false;
+    
+    if (objectif.reportable) {
+      objectif.reportCount = 0;
+    }
 
     this.objectifsService.add(objectif);
     this.viewCtrl.dismiss(objectif);

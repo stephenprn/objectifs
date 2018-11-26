@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DateService {
-    getStringFromDate(date: Date) {
+    getStringFromDate(date: Date): String {
         if (date == null) {
             date = new Date();
         }
@@ -15,8 +15,14 @@ export class DateService {
         return str;
     }
 
+    //From DD/MM/YYYY to Date object
+    getDateFromString(str: String): Date {
+        let array = str.split('/');
+        return new Date(Number(array[2]), Number(array[1]), Number(array[0]));
+    }
+
     //From YYYY-MM-DD to DD/MM/YYYY
-    reformatDate(date: string) {
+    reformatDate(date: string): String {
         return date.split('-').reverse().join('/');
     }
 }

@@ -19,9 +19,10 @@
     <ion-slide *ngFor="let day of days">
       <h1>{{day.date}}</h1>
       <ion-list>
-        <ion-item *ngFor="let objectif of day.objectifs">
-          <ion-icon name="square" [ngStyle]="{'color': objectif.color }" item-start></ion-icon>
-          {{objectif.title}}
+        <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
+          <ion-icon name="square" [ngStyle]="{'color': obj.color }" item-start></ion-icon>
+          {{obj.title}}
+          <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
         </ion-item>
       </ion-list>
     </ion-slide>
