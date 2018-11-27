@@ -11,4 +11,9 @@ export class AppConstants {
         { name: 'marron', hex: '#795548' },
         { name: 'gris', hex: '#9E9E9E' }
     ];
+
+    //Number of days displayed at the initialization of the objectives
+    public static nbrDaysDisplayed = 5;
+
+    public static indexTriggerCache = 2;
 }
