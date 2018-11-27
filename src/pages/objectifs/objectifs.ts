@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController, ActionSheetController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, ModalController, ActionSheetController, Slides } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
 import { DatePicker } from '@ionic-native/date-picker';
+import { AppConstants } from '../../app/app.constants';
 
 @Component({
   selector: 'page-objectifs',
@@ -11,23 +12,46 @@ import { DatePicker } from '@ionic-native/date-picker';
   providers: [DateService]
 })
 export class ObjectifsPage {
+  @ViewChild(Slides) slides: Slides;
   objectifs: any[];
   days: any[];
+  nbrDaysDisplayed: number;
 
-  constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController, 
+  constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController,
     private dateService: DateService, public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker) {
+    this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
     this.objectifs = this.objectifsService.getAll();
     console.log(this.objectifs);
-    this.initDays();
+    this.initDays(null, null);
   }
 
-  initDays(): void {
-    this.days = [];
-    let date = new Date();
-    date.setDate(date.getDate() - 2);
+  initDays(addBegin: Boolean, currentIndex: Number): void {
+    let date;
+    let iEnd;
 
-    for (let i = -2; i < 3; i++) {
-      date.setDate(date.getDate() + 1);
+    if (addBegin === null) {
+      this.days = [];
+
+      date = new Date();
+      date.setDate(date.getDate() - this.nbrDaysDisplayed);
+
+      iEnd = 2 * this.nbrDaysDisplayed;
+    } else {
+      if (addBegin) {
+        date = this.dateService.getDateFromString(this.days[0].date);
+      } else {
+        date = this.dateService.getDateFromString(this.days[this.days.length - 1].date);
+      }
+
+      iEnd = this.nbrDaysDisplayed;
+    }
+
+    for (let i = 0; i < iEnd; i++) {
+      if (addBegin === null || addBegin === false) { 
+        date.setDate(date.getDate() + 1); 
+      } else {
+        date.setDate(date.getDate() - 1);
+      }
 
       let day = {
         date: null,
@@ -39,7 +63,17 @@ export class ObjectifsPage {
         return objectif.date === day.date;
       });
 
-      this.days.push(day);
+      if (addBegin === null || addBegin === false) {
+        this.days.push(day);
+      } else {
+        this.days.unshift(day);
+      }
+    }
+
+    if (addBegin !== null && addBegin === true) {
+      setTimeout(() => {
+        this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
+      });
     }
 
     console.log(this.days);
@@ -58,7 +92,7 @@ export class ObjectifsPage {
         obj.date = this.dateService.getStringFromDate(date);
 
         this.objectifsService.saveChanges();
-        this.initDays();
+        this.initDays(null, null);
       },
       (err: any) => {
         console.log(err);
@@ -70,8 +104,8 @@ export class ObjectifsPage {
     obj.done = done;
     this.objectifsService.saveChanges();
   }
- 
-  showActions(obj: any): void  {
+
+  showActions(obj: any): void {
     let buttons: any[] = [
       {
         text: 'Annuler',
@@ -126,8 +160,24 @@ export class ObjectifsPage {
 
     modal.onDidDismiss((obj: any) => {
       if (obj != null) {
-        this.initDays();
+        this.initDays(null, null);
       }
     })
+  }
+
+  slideWillChange(): void {
+    let currentIndex = this.slides.getActiveIndex();
+
+    if (currentIndex == null) {
+      return;
+    }
+
+    if (currentIndex < AppConstants.indexTriggerCache) {
+      this.initDays(true, currentIndex);
+    } else if (currentIndex >= this.days.length - AppConstants.indexTriggerCache) {
+      this.initDays(false, null);
+    }
+
+    console.log(currentIndex);
   }
 }

@@ -15,7 +15,7 @@
 
     </ion-content>
   </ion-card>
-  <ion-slides>
+  <ion-slides (ionSlideDidChange)="slideWillChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days">
       <h1>{{day.date}}</h1>
       <ion-list>
