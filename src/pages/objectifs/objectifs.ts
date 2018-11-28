@@ -9,8 +9,7 @@ import { Objectif } from '../../models/objectif.model';
 
 @Component({
   selector: 'page-objectifs',
-  templateUrl: 'objectifs.html',
-  providers: [DateService]
+  templateUrl: 'objectifs.html'
 })
 export class ObjectifsPage {
   @ViewChild(Slides) slides: Slides;

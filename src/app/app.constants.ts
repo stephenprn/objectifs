@@ -12,8 +12,10 @@ export class AppConstants {
         { name: 'gris', hex: '#9E9E9E' }
     ];
 
-    //Number of days displayed at the initialization of the objectives
-    public static nbrDaysDisplayed = 5;
+    public static initialColor: string = '#2196F3';
 
-    public static indexTriggerCache = 2;
+    //Number of days displayed at the initialization of the objectives
+    public static nbrDaysDisplayed: number = 5;
+
+    public static indexTriggerCache: number = 2;
 }
