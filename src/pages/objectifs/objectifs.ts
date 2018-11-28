@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, Slides } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, Slides, Modal } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
 import { DatePicker } from '@ionic-native/date-picker';
 import { AppConstants } from '../../app/app.constants';
+import { Objectif } from '../../models/objectif.model';
 
 @Component({
   selector: 'page-objectifs',
@@ -13,7 +14,7 @@ import { AppConstants } from '../../app/app.constants';
 })
 export class ObjectifsPage {
   @ViewChild(Slides) slides: Slides;
-  objectifs: any[];
+  objectifs: Objectif[];
   days: any[];
   nbrDaysDisplayed: number;
 
@@ -25,9 +26,9 @@ export class ObjectifsPage {
     this.initDays(null, null);
   }
 
-  initDays(addBegin: Boolean, currentIndex: Number): void {
-    let date;
-    let iEnd;
+  initDays(addBegin: boolean, currentIndex: number): void {
+    let date: Date;
+    let nbrDays: number;
 
     if (addBegin === null) {
       this.days = [];
@@ -35,7 +36,7 @@ export class ObjectifsPage {
       date = new Date();
       date.setDate(date.getDate() - this.nbrDaysDisplayed);
 
-      iEnd = 2 * this.nbrDaysDisplayed;
+      nbrDays = 2 * this.nbrDaysDisplayed;
     } else {
       if (addBegin) {
         date = this.dateService.getDateFromString(this.days[0].date);
@@ -43,24 +44,24 @@ export class ObjectifsPage {
         date = this.dateService.getDateFromString(this.days[this.days.length - 1].date);
       }
 
-      iEnd = this.nbrDaysDisplayed;
+      nbrDays = this.nbrDaysDisplayed;
     }
 
-    for (let i = 0; i < iEnd; i++) {
+    for (let i = 0; i < nbrDays; i++) {
       if (addBegin === null || addBegin === false) { 
         date.setDate(date.getDate() + 1); 
       } else {
         date.setDate(date.getDate() - 1);
       }
 
-      let day = {
+      let day: any = {
         date: null,
         objectifs: []
       };
 
       day.date = this.dateService.getStringFromDate(date);
-      day.objectifs = this.objectifs.filter((objectif: any) => {
-        return objectif.date === day.date;
+      day.objectifs = this.objectifs.filter((obj: Objectif) => {
+        return obj.date === day.date;
       });
 
       if (addBegin === null || addBegin === false) {
@@ -79,7 +80,7 @@ export class ObjectifsPage {
     console.log(this.days);
   }
 
-  report(obj: any): void {
+  report(obj: Objectif): void {
     this.datePicker.show({
       date: this.dateService.getDateFromString(obj.date),
       mode: 'date',
@@ -100,12 +101,13 @@ export class ObjectifsPage {
     );
   }
 
-  setDone(obj: any, done: boolean): void {
+  setDone(obj: Objectif, done: boolean): void {
     obj.done = done;
     this.objectifsService.saveChanges();
   }
 
-  showActions(obj: any): void {
+  showActions(obj: Objectif): void {
+    //Buttons that are displayed in the action sheet
     let buttons: any[] = [
       {
         text: 'Annuler',
@@ -148,7 +150,7 @@ export class ObjectifsPage {
   }
 
   showAdd(): void {
-    let modal = this.modalCtrl.create(AddObjectifPage);
+    let modal: Modal = this.modalCtrl.create(AddObjectifPage);
 
     // modal.onDidDismiss((objectif: any) => {
     //   if (objectif != null) {
@@ -158,15 +160,15 @@ export class ObjectifsPage {
 
     modal.present();
 
-    modal.onDidDismiss((obj: any) => {
+    modal.onDidDismiss((obj: Objectif) => {
       if (obj != null) {
         this.initDays(null, null);
       }
     })
   }
 
-  slideWillChange(): void {
-    let currentIndex = this.slides.getActiveIndex();
+  slideDidChange(): void {
+    let currentIndex: number = this.slides.getActiveIndex();
 
     if (currentIndex == null) {
       return;
@@ -177,7 +179,5 @@ export class ObjectifsPage {
     } else if (currentIndex >= this.days.length - AppConstants.indexTriggerCache) {
       this.initDays(false, null);
     }
-
-    console.log(currentIndex);
   }
 }
