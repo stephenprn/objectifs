@@ -10,6 +10,8 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { MyApp } from './app.component';
 import { ObjectifsService } from '../services/objectifs.service';
 import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
+import { SuggestionsService } from '../services/suggestions.service';
+import { DateService } from '../services/date.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ObjectifsService,
+    SuggestionsService,
+    DateService,
     DatePicker
   ]
 })

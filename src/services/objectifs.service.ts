@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Objectif } from '../models/objectif.model';
+import { SuggestionsService } from './suggestions.service';
 
 @Injectable()
 export class ObjectifsService {
     objectifs: Objectif[];
 
-    constructor() { }
+    constructor(private suggestionsService: SuggestionsService) { }
 
     private getId(): number {
         if (localStorage.getItem('id') == null) {
@@ -35,6 +36,7 @@ export class ObjectifsService {
         objectif.id = this.getId();
 
         this.objectifs.push(objectif);
+        this.suggestionsService.save(objectif.title);
 
         this.saveChanges();
     }

@@ -9,8 +9,7 @@ import { Objectif } from '../../models/objectif.model';
 
 @Component({
   selector: 'page-add-objectif',
-  templateUrl: 'addObjectif.html',
-  providers: [DateService]
+  templateUrl: 'addObjectif.html'
 })
 export class AddObjectifPage {
   colors: any[] = [];
@@ -23,7 +22,7 @@ export class AddObjectifPage {
     this.formGroup = formBuilder.group({
       title: ['', [Validators.required]],
       date: ['', [Validators.required]],
-      color: ['#2196F3', [Validators.required]],
+      color: [AppConstants.initialColor, [Validators.required]],
       description: ['', [Validators.required]],
       reportable: [true, [Validators.required]]
     });
@@ -46,7 +45,7 @@ export class AddObjectifPage {
 
     objectif.date = this.dateService.reformatDate(objectif.date);
     objectif.done = false;
-    
+
     if (objectif.reportable) {
       objectif.reportCount = 0;
     }
