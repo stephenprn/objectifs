@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Objectif } from '../models/objectif.model';
 
 @Injectable()
 export class ObjectifsService {
-    objectifs: any[];
+    objectifs: Objectif[];
 
     constructor() { }
 
@@ -12,7 +13,7 @@ export class ObjectifsService {
             return 1;
         }
 
-        let nbr = Number(localStorage.getItem('id'));
+        let nbr: number = Number(localStorage.getItem('id'));
         nbr++;
 
         localStorage.setItem('id', nbr.toString());
@@ -26,7 +27,7 @@ export class ObjectifsService {
     //     });
     // }
 
-    public add(objectif: any): void {
+    public add(objectif: Objectif): void {
         if (!this.objectifs) {
             this.getAll();
         }
@@ -42,8 +43,8 @@ export class ObjectifsService {
         localStorage.setItem('objectifs', JSON.stringify(this.objectifs));
     }
 
-    public getAll(): any[] {
-        let objStorage = localStorage.getItem('objectifs');
+    public getAll(): Objectif[] {
+        let objStorage: string = localStorage.getItem('objectifs');
 
         if (!objStorage) {
             this.objectifs = [];

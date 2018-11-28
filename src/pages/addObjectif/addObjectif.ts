@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage, ViewController, AlertController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AppConstants } from '../../app/app.constants';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { DateService } from '../../services/date.service';
+import { Objectif } from '../../models/objectif.model';
 
 @Component({
   selector: 'page-add-objectif',
@@ -16,7 +17,7 @@ export class AddObjectifPage {
   formGroup: any;
   submitAttempted: boolean = false;
 
-  constructor(public viewCtrl: ViewController, private alertCtrl: AlertController, public formBuilder: FormBuilder,
+  constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
     private objectifsService: ObjectifsService, private dateService: DateService) {
     //Initial color value: blue
     this.formGroup = formBuilder.group({
@@ -41,7 +42,7 @@ export class AddObjectifPage {
       return;
     }
 
-    let objectif = _.cloneDeep(this.formGroup.value);
+    let objectif: Objectif = _.cloneDeep(this.formGroup.value);
 
     objectif.date = this.dateService.reformatDate(objectif.date);
     objectif.done = false;
