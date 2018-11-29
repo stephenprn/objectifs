@@ -13,6 +13,7 @@ import { Objectif } from '../../models/objectif.model';
 })
 export class ObjectifsPage {
   @ViewChild(Slides) slides: Slides;
+  
   objectifs: Objectif[];
   days: any[];
   nbrDaysDisplayed: number;

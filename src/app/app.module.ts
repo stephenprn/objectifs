@@ -6,12 +6,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { DatePicker } from '@ionic-native/date-picker';
+import { AutoCompleteModule } from 'ionic2-auto-complete';
 
 import { MyApp } from './app.component';
 import { ObjectifsService } from '../services/objectifs.service';
 import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
 import { SuggestionsService } from '../services/suggestions.service';
 import { DateService } from '../services/date.service';
+
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { DateService } from '../services/date.service';
   ],
   imports: [
     BrowserModule,
+    AutoCompleteModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],

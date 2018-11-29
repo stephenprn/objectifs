@@ -27,6 +27,7 @@
     "@ionic/storage": "^2.2.0",
     "cordova-plugin-datepicker": "0.9.3",
     "ionic-angular": "3.9.2",
+    "ionic2-auto-complete": "^1.6.2-alpha",
     "ionicons": "3.0.0",
     "lodash": "^4.17.11",
     "rxjs": "5.5.11",

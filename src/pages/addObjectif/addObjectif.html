@@ -14,13 +14,10 @@
 
 <ion-content>
   <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
-    <ion-item>
-      <ion-label>Titre</ion-label>
-      <ion-input type="text" formControlName="title"></ion-input>
-    </ion-item>
-    <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['title'].invalid && (formGroup.controls['title'].dirty || submitAttempted)">
+    <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title" #autocomplete></ion-auto-complete>
+    <!-- <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['title'].invalid && (formGroup.controls['title'].dirty || submitAttempted)">
       Titre requis
-    </div>
+    </div> -->
 
     <ion-item>
       <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
