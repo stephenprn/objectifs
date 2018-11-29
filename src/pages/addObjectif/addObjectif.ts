@@ -10,59 +10,59 @@ import { SuggestionsService } from '../../services/suggestions.service';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 
 @Component({
-  selector: 'page-add-objectif',
-  templateUrl: 'addObjectif.html'
+    selector: 'page-add-objectif',
+    templateUrl: 'addObjectif.html'
 })
 export class AddObjectifPage {
-  @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
-  
-  colors: any[] = [];
-  formGroup: any;
-  submitAttempted: boolean = false;
+    @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
 
-  constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder, private objectifsService: ObjectifsService, 
-    private dateService: DateService, public suggestionsService: SuggestionsService, private navParams: NavParams) {
-    // Initial color value: blue
-    this.formGroup = formBuilder.group({
-      title: ['', [Validators.required]],
-      date: [this.navParams.get('date'), [Validators.required]],
-      color: [AppConstants.initialColor, [Validators.required]],
-      description: ['', [Validators.required]],
-      reportable: [true, [Validators.required]]
-    });
+    colors: any[] = [];
+    formGroup: any;
+    submitAttempted: boolean = false;
 
-    this.colors = AppConstants.colors;
-  }
+    constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder, private objectifsService: ObjectifsService,
+        private dateService: DateService, public suggestionsService: SuggestionsService, private navParams: NavParams) {
+        // Initial color value: blue
+        this.formGroup = formBuilder.group({
+            title: ['', [Validators.required]],
+            date: [this.navParams.get('date'), [Validators.required]],
+            color: [AppConstants.initialColor, [Validators.required]],
+            description: ['', [Validators.required]],
+            reportable: [true, [Validators.required]]
+        });
 
-  ionViewDidEnter() {
-    // Set focus on the auto-focus at the init of the page
-    this.autocomplete.setFocus();
-  }
-
-  dismiss(): void {
-    this.viewCtrl.dismiss(null);
-  }
-
-  submit(): void {
-    this.formGroup.patchValue({
-      title: this.autocomplete.keyword
-    });
-
-    if (!this.formGroup.valid) {
-      this.submitAttempted = true;
-      return;
+        this.colors = AppConstants.colors;
     }
 
-    let objectif: Objectif = _.cloneDeep(this.formGroup.value);
-
-    objectif.date = this.dateService.formatDateString(objectif.date);
-    objectif.done = false;
-
-    if (objectif.reportable) {
-      objectif.reportCount = 0;
+    ionViewDidEnter() {
+        // Set focus on the auto-focus at the init of the page
+        this.autocomplete.setFocus();
     }
 
-    this.objectifsService.add(objectif);
-    this.viewCtrl.dismiss(objectif);
-  }
+    dismiss(): void {
+        this.viewCtrl.dismiss(null);
+    }
+
+    submit(): void {
+        this.formGroup.patchValue({
+            title: this.autocomplete.keyword
+        });
+
+        if (!this.formGroup.valid) {
+            this.submitAttempted = true;
+            return;
+        }
+
+        let objectif: Objectif = _.cloneDeep(this.formGroup.value);
+
+        objectif.date = this.dateService.formatDateString(objectif.date);
+        objectif.done = false;
+
+        if (objectif.reportable) {
+            objectif.reportCount = 0;
+        }
+
+        this.objectifsService.add(objectif);
+        this.viewCtrl.dismiss(objectif);
+    }
 }
