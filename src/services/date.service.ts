@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DateService {
@@ -33,5 +34,19 @@ export class DateService {
         }
 
         return date.split('-').reverse().join('/');
+    }
+
+    //Return yesterday's, today's and tomorrow's date in format DD/MM/YYYY
+    getCloseDays(date: Date): any {
+        let days: any = {};
+        let dateClone = _.cloneDeep(date);
+
+        days.today = this.getStringFromDate(dateClone);
+        dateClone.setDate(date.getDate() - 1);
+        days.yesterday = this.getStringFromDate(dateClone);
+        dateClone.setDate(date.getDate() + 1);
+        days.tomorrow = this.getStringFromDate(dateClone);
+
+        return days;
     }
 }
