@@ -29,9 +29,7 @@ export class ObjectifsService {
     // }
 
     public add(objectif: Objectif): void {
-        if (!this.objectifs) {
-            this.getAll();
-        }
+        this.getAll();
 
         objectif.id = this.getId();
 
@@ -46,6 +44,10 @@ export class ObjectifsService {
     }
 
     public getAll(): Objectif[] {
+        if (this.objectifs != null) {
+            return this.objectifs;
+        }
+
         let objStorage: string = localStorage.getItem('objectifs');
 
         if (!objStorage) {
@@ -55,5 +57,19 @@ export class ObjectifsService {
         }
 
         return this.objectifs;
+    }
+
+    public getNumberDone(objectifs?: Objectif[]) {
+        if (!objectifs) {
+            objectifs = this.getAll();
+        }
+
+        let countDone: number = 0;
+
+        objectifs.forEach((obj: Objectif) => {
+            if (obj.done) countDone++; 
+        });
+
+        return countDone;
     }
 }
