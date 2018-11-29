@@ -150,7 +150,9 @@ export class ObjectifsPage {
   }
 
   showAdd(): void {
-    let modal: Modal = this.modalCtrl.create(AddObjectifPage);
+    //Get the date of the current slide and convert it to format YYYY-MM-DD
+    let date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
+    let modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
     // modal.onDidDismiss((objectif: any) => {
     //   if (objectif != null) {

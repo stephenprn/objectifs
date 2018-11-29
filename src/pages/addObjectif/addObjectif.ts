@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AppConstants } from '../../app/app.constants';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -20,21 +20,23 @@ export class AddObjectifPage {
   formGroup: any;
   submitAttempted: boolean = false;
 
-  constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
-    private objectifsService: ObjectifsService, private dateService: DateService, public suggestionsService: SuggestionsService) {
+  constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder, private objectifsService: ObjectifsService, 
+    private dateService: DateService, public suggestionsService: SuggestionsService, private navParams: NavParams) {
     // Initial color value: blue
     this.formGroup = formBuilder.group({
       title: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+      date: [this.navParams.get('date'), [Validators.required]],
       color: [AppConstants.initialColor, [Validators.required]],
       description: ['', [Validators.required]],
       reportable: [true, [Validators.required]]
     });
 
     this.colors = AppConstants.colors;
+  }
 
-    // // Set focus on the auto-focus at the init of the page
-    // this.autocomplete.setFocus();
+  ionViewDidEnter() {
+    // Set focus on the auto-focus at the init of the page
+    this.autocomplete.setFocus();
   }
 
   dismiss(): void {
@@ -53,7 +55,7 @@ export class AddObjectifPage {
 
     let objectif: Objectif = _.cloneDeep(this.formGroup.value);
 
-    objectif.date = this.dateService.reformatDate(objectif.date);
+    objectif.date = this.dateService.formatDateString(objectif.date);
     objectif.done = false;
 
     if (objectif.reportable) {
