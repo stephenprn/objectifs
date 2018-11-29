@@ -17,6 +17,7 @@ export class ObjectifsPage {
     objectifs: Objectif[];
     days: any[];
     nbrDaysDisplayed: number;
+    closeDays: any = null;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController,
         private dateService: DateService, public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker) {
@@ -27,13 +28,17 @@ export class ObjectifsPage {
     }
 
     initDays(addBegin: boolean, currentIndex: number): void {
-        let date: Date;
+        let date: Date = new Date();
         let nbrDays: number;
 
+        if (this.closeDays === null) {
+            this.closeDays = this.dateService.getCloseDays(date);
+        }
+
+        //If addBegin is null, we totally reinitialize the days
         if (addBegin === null) {
             this.days = [];
 
-            date = new Date();
             date.setDate(date.getDate() - this.nbrDaysDisplayed);
 
             nbrDays = 2 * this.nbrDaysDisplayed;
@@ -65,6 +70,24 @@ export class ObjectifsPage {
                 return obj.date === day.date;
             });
             day.countDone = this.objectifsService.getNumberDone(day.objectifs);
+
+            //We replace the date by yesterday, today or tomorrow
+            if (addBegin === null) {
+                switch (day.date) {
+                    case this.closeDays.today: {
+                        day.date = 'Aujourd\'hui';
+                        break;
+                    }
+                    case this.closeDays.yesterday: {
+                        day.date = 'Hier';
+                        break;
+                    }
+                    case this.closeDays.tomorrow: {
+                        day.date = 'Demain';
+                        break;
+                    }
+                }
+            }
 
             if (addBegin === null || addBegin === false) {
                 this.days.push(day);

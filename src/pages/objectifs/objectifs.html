@@ -17,19 +17,32 @@
     <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
         <ion-slide *ngFor="let day of days">
             <h1>{{day.date}}</h1>
-            <ion-card>
-                <ion-card-content>
-                    {{day.countDone*100 / day.objectifs.length | number:'1.0-0'}}% d'objectifs atteints
-                </ion-card-content>
-            </ion-card>
-            <ion-list>
-                <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
-                    <ion-icon name="{{obj.done ? 'checkmark-circle-outline' : 'radio-button-off'}}" [ngStyle]="{'color': obj.color }"
-                        item-start></ion-icon>
-                    {{obj.title}}
-                    <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
-                </ion-item>
-            </ion-list>
+            <div *ngIf="day.objectifs.length > 0">
+                <ion-card>
+                    <ion-card-content>
+                        {{day.countDone*100 / day.objectifs.length | number:'1.0-0'}}% d'objectifs atteints
+                    </ion-card-content>
+                </ion-card>
+                <ion-list>
+                    <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
+                        <ion-icon name="{{obj.done ? 'checkmark-circle-outline' : 'radio-button-off'}}" [ngStyle]="{'color': obj.color }"
+                            item-start></ion-icon>
+                        {{obj.title}}
+                        <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
+                    </ion-item>
+                </ion-list>
+            </div>
+            <div *ngIf="day.objectifs.length === 0">
+                <ion-card>
+                    <ion-card-header>
+                        Aucun objectif pour le moment !
+                    </ion-card-header>
+                    <ion-card-content>
+                        Vous n'avez fixé aucun objectif pour ce jour.
+                        <button ion-button outline (click)="showAdd()">Ajouter un objectif</button>
+                    </ion-card-content>
+                </ion-card>
+            </div>
         </ion-slide>
     </ion-slides>
 
