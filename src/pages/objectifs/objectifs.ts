@@ -8,178 +8,178 @@ import { AppConstants } from '../../app/app.constants';
 import { Objectif } from '../../models/objectif.model';
 
 @Component({
-  selector: 'page-objectifs',
-  templateUrl: 'objectifs.html'
+    selector: 'page-objectifs',
+    templateUrl: 'objectifs.html'
 })
 export class ObjectifsPage {
-  @ViewChild(Slides) slides: Slides;
-  
-  objectifs: Objectif[];
-  days: any[];
-  nbrDaysDisplayed: number;
+    @ViewChild(Slides) slides: Slides;
 
-  constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController,
-    private dateService: DateService, public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker) {
-    this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
-    this.objectifs = this.objectifsService.getAll();
-    console.log(this.objectifs);
-    this.initDays(null, null);
-  }
+    objectifs: Objectif[];
+    days: any[];
+    nbrDaysDisplayed: number;
 
-  initDays(addBegin: boolean, currentIndex: number): void {
-    let date: Date;
-    let nbrDays: number;
-
-    if (addBegin === null) {
-      this.days = [];
-
-      date = new Date();
-      date.setDate(date.getDate() - this.nbrDaysDisplayed);
-
-      nbrDays = 2 * this.nbrDaysDisplayed;
-    } else {
-      if (addBegin) {
-        date = this.dateService.getDateFromString(this.days[0].date);
-      } else {
-        date = this.dateService.getDateFromString(this.days[this.days.length - 1].date);
-      }
-
-      nbrDays = this.nbrDaysDisplayed;
+    constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController,
+        private dateService: DateService, public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker) {
+        this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
+        this.objectifs = this.objectifsService.getAll();
+        console.log(this.objectifs);
+        this.initDays(null, null);
     }
 
-    for (let i = 0; i < nbrDays; i++) {
-      if (addBegin === null || addBegin === false) { 
-        date.setDate(date.getDate() + 1); 
-      } else {
-        date.setDate(date.getDate() - 1);
-      }
+    initDays(addBegin: boolean, currentIndex: number): void {
+        let date: Date;
+        let nbrDays: number;
 
-      let day: any = {
-        date: null,
-        objectifs: []
-      };
+        if (addBegin === null) {
+            this.days = [];
 
-      day.date = this.dateService.getStringFromDate(date);
-      day.objectifs = this.objectifs.filter((obj: Objectif) => {
-        return obj.date === day.date;
-      });
+            date = new Date();
+            date.setDate(date.getDate() - this.nbrDaysDisplayed);
 
-      if (addBegin === null || addBegin === false) {
-        this.days.push(day);
-      } else {
-        this.days.unshift(day);
-      }
+            nbrDays = 2 * this.nbrDaysDisplayed;
+        } else {
+            if (addBegin) {
+                date = this.dateService.getDateFromString(this.days[0].date);
+            } else {
+                date = this.dateService.getDateFromString(this.days[this.days.length - 1].date);
+            }
+
+            nbrDays = this.nbrDaysDisplayed;
+        }
+
+        for (let i = 0; i < nbrDays; i++) {
+            if (addBegin === null || addBegin === false) {
+                date.setDate(date.getDate() + 1);
+            } else {
+                date.setDate(date.getDate() - 1);
+            }
+
+            let day: any = {
+                date: null,
+                objectifs: []
+            };
+
+            day.date = this.dateService.getStringFromDate(date);
+            day.objectifs = this.objectifs.filter((obj: Objectif) => {
+                return obj.date === day.date;
+            });
+
+            if (addBegin === null || addBegin === false) {
+                this.days.push(day);
+            } else {
+                this.days.unshift(day);
+            }
+        }
+
+        if (addBegin !== null && addBegin === true) {
+            setTimeout(() => {
+                this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
+            });
+        }
+
+        console.log(this.days);
     }
 
-    if (addBegin !== null && addBegin === true) {
-      setTimeout(() => {
-        this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
-      });
+    report(obj: Objectif): void {
+        this.datePicker.show({
+            date: this.dateService.getDateFromString(obj.date),
+            mode: 'date',
+            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+        }).then(
+            (date: Date) => {
+                console.log('new date: ' + date);
+
+                obj.reportCount++;
+                obj.date = this.dateService.getStringFromDate(date);
+
+                this.objectifsService.saveChanges();
+                this.initDays(null, null);
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
     }
 
-    console.log(this.days);
-  }
-
-  report(obj: Objectif): void {
-    this.datePicker.show({
-      date: this.dateService.getDateFromString(obj.date),
-      mode: 'date',
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      (date: Date) => {
-        console.log('new date: ' + date);
-
-        obj.reportCount++;
-        obj.date = this.dateService.getStringFromDate(date);
-
+    setDone(obj: Objectif, done: boolean): void {
+        obj.done = done;
         this.objectifsService.saveChanges();
-        this.initDays(null, null);
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    );
-  }
+    }
 
-  setDone(obj: Objectif, done: boolean): void {
-    obj.done = done;
-    this.objectifsService.saveChanges();
-  }
+    showActions(obj: Objectif): void {
+        //Buttons that are displayed in the action sheet
+        let buttons: any[] = [
+            {
+                text: 'Annuler',
+                role: 'cancel'
+            }
+        ];
 
-  showActions(obj: Objectif): void {
-    //Buttons that are displayed in the action sheet
-    let buttons: any[] = [
-      {
-        text: 'Annuler',
-        role: 'cancel'
-      }
-    ];
-
-    if (obj.reportable) {
-      buttons.unshift({
-        text: 'Reporter',
-        handler: () => {
-          this.report(obj);
-          return true;
+        if (obj.reportable) {
+            buttons.unshift({
+                text: 'Reporter',
+                handler: () => {
+                    this.report(obj);
+                    return true;
+                }
+            });
         }
-      });
-    }
 
-    if (obj.done) {
-      buttons.unshift({
-        text: 'Objectif non-atteint...',
-        handler: () => {
-          this.setDone(obj, false);
+        if (obj.done) {
+            buttons.unshift({
+                text: 'Objectif non-atteint...',
+                handler: () => {
+                    this.setDone(obj, false);
+                }
+            })
+        } else {
+            buttons.unshift({
+                text: 'Objectif atteint !',
+                handler: () => {
+                    this.setDone(obj, true);
+                }
+            })
         }
-      })
-    } else {
-      buttons.unshift({
-        text: 'Objectif atteint !',
-        handler: () => {
-          this.setDone(obj, true);
+
+        let actionSheet = this.actionSheetCtrl.create({
+            title: obj.title,
+            buttons: buttons
+        });
+
+        actionSheet.present();
+    }
+
+    showAdd(): void {
+        //Get the date of the current slide and convert it to format YYYY-MM-DD
+        let date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
+        let modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
+
+        // modal.onDidDismiss((objectif: any) => {
+        //   if (objectif != null) {
+        //     this.objectifs.push(objectif);
+        //   }
+        // });
+
+        modal.present();
+
+        modal.onDidDismiss((obj: Objectif) => {
+            if (obj != null) {
+                this.initDays(null, null);
+            }
+        })
+    }
+
+    slideDidChange(): void {
+        let currentIndex: number = this.slides.getActiveIndex();
+
+        if (currentIndex == null) {
+            return;
         }
-      })
+
+        if (currentIndex < AppConstants.indexTriggerCache) {
+            this.initDays(true, currentIndex);
+        } else if (currentIndex >= this.days.length - AppConstants.indexTriggerCache) {
+            this.initDays(false, null);
+        }
     }
-
-    let actionSheet = this.actionSheetCtrl.create({
-      title: obj.title,
-      buttons: buttons
-    });
-
-    actionSheet.present();
-  }
-
-  showAdd(): void {
-    //Get the date of the current slide and convert it to format YYYY-MM-DD
-    let date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
-    let modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
-
-    // modal.onDidDismiss((objectif: any) => {
-    //   if (objectif != null) {
-    //     this.objectifs.push(objectif);
-    //   }
-    // });
-
-    modal.present();
-
-    modal.onDidDismiss((obj: Objectif) => {
-      if (obj != null) {
-        this.initDays(null, null);
-      }
-    })
-  }
-
-  slideDidChange(): void {
-    let currentIndex: number = this.slides.getActiveIndex();
-
-    if (currentIndex == null) {
-      return;
-    }
-
-    if (currentIndex < AppConstants.indexTriggerCache) {
-      this.initDays(true, currentIndex);
-    } else if (currentIndex >= this.days.length - AppConstants.indexTriggerCache) {
-      this.initDays(false, null);
-    }
-  }
 }

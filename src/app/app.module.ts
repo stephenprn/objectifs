@@ -16,31 +16,31 @@ import { DateService } from '../services/date.service';
 
 
 @NgModule({
-  declarations: [
-    MyApp,
-    ObjectifsPage,
-    AddObjectifPage
-  ],
-  imports: [
-    BrowserModule,
-    AutoCompleteModule,
-    IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    ObjectifsPage,
-    AddObjectifPage
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ObjectifsService,
-    SuggestionsService,
-    DateService,
-    DatePicker
-  ]
+    declarations: [
+        MyApp,
+        ObjectifsPage,
+        AddObjectifPage
+    ],
+    imports: [
+        BrowserModule,
+        AutoCompleteModule,
+        IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot()
+    ],
+    bootstrap: [IonicApp],
+    entryComponents: [
+        MyApp,
+        ObjectifsPage,
+        AddObjectifPage
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        ObjectifsService,
+        SuggestionsService,
+        DateService,
+        DatePicker
+    ]
 })
-export class AppModule {}
+export class AppModule { }
