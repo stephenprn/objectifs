@@ -56,13 +56,15 @@ export class ObjectifsPage {
 
             let day: any = {
                 date: null,
-                objectifs: []
+                objectifs: [],
+                countDone: 0
             };
 
             day.date = this.dateService.getStringFromDate(date);
             day.objectifs = this.objectifs.filter((obj: Objectif) => {
                 return obj.date === day.date;
             });
+            day.countDone = this.objectifsService.getNumberDone(day.objectifs);
 
             if (addBegin === null || addBegin === false) {
                 this.days.push(day);
@@ -71,6 +73,7 @@ export class ObjectifsPage {
             }
         }
 
+        //If we add days at the begining, the index of the current slide changed
         if (addBegin !== null && addBegin === true) {
             setTimeout(() => {
                 this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
@@ -103,6 +106,14 @@ export class ObjectifsPage {
 
     setDone(obj: Objectif, done: boolean): void {
         obj.done = done;
+
+        //Update number of objectives done
+        if (done) {
+            this.days[this.slides.getActiveIndex()].countDone++;
+        } else {
+            this.days[this.slides.getActiveIndex()].countDone--;
+        }
+
         this.objectifsService.saveChanges();
     }
 
