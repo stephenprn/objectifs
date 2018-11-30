@@ -6,6 +6,7 @@ import { DateService } from '../../services/date.service';
 import { DatePicker } from '@ionic-native/date-picker';
 import { AppConstants } from '../../app/app.constants';
 import { Objectif } from '../../models/objectif.model';
+import { StatsService } from '../../services/stats.service';
 
 @Component({
     selector: 'page-objectifs',
@@ -19,8 +20,10 @@ export class ObjectifsPage {
     nbrDaysDisplayed: number;
     closeDays: any = null;
 
-    constructor(public navCtrl: NavController, private objectifsService: ObjectifsService, public modalCtrl: ModalController,
-        private dateService: DateService, public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker) {
+    constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
+        public modalCtrl: ModalController, private dateService: DateService,
+        public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
+        private statsService: StatsService) {
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
         console.log(this.objectifs);
@@ -69,7 +72,7 @@ export class ObjectifsPage {
             day.objectifs = this.objectifs.filter((obj: Objectif) => {
                 return obj.date === day.date;
             });
-            day.countDone = this.objectifsService.getNumberDone(day.objectifs);
+            day.countDone = this.statsService.getNumberDone(day.objectifs);
 
             //We replace the date by yesterday, today or tomorrow
             if (addBegin === null) {

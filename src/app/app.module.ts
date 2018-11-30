@@ -13,6 +13,7 @@ import { ObjectifsService } from '../services/objectifs.service';
 import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
 import { SuggestionsService } from '../services/suggestions.service';
 import { DateService } from '../services/date.service';
+import { StatsService } from '../services/stats.service';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { DateService } from '../services/date.service';
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         ObjectifsService,
         SuggestionsService,
+        StatsService,
         DateService,
         DatePicker
     ]
