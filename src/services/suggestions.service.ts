@@ -31,7 +31,7 @@ export class SuggestionsService implements AutoCompleteService {
             return;
         }
 
-        let textNormalized = text.normalize('NFD');
+        const textNormalized = text.normalize('NFD');
 
         return this.suggestions.filter((sug: string) => {
             if (sug.normalize('NFD').includes(textNormalized)) {

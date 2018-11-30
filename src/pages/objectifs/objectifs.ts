@@ -75,15 +75,15 @@ export class ObjectifsPage {
             if (addBegin === null) {
                 switch (day.date) {
                     case this.closeDays.today: {
-                        day.date = 'Aujourd\'hui';
+                        day.name = 'Aujourd\'hui';
                         break;
                     }
                     case this.closeDays.yesterday: {
-                        day.date = 'Hier';
+                        day.name = 'Hier';
                         break;
                     }
                     case this.closeDays.tomorrow: {
-                        day.date = 'Demain';
+                        day.name = 'Demain';
                         break;
                     }
                 }
@@ -175,7 +175,7 @@ export class ObjectifsPage {
             })
         }
 
-        let actionSheet = this.actionSheetCtrl.create({
+        const actionSheet = this.actionSheetCtrl.create({
             title: obj.title,
             buttons: buttons
         });
@@ -185,8 +185,8 @@ export class ObjectifsPage {
 
     showAdd(): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
-        let date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
-        let modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
+        const date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
+        const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
         // modal.onDidDismiss((objectif: any) => {
         //   if (objectif != null) {
@@ -204,7 +204,7 @@ export class ObjectifsPage {
     }
 
     slideDidChange(): void {
-        let currentIndex: number = this.slides.getActiveIndex();
+        const currentIndex: number = this.slides.getActiveIndex();
 
         if (currentIndex == null) {
             return;

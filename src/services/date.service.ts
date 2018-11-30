@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class DateService {
     //From Date object to DD/MM/YYYY
-    getStringFromDate(date: Date, reformat?: boolean): string {
+    public getStringFromDate(date: Date, reformat?: boolean): string {
         if (date == null) {
             date = new Date();
         }
@@ -22,13 +22,13 @@ export class DateService {
     }
 
     //From DD/MM/YYYY to Date object
-    getDateFromString(str: string): Date {
-        let array: string[] = str.split('/');
+    public getDateFromString(str: string): Date {
+        const array: string[] = str.split('/');
         return new Date(Number(array[2]), Number(array[1]) - 1, Number(array[0]));
     }
 
     //From YYYY-MM-DD to DD/MM/YYYY or DD/MM/YYYY to YYYY-MM-DD if inverse = true
-    formatDateString(date: string, inverse?: boolean): string {
+    public formatDateString(date: string, inverse?: boolean): string {
         if (inverse) {
             return date.split('/').reverse().join('-');
         }
@@ -37,7 +37,7 @@ export class DateService {
     }
 
     //Return yesterday's, today's and tomorrow's date in format DD/MM/YYYY
-    getCloseDays(date: Date): any {
+    public getCloseDays(date: Date): any {
         let days: any = {};
         let dateClone = _.cloneDeep(date);
 
