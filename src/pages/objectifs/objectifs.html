@@ -12,6 +12,10 @@
             Vos stats
         </ion-card-header>
         <ion-card-content>
+            Total: {{stats.total}}
+            Faits: {{stats.done}}
+            Nombre de reports: {{stats.reports}}
+            Nombre de reportés: {{stats.reported}}
         </ion-card-content>
     </ion-card>
     <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">

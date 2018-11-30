@@ -57,10 +57,7 @@ export class AddObjectifPage {
 
         objectif.date = this.dateService.formatDateString(objectif.date);
         objectif.done = false;
-
-        if (objectif.reportable) {
-            objectif.reportCount = 0;
-        }
+        objectif.reportCount = 0;
 
         this.objectifsService.add(objectif);
         this.viewCtrl.dismiss(objectif);
