@@ -8,6 +8,7 @@ import { AppConstants } from '../../app/app.constants';
 import { Objectif } from '../../models/objectif.model';
 import { StatsService } from '../../services/stats.service';
 import { Stats } from '../../models/stats.model';
+import { Day } from '../../models/day.model';
 
 @Component({
     selector: 'page-objectifs',
@@ -17,7 +18,7 @@ export class ObjectifsPage {
     @ViewChild(Slides) slides: Slides;
 
     objectifs: Objectif[];
-    days: any[];
+    days: Day[];
     nbrDaysDisplayed: number;
     closeDays: any = null;
     stats: Stats;
@@ -64,17 +65,13 @@ export class ObjectifsPage {
                 date.setDate(date.getDate() - 1);
             }
 
-            let day: any = {
-                date: null,
-                objectifs: [],
-                countDone: 0
-            };
+            let day: Day = new Day();
 
             day.date = this.dateService.getStringFromDate(date);
             day.objectifs = this.objectifs.filter((obj: Objectif) => {
                 return obj.date === day.date;
             });
-            day.countDone = this.statsService.getNumberDone(day.objectifs);
+            day.stats = this.statsService.getStats(day.objectifs);
 
             //We replace the date by yesterday, today or tomorrow
             if (addBegin === null) {
@@ -143,10 +140,10 @@ export class ObjectifsPage {
 
         //Update number of objectives done
         if (done) {
-            this.days[this.slides.getActiveIndex()].countDone++;
+            this.days[this.slides.getActiveIndex()].stats.done++;
             this.stats.done++;
         } else {
-            this.days[this.slides.getActiveIndex()].countDone--;
+            this.days[this.slides.getActiveIndex()].stats.done--;
             this.stats.done--;
         }
 

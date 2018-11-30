@@ -22,7 +22,7 @@ export class StatsService {
     }
 
     public getStats(objectifs?: Objectif[]): any {
-        if (!objectifs) {
+        if (objectifs == null) {
             objectifs = this.objectifsService.getAll();
         }
 
