@@ -7,6 +7,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { AppConstants } from '../../app/app.constants';
 import { Objectif } from '../../models/objectif.model';
 import { StatsService } from '../../services/stats.service';
+import { Stats } from '../../models/stats.model';
 
 @Component({
     selector: 'page-objectifs',
@@ -19,6 +20,7 @@ export class ObjectifsPage {
     days: any[];
     nbrDaysDisplayed: number;
     closeDays: any = null;
+    stats: Stats;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -26,8 +28,8 @@ export class ObjectifsPage {
         private statsService: StatsService) {
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
-        console.log(this.objectifs);
         this.initDays(null, null);
+        this.stats = this.statsService.getStats();
     }
 
     initDays(addBegin: boolean, currentIndex: number): void {
@@ -123,6 +125,12 @@ export class ObjectifsPage {
 
                 this.objectifsService.saveChanges();
                 this.initDays(null, null);
+                
+                //Update stats
+                if (obj.reportCount === 1) {
+                    this.stats.reported++;
+                }
+                this.stats.reports++;
             },
             (err: any) => {
                 console.log(err);
@@ -136,8 +144,10 @@ export class ObjectifsPage {
         //Update number of objectives done
         if (done) {
             this.days[this.slides.getActiveIndex()].countDone++;
+            this.stats.done++;
         } else {
             this.days[this.slides.getActiveIndex()].countDone--;
+            this.stats.done--;
         }
 
         this.objectifsService.saveChanges();
@@ -201,6 +211,7 @@ export class ObjectifsPage {
 
         modal.onDidDismiss((obj: Objectif) => {
             if (obj != null) {
+                this.stats.total++;
                 this.initDays(null, null);
             }
         })
