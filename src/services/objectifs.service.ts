@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Objectif } from '../models/objectif.model';
 import { SuggestionsService } from './suggestions.service';
+import { Filter } from '../models/filter.model';
 
 @Injectable()
 export class ObjectifsService {
@@ -21,12 +22,6 @@ export class ObjectifsService {
 
         return nbr;
     }
-
-    // public report(objectif: any) {
-    //     this.objectifs.find((obj: any) => {
-    //         return obj.id === objectif.id;
-    //     });
-    // }
 
     public add(objectif: Objectif): void {
         this.getAll();
@@ -56,20 +51,30 @@ export class ObjectifsService {
             this.objectifs = JSON.parse(objStorage);
         }
 
+        console.log(this.objectifs);
+
         return this.objectifs;
     }
 
-    public getNumberDone(objectifs?: Objectif[]) {
+    public getNbrObjectifs(objectifs?: Objectif[]): number {
         if (!objectifs) {
             objectifs = this.getAll();
         }
 
-        let countDone: number = 0;
+        return objectifs.length;
+    }
 
-        objectifs.forEach((obj: Objectif) => {
-            if (obj.done) countDone++; 
+    public filterObjectifs(filter: Filter, objectifs?: Objectif[]): any {
+        if (!objectifs) {
+            objectifs = this.getAll();
+        }
+
+        let objs: Objectif[] = objectifs.filter((obj: Objectif) => {
+            if (obj[filter.criteria] === filter.value) {
+                return obj;
+            }
         });
 
-        return countDone;
+        return filter.count ? objs.length : objs; 
     }
 }
