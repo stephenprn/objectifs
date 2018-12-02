@@ -14,6 +14,7 @@ import { AddObjectifPage } from '../pages/addObjectif/addObjectif';
 import { SuggestionsService } from '../services/suggestions.service';
 import { DateService } from '../services/date.service';
 import { StatsService } from '../services/stats.service';
+import { ObjectifsLaterService } from '../services/objectifsLater.service';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { StatsService } from '../services/stats.service';
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         ObjectifsService,
+        ObjectifsLaterService,
         SuggestionsService,
         StatsService,
         DateService,

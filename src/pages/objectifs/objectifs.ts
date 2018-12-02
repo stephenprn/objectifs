@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, Slides, Modal } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
@@ -9,6 +9,7 @@ import { Objectif } from '../../models/objectif.model';
 import { StatsService } from '../../services/stats.service';
 import { Stats } from '../../models/stats.model';
 import { Day } from '../../models/day.model';
+import { ObjectifsLaterService } from '../../services/objectifsLater.service';
 
 @Component({
     selector: 'page-objectifs',
@@ -26,7 +27,8 @@ export class ObjectifsPage {
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
-        private statsService: StatsService) {
+        private statsService: StatsService, private alertCtrl: AlertController,
+        private objectifsLaterService: ObjectifsLaterService) {
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null);
@@ -212,6 +214,37 @@ export class ObjectifsPage {
                 this.initDays(null, null);
             }
         })
+    }
+
+    showAddLater() {
+        console.log('showAddLater');
+        const alert: Alert = this.alertCtrl.create({
+            title: 'Ajouter pour plus tard',
+            message: 'Objectif que vous pourrez programmer plus tard',
+            inputs: [
+                {
+                    name: 'title',
+                    placeholder: 'Titre'
+                },
+                {
+                    name: 'description',
+                    placeholder: 'Description'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Annuler'
+                },
+                {
+                    text: 'Sauvegarder',
+                    handler: (data: any) => {
+                        this.objectifsLaterService.add(data);
+                    }
+                }
+            ]
+        });
+
+        alert.present();
     }
 
     slideDidChange(): void {
