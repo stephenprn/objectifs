@@ -51,8 +51,16 @@
     </ion-slides>
 
     <ion-fab right bottom>
-        <button ion-fab (click)="showAdd()">
-            <ion-icon name="add"></ion-icon>
+        <button ion-fab>
+            <ion-icon name="trending-up"></ion-icon>
         </button>
+        <ion-fab-list side="top">
+            <button ion-fab (click)="showAdd()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+            <button ion-fab (click)="showAddLater()">
+                <ion-icon name="time"></ion-icon>
+            </button>
+        </ion-fab-list>
     </ion-fab>
 </ion-content>

@@ -6,6 +6,7 @@ import { Filter } from '../models/filter.model';
 @Injectable()
 export class ObjectifsService {
     objectifs: Objectif[];
+    objectifsLater: any[];
 
     constructor(private suggestionsService: SuggestionsService) { }
 
@@ -43,15 +44,13 @@ export class ObjectifsService {
             return this.objectifs;
         }
 
-        let objStorage: string = localStorage.getItem('objectifs');
+        const objStorage: string = localStorage.getItem('objectifs');
 
         if (!objStorage) {
             this.objectifs = [];
         } else {
             this.objectifs = JSON.parse(objStorage);
         }
-
-        console.log(this.objectifs);
 
         return this.objectifs;
     }
