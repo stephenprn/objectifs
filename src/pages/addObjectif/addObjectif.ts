@@ -9,6 +9,7 @@ import { Objectif } from '../../models/objectif.model';
 import { SuggestionsService } from '../../services/suggestions.service';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { ObjectifsLaterService } from '../../services/objectifsLater.service';
+import { Importance } from '../../models/importance.enum';
 
 @Component({
     selector: 'page-add-objectif',
@@ -22,19 +23,25 @@ export class AddObjectifPage {
     submitAttempted: boolean = false;
     idLater: number = null;
     isLaterEmpty: boolean = true;
+    importances: string[];
+    Importance = Importance;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
         private objectifsService: ObjectifsService, private dateService: DateService,
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private toastCtrl: ToastController,
         private objectifsLaterService: ObjectifsLaterService) {
+        //Initialize types of importances
+        this.importances = Object.keys(Importance);
+
         // Initial color value: blue
         this.formGroup = formBuilder.group({
             title: ['', [Validators.required]],
             date: [this.navParams.get('date'), [Validators.required]],
             color: [AppConstants.initialColor, [Validators.required]],
             description: ['', [Validators.required]],
-            reportable: [true, [Validators.required]]
+            reportable: [true, [Validators.required]],
+            importance: [AppConstants.initialImportance, [Validators.required]]
         });
 
         this.colors = AppConstants.colors;
@@ -109,7 +116,7 @@ export class AddObjectifPage {
 
         this.objectifsLaterService.getAll().forEach((obj: any) => {
             let selected: boolean = false;
-            
+
             if (this.idLater !== null && this.idLater === obj.id) {
                 selected = true;
             }

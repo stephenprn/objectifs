@@ -1,3 +1,5 @@
+import { Importance } from "./importance.enum";
+
 export class Objectif {
     id: number;
     title: string;
@@ -7,4 +9,5 @@ export class Objectif {
     reportable: boolean;
     done: boolean;
     reportCount: number;
+    importance: Importance;
 }
