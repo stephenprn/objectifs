@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert, ActionSheet } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
@@ -21,7 +21,6 @@ export class ObjectifsPage {
     objectifs: Objectif[];
     days: Day[];
     nbrDaysDisplayed: number;
-    closeDays: any = null;
     stats: Stats;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
@@ -38,10 +37,7 @@ export class ObjectifsPage {
     initDays(addBegin: boolean, currentIndex: number): void {
         let date: Date = new Date();
         let nbrDays: number;
-
-        if (this.closeDays === null) {
-            this.closeDays = this.dateService.getCloseDays(date);
-        }
+        this.dateService.getCloseDays(date);
 
         //If addBegin is null, we totally reinitialize the days
         if (addBegin === null) {
@@ -61,43 +57,7 @@ export class ObjectifsPage {
         }
 
         for (let i = 0; i < nbrDays; i++) {
-            if (addBegin === null || addBegin === false) {
-                date.setDate(date.getDate() + 1);
-            } else {
-                date.setDate(date.getDate() - 1);
-            }
-
-            let day: Day = new Day();
-
-            day.date = this.dateService.getStringFromDate(date);
-            day.objectifs = this.objectifs.filter((obj: Objectif) => {
-                return obj.date === day.date;
-            });
-            day.stats = this.statsService.getStats(day.objectifs);
-
-            //We replace the date by yesterday, today or tomorrow
-            if (addBegin === null) {
-                switch (day.date) {
-                    case this.closeDays.today: {
-                        day.name = 'Aujourd\'hui';
-                        break;
-                    }
-                    case this.closeDays.yesterday: {
-                        day.name = 'Hier';
-                        break;
-                    }
-                    case this.closeDays.tomorrow: {
-                        day.name = 'Demain';
-                        break;
-                    }
-                }
-            }
-
-            if (addBegin === null || addBegin === false) {
-                this.days.push(day);
-            } else {
-                this.days.unshift(day);
-            }
+            this.constructDay(addBegin, date);
         }
 
         //If we add days at the begining, the index of the current slide changed
@@ -108,6 +68,33 @@ export class ObjectifsPage {
         }
 
         console.log(this.days);
+    }
+
+    private constructDay(addBegin: boolean, date: Date) {
+        if (addBegin === null || addBegin === false) {
+            date.setDate(date.getDate() + 1);
+        } else {
+            date.setDate(date.getDate() - 1);
+        }
+
+        let day: Day = new Day();
+
+        day.date = this.dateService.getStringFromDate(date);
+        day.objectifs = this.objectifs.filter((obj: Objectif) => {
+            return obj.date === day.date;
+        });
+        day.stats = this.statsService.getStats(day.objectifs);
+
+        //We replace the date by yesterday, today or tomorrow
+        if (addBegin === null) {
+            this.dateService.checkCloseDay(day);
+        }
+
+        if (addBegin === null || addBegin === false) {
+            this.days.push(day);
+        } else {
+            this.days.unshift(day);
+        }
     }
 
     report(obj: Objectif): void {
@@ -187,7 +174,7 @@ export class ObjectifsPage {
             })
         }
 
-        const actionSheet = this.actionSheetCtrl.create({
+        const actionSheet: ActionSheet = this.actionSheetCtrl.create({
             title: obj.title,
             buttons: buttons
         });
@@ -197,14 +184,8 @@ export class ObjectifsPage {
 
     showAdd(): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
-        const date = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
+        const date: string = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
-
-        // modal.onDidDismiss((objectif: any) => {
-        //   if (objectif != null) {
-        //     this.objectifs.push(objectif);
-        //   }
-        // });
 
         modal.present();
 
@@ -217,7 +198,6 @@ export class ObjectifsPage {
     }
 
     showAddLater() {
-        console.log('showAddLater');
         const alert: Alert = this.alertCtrl.create({
             title: 'Ajouter pour plus tard',
             message: 'Objectif que vous pourrez programmer plus tard',

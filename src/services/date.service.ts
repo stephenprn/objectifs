@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Day } from '../models/day.model';
 
 @Injectable()
 export class DateService {
+    closeDays: any = null;
+
     //From Date object to DD/MM/YYYY
     public getStringFromDate(date: Date, reformat?: boolean): string {
         if (date == null) {
@@ -38,15 +41,34 @@ export class DateService {
 
     //Return yesterday's, today's and tomorrow's date in format DD/MM/YYYY
     public getCloseDays(date: Date): any {
-        let days: any = {};
+        if (this.closeDays !== null) {
+            return;
+        }
+
+        this.closeDays = {};
         let dateClone = _.cloneDeep(date);
 
-        days.today = this.getStringFromDate(dateClone);
+        this.closeDays.today = this.getStringFromDate(dateClone);
         dateClone.setDate(date.getDate() - 1);
-        days.yesterday = this.getStringFromDate(dateClone);
+        this.closeDays.yesterday = this.getStringFromDate(dateClone);
         dateClone.setDate(date.getDate() + 1);
-        days.tomorrow = this.getStringFromDate(dateClone);
+        this.closeDays.tomorrow = this.getStringFromDate(dateClone);
+    }
 
-        return days;
+    public checkCloseDay(day: Day) {
+        switch (day.date) {
+            case this.closeDays.today: {
+                day.name = 'Aujourd\'hui';
+                break;
+            }
+            case this.closeDays.yesterday: {
+                day.name = 'Hier';
+                break;
+            }
+            case this.closeDays.tomorrow: {
+                day.name = 'Demain';
+                break;
+            }
+        }
     }
 }
