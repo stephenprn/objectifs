@@ -18,4 +18,6 @@ export class AppConstants {
     public static nbrDaysDisplayed: number = 5;
 
     public static indexTriggerCache: number = 2;
+
+    public static ionFormat: string = 'DD/MM/YYYY';
 }
