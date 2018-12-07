@@ -14,10 +14,22 @@ export class AppConstants {
 
     public static initialColor: string = '#2196F3';
 
+    public static initialImportance: string = 'medium';
+
     //Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 5;
 
     public static indexTriggerCache: number = 2;
 
     public static ionFormat: string = 'DD/MM/YYYY';
+
+    public static scoresCoef: any = {
+        done: {
+            important: 10,
+            medium: 6,
+            trivial: 3
+        },
+        reported: -1,
+
+    }
 }

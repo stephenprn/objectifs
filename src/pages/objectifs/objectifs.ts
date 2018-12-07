@@ -197,7 +197,7 @@ export class ObjectifsPage {
         })
     }
 
-    showAddLater() {
+    showAddLater(): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Ajouter pour plus tard',
             message: 'Objectif que vous pourrez programmer plus tard',
