@@ -18,7 +18,7 @@ import { Importance } from '../../models/importance.enum';
 export class AddObjectifPage {
     @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
 
-    colors: any[] = [];
+    categories: any[];
     formGroup: any;
     submitAttempted: boolean = false;
     idLater: number = null;
@@ -34,17 +34,17 @@ export class AddObjectifPage {
         //Initialize types of importances
         this.importances = Object.keys(Importance);
 
-        // Initial color value: blue
+        // Initial category value: relational
         this.formGroup = formBuilder.group({
             title: ['', [Validators.required]],
             date: [this.navParams.get('date'), [Validators.required]],
-            color: [AppConstants.initialColor, [Validators.required]],
+            category: [AppConstants.initialCategory, [Validators.required]],
             description: ['', [Validators.required]],
             reportable: [true, [Validators.required]],
             importance: [AppConstants.initialImportance, [Validators.required]]
         });
 
-        this.colors = AppConstants.colors;
+        this.categories = AppConstants.categories;
         this.isLaterEmpty = this.objectifsLaterService.isListEmpty();
     }
 

@@ -1,3 +1,4 @@
+import { UtilsService } from './../services/utils.service';
 import { ObjectifsPage } from './../pages/objectifs/objectifs';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -43,6 +44,7 @@ import { ObjectifsLaterService } from '../services/objectifsLater.service';
         ObjectifsLaterService,
         SuggestionsService,
         StatsService,
+        UtilsService,
         DateService,
         DatePicker
     ]

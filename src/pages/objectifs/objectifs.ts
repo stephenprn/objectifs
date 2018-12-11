@@ -10,6 +10,7 @@ import { StatsService } from '../../services/stats.service';
 import { Stats } from '../../models/stats.model';
 import { Day } from '../../models/day.model';
 import { ObjectifsLaterService } from '../../services/objectifsLater.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
     selector: 'page-objectifs',
@@ -22,16 +23,18 @@ export class ObjectifsPage {
     days: Day[];
     nbrDaysDisplayed: number;
     stats: Stats;
+    categoriesJson: any;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
         private statsService: StatsService, private alertCtrl: AlertController,
-        private objectifsLaterService: ObjectifsLaterService) {
+        private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null);
         this.stats = this.statsService.getStats();
+        this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
     }
 
     initDays(addBegin: boolean, currentIndex: number): void {
@@ -83,6 +86,7 @@ export class ObjectifsPage {
         day.objectifs = this.objectifs.filter((obj: Objectif) => {
             return obj.date === day.date;
         });
+        this.orderObjectives(day.objectifs);
         day.stats = this.statsService.getStats(day.objectifs);
 
         //We replace the date by yesterday, today or tomorrow
@@ -95,6 +99,19 @@ export class ObjectifsPage {
         } else {
             this.days.unshift(day);
         }
+    }
+
+    //Sort objectives by not done first and name
+    orderObjectives(objs: Objectif[]): void {
+        objs.sort((a: Objectif, b: Objectif) => {
+            if (a.done && !b.done) {
+                return 1;
+            } else if (!a.done && b.done) {
+                return -1;
+            } else {
+                return a.title.localeCompare(b.title);
+            }
+        });
     }
 
     report(obj: Objectif): void {
@@ -136,6 +153,8 @@ export class ObjectifsPage {
             this.stats.done--;
         }
 
+        //Reorder objectives after status change
+        this.orderObjectives(this.days[this.slides.getActiveIndex()].objectifs);
         this.objectifsService.saveChanges();
     }
 
