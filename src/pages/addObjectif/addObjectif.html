@@ -40,10 +40,10 @@
         </div>
 
         <ion-item>
-            <ion-label>Couleur</ion-label>
-            <ion-select formControlName="color">
-                <ion-option [value]="color.hex" *ngFor="let color of colors">
-                    {{color.name}}
+            <ion-label>Categorie</ion-label>
+            <ion-select formControlName="category">
+                <ion-option [value]="category.id" *ngFor="let category of categories">
+                    {{category.title}}
                 </ion-option>
             </ion-select>
         </ion-item>
