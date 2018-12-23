@@ -13,7 +13,7 @@ export class AppConstants {
     public static initialImportance: string = 'medium';
 
     //Number of days displayed at the initialization of the objectives
-    public static nbrDaysDisplayed: number = 5;
+    public static nbrDaysDisplayed: number = 7;
 
     public static indexTriggerCache: number = 2;
 

@@ -7,15 +7,15 @@
 </ion-header>
 
 <ion-content>
-    <ion-card>
+    <ion-card *ngIf="weekStats">
         <ion-card-header>
-            Vos stats
+            Stats de la semaine
         </ion-card-header>
         <ion-card-content>
-            Total: {{stats.total}}
-            Faits: {{stats.done}}
-            Nombre de reports: {{stats.reports}}
-            Nombre de reportés: {{stats.reported}}
+            <div>Total: {{weekStats.total}}</div>
+            <div>Faits: {{weekStats.done}}</div>
+            <div>Nombre de reports: {{weekStats.reports}}</div>
+            <div>Nombre de reportés: {{weekStats.reported}}</div>
         </ion-card-content>
     </ion-card>
     <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert, ActionSheet } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
@@ -22,8 +22,9 @@ export class ObjectifsPage {
     objectifs: Objectif[];
     days: Day[];
     nbrDaysDisplayed: number;
-    stats: Stats;
+    weekStats: Stats;
     categoriesJson: any;
+    private week1: Date;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -33,8 +34,9 @@ export class ObjectifsPage {
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null);
-        this.stats = this.statsService.getStats();
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
+        //Useful for checkWeekStats() 
+        this.week1 = new Date(new Date().getFullYear(), 0, 4);
     }
 
     initDays(addBegin: boolean, currentIndex: number): void {
@@ -128,12 +130,6 @@ export class ObjectifsPage {
 
                 this.objectifsService.saveChanges();
                 this.initDays(null, null);
-                
-                //Update stats
-                if (obj.reportCount === 1) {
-                    this.stats.reported++;
-                }
-                this.stats.reports++;
             },
             (err: any) => {
                 console.log(err);
@@ -147,10 +143,10 @@ export class ObjectifsPage {
         //Update number of objectives done
         if (done) {
             this.days[this.slides.getActiveIndex()].stats.done++;
-            this.stats.done++;
+            this.weekStats.done++;
         } else {
             this.days[this.slides.getActiveIndex()].stats.done--;
-            this.stats.done--;
+            this.weekStats.done--;
         }
 
         //Reorder objectives after status change
@@ -210,8 +206,8 @@ export class ObjectifsPage {
 
         modal.onDidDismiss((obj: Objectif) => {
             if (obj != null) {
-                this.stats.total++;
                 this.initDays(null, null);
+                this.checkWeekStats(true);
             }
         })
     }
@@ -247,6 +243,7 @@ export class ObjectifsPage {
     }
 
     slideDidChange(): void {
+        this.checkWeekStats();
         const currentIndex: number = this.slides.getActiveIndex();
 
         if (currentIndex == null) {
@@ -258,5 +255,36 @@ export class ObjectifsPage {
         } else if (currentIndex >= this.days.length - AppConstants.indexTriggerCache) {
             this.initDays(false, null);
         }
+    }
+
+    checkWeekStats(reset?: boolean): void {
+        //Get week from the current day
+        let date: Date = this.dateService.getDateFromString(this.days[this.slides.getActiveIndex()].date);
+        date.setDate(date.getDate() - (date.getDay() + 6) % 7);
+        
+        const weekNbr: number = 1 + Math.round(((date.getTime() - this.week1.getTime()) / 86400000
+            - 3 + (this.week1.getDay() + 6) % 7) / 7);
+
+        if (!reset && this.weekStats && this.weekStats.weekNbr === weekNbr) {
+            return;
+        }
+
+        //The list of the objectives of the current week
+        let objectifs: Objectif[] = [];
+
+        for (let i = 0; i <= 6; i++) {
+            for (let j = 0; j < this.days.length; j++) {
+                const dateStr: string = this.dateService.getStringFromDate(date);
+                if (this.days[j].date === dateStr) {
+                    objectifs = objectifs.concat(this.days[j].objectifs);
+                    break;
+                }
+            }
+
+            date.setDate(date.getDate() + 1);
+        }
+
+        this.weekStats = this.statsService.getStats(objectifs);
+        this.weekStats.weekNbr = weekNbr;
     }
 }

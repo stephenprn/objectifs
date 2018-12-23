@@ -27,7 +27,7 @@ export class DateService {
     //From DD/MM/YYYY to Date object
     public getDateFromString(str: string): Date {
         const array: string[] = str.split('/');
-        return new Date(Number(array[2]), Number(array[1]) - 1, Number(array[0]));
+        return new Date(Number(array[2]), Number(array[1]) - 1, Number(array[0]), 0, 0, 0, 0);
     }
 
     //From YYYY-MM-DD to DD/MM/YYYY or DD/MM/YYYY to YYYY-MM-DD if inverse = true
