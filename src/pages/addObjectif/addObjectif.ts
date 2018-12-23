@@ -39,7 +39,7 @@ export class AddObjectifPage {
             title: ['', [Validators.required]],
             date: [this.navParams.get('date'), [Validators.required]],
             category: [AppConstants.initialCategory, [Validators.required]],
-            description: ['', [Validators.required]],
+            description: ['', []],
             reportable: [true, [Validators.required]],
             importance: [AppConstants.initialImportance, [Validators.required]]
         });
