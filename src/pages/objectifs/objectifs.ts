@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert, ActionSheet } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert, ActionSheet, FabContainer } from 'ionic-angular';
 import { ObjectifsService } from '../../services/objectifs.service';
 import { AddObjectifPage } from '../addObjectif/addObjectif';
 import { DateService } from '../../services/date.service';
@@ -197,12 +197,13 @@ export class ObjectifsPage {
         actionSheet.present();
     }
 
-    showAdd(): void {
+    showAdd(event:any, fab: FabContainer): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
         const date: string = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
         modal.present();
+        fab.close();
 
         modal.onDidDismiss((obj: Objectif) => {
             if (obj != null) {
@@ -212,7 +213,7 @@ export class ObjectifsPage {
         })
     }
 
-    showAddLater(): void {
+    showAddLater(event:any, fab: FabContainer): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Ajouter pour plus tard',
             message: 'Objectif que vous pourrez programmer plus tard',
@@ -240,6 +241,7 @@ export class ObjectifsPage {
         });
 
         alert.present();
+        fab.close();
     }
 
     slideDidChange(): void {
