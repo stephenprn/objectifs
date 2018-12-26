@@ -11,9 +11,9 @@ export class AppConstants {
     public static initialCategory: string = 'relational';
 
     public static importances: any[] = [
-        { id: 'high', title: 'Haute', icon: 'arrow-up', color: '#F44336' },
-        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: '#FF9800' },
-        { id: 'low', title: 'Minime', icon: 'arrow-down', color: '#4CAF50' }
+        { id: 'high', title: 'Haute', icon: 'arrow-up', color: '#F44336', index: 2 },
+        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: '#FF9800', index: 1 },
+        { id: 'low', title: 'Minime', icon: 'arrow-down', color: '#4CAF50', index: 0 }
     ];
 
     public static initialImportance: string = 'medium';
