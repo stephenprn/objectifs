@@ -24,17 +24,22 @@ export class ObjectifsPage {
     nbrDaysDisplayed: number;
     weekStats: Stats;
     categoriesJson: any;
+    importancesJson: any;
     private week1: Date;
+    limitDescription: number;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
         private statsService: StatsService, private alertCtrl: AlertController,
         private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
+        this.limitDescription = AppConstants.limitDescription;
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null);
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
+        this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color'], AppConstants.importances);
+        console.log(this.importancesJson);
         //Useful for checkWeekStats() 
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
     }
