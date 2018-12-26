@@ -10,12 +10,20 @@ export class AppConstants {
 
     public static initialCategory: string = 'relational';
 
+    public static importances: any[] = [
+        { id: 'high', title: 'Haute', icon: 'arrow-up', color: '#F44336' },
+        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: '#FF9800' },
+        { id: 'low', title: 'Minime', icon: 'arrow-down', color: '#4CAF50' }
+    ];
+
     public static initialImportance: string = 'medium';
 
     //Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 7;
 
     public static indexTriggerCache: number = 2;
+
+    public static limitDescription: number = 30;
 
     public static ionFormat: string = 'DD/MM/YYYY';
 

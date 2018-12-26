@@ -22,8 +22,8 @@
         </button>
 
         <ion-segment formControlName="importance">
-            <ion-segment-button *ngFor="let imp of importances" value="{{imp}}">
-                {{Importance[imp]}}
+            <ion-segment-button *ngFor="let imp of importances" value="{{imp.id}}">
+                {{imp.title}}
             </ion-segment-button>
         </ion-segment>
 

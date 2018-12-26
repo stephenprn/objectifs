@@ -34,6 +34,15 @@
                         <div [ngClass]="{'done': obj.done}">
                             {{obj.title}}
                         </div>
+                        <p>
+                            <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{'color': importancesJson[obj.importance].color }"></ion-icon>
+                            <span *ngIf="obj.description.length <= limitDescription">
+                                {{obj.description}}
+                            </span>
+                            <span *ngIf="obj.description.length > limitDescription">
+                                {{obj.description | slice:0:limitDescription}}...
+                            </span>
+                        </p>
                         <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
                     </ion-item>
                 </ion-list>
