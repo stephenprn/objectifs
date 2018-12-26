@@ -33,13 +33,14 @@ export class ObjectifsPage {
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
         private statsService: StatsService, private alertCtrl: AlertController,
         private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
+        this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
+        this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index'], AppConstants.importances);
+
         this.limitDescription = AppConstants.limitDescription;
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
+
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null);
-        this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
-        this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color'], AppConstants.importances);
-        console.log(this.importancesJson);
         //Useful for checkWeekStats() 
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
     }
@@ -116,7 +117,13 @@ export class ObjectifsPage {
             } else if (!a.done && b.done) {
                 return -1;
             } else {
-                return a.title.localeCompare(b.title);
+                if (this.importancesJson[a.importance].index > this.importancesJson[b.importance].index) {
+                    return -1;
+                } else if (this.importancesJson[a.importance].index < this.importancesJson[b.importance].index) {
+                    return 1;
+                } else {
+                    return a.title.localeCompare(b.title);
+                }
             }
         });
     }
@@ -202,7 +209,7 @@ export class ObjectifsPage {
         actionSheet.present();
     }
 
-    showAdd(event:any, fab: FabContainer): void {
+    showAdd(event: any, fab: FabContainer): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
         const date: string = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
@@ -218,7 +225,7 @@ export class ObjectifsPage {
         })
     }
 
-    showAddLater(event:any, fab: FabContainer): void {
+    showAddLater(event: any, fab: FabContainer): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Ajouter pour plus tard',
             message: 'Objectif que vous pourrez programmer plus tard',
@@ -268,7 +275,7 @@ export class ObjectifsPage {
         //Get week from the current day
         let date: Date = this.dateService.getDateFromString(this.days[this.slides.getActiveIndex()].date);
         date.setDate(date.getDate() - (date.getDay() + 6) % 7);
-        
+
         const weekNbr: number = 1 + Math.round(((date.getTime() - this.week1.getTime()) / 86400000
             - 3 + (this.week1.getDay() + 6) % 7) / 7);
 
