@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { AutoCompleteService } from "ionic2-auto-complete";
+import { Injectable } from '@angular/core';
+import { AutoCompleteService } from 'ionic2-auto-complete';
 
 @Injectable()
 export class SuggestionsService implements AutoCompleteService {

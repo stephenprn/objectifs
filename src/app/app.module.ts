@@ -5,6 +5,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Firebase } from '@ionic-native/firebase';
 import { IonicStorageModule } from '@ionic/storage';
 import { DatePicker } from '@ionic-native/date-picker';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
@@ -16,13 +17,15 @@ import { SuggestionsService } from '../services/suggestions.service';
 import { DateService } from '../services/date.service';
 import { StatsService } from '../services/stats.service';
 import { ObjectifsLaterService } from '../services/objectifsLater.service';
+import { WeekStatsPage } from '../pages/weekStats/weekStats';
 
 
 @NgModule({
     declarations: [
         MyApp,
         ObjectifsPage,
-        AddObjectifPage
+        AddObjectifPage,
+        WeekStatsPage
     ],
     imports: [
         BrowserModule,
@@ -34,7 +37,8 @@ import { ObjectifsLaterService } from '../services/objectifsLater.service';
     entryComponents: [
         MyApp,
         ObjectifsPage,
-        AddObjectifPage
+        AddObjectifPage,
+        WeekStatsPage
     ],
     providers: [
         StatusBar,
@@ -46,7 +50,8 @@ import { ObjectifsLaterService } from '../services/objectifsLater.service';
         StatsService,
         UtilsService,
         DateService,
-        DatePicker
+        DatePicker,
+        Firebase
     ]
 })
 export class AppModule { }
