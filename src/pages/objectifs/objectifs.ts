@@ -45,8 +45,11 @@ export class ObjectifsPage {
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
     }
 
-    initDays(addBegin: boolean, currentIndex: number): void {
-        let date: Date = new Date();
+    initDays(addBegin: boolean, currentIndex: number, date?: Date): void {
+        if (!date) {
+            date = new Date();
+        }
+        
         let nbrDays: number;
         this.dateService.getCloseDays(date);
 
@@ -149,6 +152,21 @@ export class ObjectifsPage {
         );
     }
 
+    goToDay(initialDate: string): void {
+        this.datePicker.show({
+            date: this.dateService.getDateFromString(initialDate),
+            mode: 'date',
+            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+        }).then(
+            (date: Date) => {
+                this.initDays(null, null, date);
+            },
+            (err: any) => {
+                console.log(err);
+            }
+        );
+    }
+
     setDone(obj: Objectif, done: boolean): void {
         obj.done = done;
 
@@ -215,7 +233,10 @@ export class ObjectifsPage {
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
         modal.present();
-        fab.close();
+
+        if (fab) {
+            fab.close();
+        }
 
         modal.onDidDismiss((obj: Objectif) => {
             if (obj != null) {
