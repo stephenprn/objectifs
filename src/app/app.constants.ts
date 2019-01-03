@@ -1,19 +1,28 @@
 export class AppConstants {
+    private static colors: any = {
+        red: '#F44336',
+        orange: '#FF9800',
+        black: '#000000',
+        green: '#4CAF50',
+        blue: '#2196F3',
+        yellow: '#FFEB3B'
+    };
+
     public static categories: any[] = [
-        { id: 'health', title: 'santé', icon: 'medkit', color: '#F44336' },
-        { id: 'relational', title: 'relationnel', icon: 'happy', color: '#FF9800' },
-        { id: 'professional', title: 'professionnel', icon: 'briefcase', color: '#000000' },
-        { id: 'financial', title: 'financier', icon: 'cash', color: '#4CAF50' },
-        { id: 'spiritual', title: 'spirituel', icon: 'eye', color: '#2196F3' },
-        { id: 'other', title: 'autre', icon: 'bulb', color: '#FFEB3B' }
+        { id: 'health', title: 'santé', icon: 'medkit', color: AppConstants.colors.red },
+        { id: 'relational', title: 'relationnel', icon: 'happy', color: AppConstants.colors.orange },
+        { id: 'professional', title: 'professionnel', icon: 'briefcase', color: AppConstants.colors.black },
+        { id: 'financial', title: 'financier', icon: 'cash', color: AppConstants.colors.green },
+        { id: 'spiritual', title: 'spirituel', icon: 'eye', color: AppConstants.colors.blue },
+        { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
     ];
 
     public static initialCategory: string = 'relational';
 
     public static importances: any[] = [
-        { id: 'high', title: 'Haute', icon: 'arrow-up', color: '#F44336', index: 2 },
-        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: '#FF9800', index: 1 },
-        { id: 'low', title: 'Minime', icon: 'arrow-down', color: '#4CAF50', index: 0 }
+        { id: 'high', title: 'Haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 },
+        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },
+        { id: 'low', title: 'Minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 }
     ];
 
     public static initialImportance: string = 'medium';
