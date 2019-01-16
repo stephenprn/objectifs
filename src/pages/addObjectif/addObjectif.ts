@@ -7,8 +7,8 @@ import * as _ from 'lodash';
 import { DateService } from '../../services/date.service';
 import { Objectif } from '../../models/objectif.model';
 import { SuggestionsService } from '../../services/suggestions.service';
-import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { ObjectifsLaterService } from '../../services/objectifsLater.service';
+import { AutoCompleteComponent } from '../../components/ionic2-auto-complete';
 
 @Component({
     selector: 'page-add-objectif',

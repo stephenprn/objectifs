@@ -1,0 +1,56 @@
+.searchbar-md .searchbar-input {
+  background-color: color($colors, material-dark, contrast);
+  color: #FFF;
+  font-size: 2.2rem;
+  padding-right: 6px;
+  padding-left: 16px;
+}
+
+.searchbar-search-icon { 
+  display:none; width:0; height:0; 
+}
+
+ion-auto-complete {
+  overflow    : hidden !important;
+  display: block;
+  width: 100%;
+  display: inline-block;
+  ion-searchbar {
+    padding: 1px !important;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  ul {
+    position: absolute;
+    margin: 0px 10px 0px 10px;
+    background: color($colors, material-dark, contrast);
+    list-style-type: none;
+    padding:0px;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    li {
+      padding: 15px;
+      border-bottom: 1px solid #c1c1c1;
+    }
+
+    ion-auto-complete-item {
+      height: 40px;
+      width: 100%;
+    }
+
+    li:last-child {
+      border: none;
+    }
+
+    li:hover {
+      cursor: pointer;
+      background: #f1f1f1
+    }
+  }
+}

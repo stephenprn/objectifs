@@ -8,7 +8,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Firebase } from '@ionic-native/firebase';
 import { IonicStorageModule } from '@ionic/storage';
 import { DatePicker } from '@ionic-native/date-picker';
-import { AutoCompleteModule } from 'ionic2-auto-complete';
 
 import { MyApp } from './app.component';
 import { ObjectifsService } from '../services/objectifs.service';
@@ -18,6 +17,8 @@ import { DateService } from '../services/date.service';
 import { StatsService } from '../services/stats.service';
 import { ObjectifsLaterService } from '../services/objectifsLater.service';
 import { WeekStatsPage } from '../pages/weekStats/weekStats';
+import { ProgressBarComponent } from '../components/progressBar/progressBar';
+import { AutoCompleteModule } from '../components/ionic2-auto-complete';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { WeekStatsPage } from '../pages/weekStats/weekStats';
         MyApp,
         ObjectifsPage,
         AddObjectifPage,
-        WeekStatsPage
+        WeekStatsPage,
+        ProgressBarComponent
     ],
     imports: [
         BrowserModule,

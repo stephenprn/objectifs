@@ -27,6 +27,7 @@ export class ObjectifsPage {
     importancesJson: any;
     private week1: Date;
     limitDescription: number;
+    bluredContent: boolean = false;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -227,6 +228,11 @@ export class ObjectifsPage {
         actionSheet.present();
     }
 
+    openFabList(): void {
+        console.log('openF');
+        this.bluredContent = !this.bluredContent;
+    }
+
     showAdd(event: any, fab: FabContainer): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
         const date: string = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
@@ -239,6 +245,8 @@ export class ObjectifsPage {
         }
 
         modal.onDidDismiss((obj: Objectif) => {
+            this.bluredContent = false;
+
             if (obj != null) {
                 this.initDays(null, null);
                 this.checkWeekStats(true);

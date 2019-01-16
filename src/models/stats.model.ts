@@ -5,7 +5,7 @@ export class Stats {
     reported: number = 0; //Number of objectifs reported at least one time
     weekNbr?: number;
 
-    getPropDone(): string {
-        return Math.round(this.done*100/this.total).toString() + '%';
+    getPropDone(): number {
+        return Math.round(this.done*100/this.total);
     }
 }
