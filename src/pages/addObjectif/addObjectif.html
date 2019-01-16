@@ -14,44 +14,49 @@
 
 <ion-content>
     <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
-        <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
-            #autocomplete></ion-auto-complete>
-        
-        <button *ngIf="!isLaterEmpty" type="button" (click)="showAddedForLater()" ion-button icon-only>
-            <ion-icon name="time"></ion-icon>
-        </button>
+        <ion-card>
+            <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
+                #autocomplete></ion-auto-complete>
+            
+            <button *ngIf="!isLaterEmpty" type="button" (click)="showAddedForLater()" ion-button icon-only>
+                <ion-icon name="time"></ion-icon>
+            </button>
 
-        <ion-segment formControlName="importance">
-            <ion-segment-button *ngFor="let imp of importances" value="{{imp.id}}">
-                {{imp.title}}
-            </ion-segment-button>
-        </ion-segment>
+            <ion-segment formControlName="importance">
+                <ion-segment-button *ngFor="let imp of importances" value="{{imp.id}}" [ngStyle]="{ color: imp.color }">
+                    <ion-icon name="{{imp.icon}}" style="font-size: 1.3rem;"></ion-icon>
+                    {{imp.title}}
+                </ion-segment-button>
+            </ion-segment>
 
-        <ion-item>
-            <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
-        </ion-item>
+            <ion-item>
+                <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
+            </ion-item>
 
-        <ion-item>
-            <ion-label>Date</ion-label>
-            <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
-        </ion-item>
-        <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
-            Date requise
-        </div>
+            <ion-item>
+                <ion-label>Date</ion-label>
+                <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+            </ion-item>
+            <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
+                Date requise
+            </div>
 
-        <ion-item>
-            <ion-label>Categorie</ion-label>
-            <ion-select formControlName="category">
-                <ion-option [value]="category.id" *ngFor="let category of categories">
-                    {{category.title}}
-                </ion-option>
-            </ion-select>
-        </ion-item>
+            <ion-item>
+                <ion-label>Categorie</ion-label>
+                <ion-select formControlName="category">
+                    <ion-option [value]="category.id" *ngFor="let category of categories">
+                        {{category.title}}
+                    </ion-option>
+                </ion-select>
+            </ion-item>
 
-        <ion-item>
-            <ion-label>Peut être reporté</ion-label>
-            <ion-checkbox checked="true" formControlName="reportable"></ion-checkbox>
-        </ion-item>
-        <button type="submit" ion-button clear>Valider</button>
+            <ion-item>
+                <ion-label>Peut être reporté</ion-label>
+                <ion-checkbox checked="true" formControlName="reportable"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <button type="submit" ion-button clear item-end>Valider</button>
+            </ion-item>
+        </ion-card>
     </form>
 </ion-content>
