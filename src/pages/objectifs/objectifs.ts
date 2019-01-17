@@ -28,6 +28,7 @@ export class ObjectifsPage {
     private week1: Date;
     limitDescription: number;
     bluredContent: boolean = false;
+    bigSlides: boolean = true;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -225,11 +226,16 @@ export class ObjectifsPage {
             buttons: buttons
         });
 
+        actionSheet.onWillDismiss(() => {
+            this.bluredContent = false;
+        });
+        
+        this.bluredContent = true;
+
         actionSheet.present();
     }
 
     openFabList(): void {
-        console.log('openF');
         this.bluredContent = !this.bluredContent;
     }
 
@@ -333,5 +339,11 @@ export class ObjectifsPage {
 
         this.weekStats = this.statsService.getStats(objectifs);
         this.weekStats.weekNbr = weekNbr;
+
+        if (this.weekStats.isEmpty()) {
+            this.bigSlides = true;
+        } else {
+            this.bigSlides = false;
+        }
     }
 }

@@ -28,5 +28,18 @@
 }
 
 .alert-title {
-    color: color($colors, light);;
+    color: color($colors, light);
+}
+
+.action-sheet-group {
+    background: color($colors, dark) !important;
+}
+
+.action-sheet-button {
+    color: color($colors, light) !important;
+}
+
+.action-sheet-title {
+    color: color($colors, light) !important;
+    font-weight: bold;
 }

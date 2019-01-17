@@ -4,8 +4,12 @@ page-objectifs {
     color: #808080;
   }
 
-  ion-slides {
-    height: auto;
+  .smallSlides {
+    height: 65vh;
+  }
+
+  .bigSlides {
+    height: 81vh;
   }
 
   .buttonAddObj {
@@ -13,5 +17,9 @@ page-objectifs {
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;
+  }
+
+  ion-scroll {
+    height: 45vh;
   }
 }
