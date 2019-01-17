@@ -1,4 +1,4 @@
-<ion-card *ngIf="stats">
+<ion-card [ngClass]="{ 'cardEmpty': stats.isEmpty(), 'cardFull': !stats.isEmpty() }" *ngIf="stats">
   <ion-card-header text-center>
     Stats de la semaine
   </ion-card-header>

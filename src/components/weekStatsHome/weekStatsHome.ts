@@ -13,5 +13,6 @@ export class weekStatsHomeComponent implements OnChanges {
     }
 
     ngOnChanges(changes) {
+        console.log(changes);
     }
 }
