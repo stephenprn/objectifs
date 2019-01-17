@@ -38,7 +38,7 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #ffffff,
-  dark:       #222,
+  dark:       #2e2e38,
   material-dark: (
     base:     #424250,
     contrast: #33333d
@@ -55,14 +55,14 @@ $toolbar-background:    color($colors, material-dark, contrast);
 
 $card-ios-header-color:      color($colors, light);
 $card-ios-background-color:  color($colors, material-dark, contrast);
-$list-ios-border-color:      #2e2e38;
+$list-ios-border-color:      color($colors, dark);
 $alert-ios-background-color: color($colors, material-dark, contrast);
 $alert-ios-input-text-color: color($colors, light);
 $alert-ios-sub-title-text-color: color($colors, light);
 $alert-ios-message-text-color: color($colors, light);
 $alert-ios-radio-label-text-color: color($colors, light);
 $alert-ios-radio-icon-border-color: color($colors, light);
-$alert-ios-input-border-color: #2e2e38;
+$alert-ios-input-border-color: color($colors, dark);
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -70,14 +70,14 @@ $alert-ios-input-border-color: #2e2e38;
 
 $card-md-header-color:      color($colors, light);
 $card-md-background-color:  color($colors, material-dark, contrast);
-$list-md-border-color:     #2e2e38;
+$list-md-border-color:     color($colors, dark);;
 $alert-md-background-color: color($colors, material-dark, contrast);
 $alert-md-input-text-color: color($colors, light);
 $alert-md-sub-title-text-color: color($colors, light);
 $alert-md-message-text-color: color($colors, light);
 $alert-md-radio-label-text-color: color($colors, light);
 $alert-md-radio-icon-border-color: color($colors, light);
-$alert-md-input-border-color: #2e2e38;
+$alert-md-input-border-color: color($colors, dark);;
 
 // App Windows Variables
 // --------------------------------------------------

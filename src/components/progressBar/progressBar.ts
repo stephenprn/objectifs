@@ -1,12 +1,13 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, Input, OnChanges, OnInit } from "@angular/core";
 import { AppConstants } from '../../app/app.constants';
 
 @Component({
     selector: 'progress-bar',
     templateUrl: 'progressBar.html'
 })
-export class ProgressBarComponent implements OnChanges {
+export class ProgressBarComponent implements OnChanges, OnInit {
     @Input('progress') progress: number;
+    width: number;
     colors: any[];
     color: string;
 
@@ -14,12 +15,21 @@ export class ProgressBarComponent implements OnChanges {
         this.colors = AppConstants.progressBarColors;
     }
 
-    ngOnChanges(changes) {
+    ngOnChanges(changes): void {
         for (let i = 0; i < this.colors.length; i++) {
             if (this.progress <= this.colors[i].value) {
                 this.color = this.colors[i].color;
+                this.width = this.progress;
                 break;
             }
         }
+    }
+
+    ngOnInit(): void {
+        //To animate when the component is initialiuzed for the first time
+        this.width = 0;
+        setTimeout(() => {
+            this.width = this.progress;
+        });
     }
 }

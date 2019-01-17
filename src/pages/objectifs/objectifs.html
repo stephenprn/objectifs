@@ -1,57 +1,60 @@
-<ion-content [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
-    <week-stats-home [stats]="weekStats"></week-stats-home>
-    <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
-        <ion-slide *ngFor="let day of days">
-            <h1 (click)="goToDay(day.date)">{{day.name ? day.name : day.date}}</h1>
-            <div *ngIf="day.objectifs.length > 0">
-                <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
-                <ion-card>
-                    <ion-list>
-                        <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
-                            <ion-icon name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
-                                item-start></ion-icon>
-                            <div [ngClass]="{'done': obj.done}">
-                                {{obj.title}}
-                            </div>
-                            <p>
-                                <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
-                                <span *ngIf="obj.description.length <= limitDescription">
-                                    {{obj.description}}
-                                </span>
-                                <span *ngIf="obj.description.length > limitDescription">
-                                    {{obj.description | slice:0:limitDescription}}...
-                                </span>
-                            </p>
-                            <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
-                        </ion-item>
-                    </ion-list>
-                </ion-card>
-            </div>
-            <div *ngIf="day.objectifs.length === 0">
-                <ion-card>
-                    <ion-card-header>
-                        Aucun objectif pour le moment !
-                    </ion-card-header>
-                    <ion-card-content>
-                        Vous n'avez fixé aucun objectif pour ce jour.
-                        <button class="buttonAddObj" ion-button outline (click)="showAdd()">Ajouter un objectif</button>
-                    </ion-card-content>
-                </ion-card>
-            </div>
-        </ion-slide>
-    </ion-slides>
+<ion-content no-bounce [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
+  <week-stats-home [stats]="weekStats"></week-stats-home>
+  <ion-slides [ngClass]="{ 'bigSlides': bigSlides, 'smallSlides': !bigSlides }" (ionSlideDidChange)="slideDidChange()"
+    initialSlide="{{nbrDaysDisplayed - 1}}">
+    <ion-slide style="height: auto; display: block;" *ngFor="let day of days">
+      <h1 (click)="goToDay(day.date)">{{day.name ? day.name : day.date}}</h1>
+      <div *ngIf="day.objectifs.length > 0">
+        <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
+        <ion-card>
+            <ion-scroll scrollY="true">
+              <ion-list>
+                <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
+                  <ion-icon name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
+                    item-start></ion-icon>
+                  <div [ngClass]="{'done': obj.done}">
+                    {{obj.title}}
+                  </div>
+                  <p>
+                    <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+                    <span *ngIf="obj.description.length <= limitDescription">
+                      {{obj.description}}
+                    </span>
+                    <span *ngIf="obj.description.length > limitDescription">
+                      {{obj.description | slice:0:limitDescription}}...
+                    </span>
+                  </p>
+                  <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
+                </ion-item>
+              </ion-list>
+            </ion-scroll>
+        </ion-card>
+      </div>
+      <div *ngIf="day.objectifs.length === 0">
+        <ion-card>
+          <ion-card-header>
+            Aucun objectif pour le moment !
+          </ion-card-header>
+          <ion-card-content>
+            Vous n'avez fixé aucun objectif pour ce jour.
+            <button class="buttonAddObj" ion-button outline (click)="showAdd()">Ajouter un objectif</button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-slide>
+  </ion-slides>
 
-    <ion-fab right bottom #fab class="notBlured">
-        <button ion-fab (click)="openFabList()">
-            <ion-icon name="flag"></ion-icon>
-        </button>
-        <ion-fab-list side="top">
-            <button ion-fab (click)="showAdd($event, fab)">
-                <ion-icon name="add"></ion-icon>
-            </button>
-            <button ion-fab (click)="showAddLater($event, fab)">
-                <ion-icon name="time"></ion-icon>
-            </button>
-        </ion-fab-list>
-    </ion-fab>
+  <ion-fab right bottom #fab class="notBlured">
+    <button ion-fab (click)="openFabList()">
+      <ion-icon name="flag"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="showAdd($event, fab)">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-fab (click)="showAddLater($event, fab)">
+        <ion-icon name="time"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
