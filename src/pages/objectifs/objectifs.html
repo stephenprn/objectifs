@@ -1,15 +1,5 @@
 <ion-content [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
-    <ion-card *ngIf="weekStats">
-        <ion-card-header>
-            Stats de la semaine
-        </ion-card-header>
-        <ion-card-content>
-            <div>Total: {{weekStats.total}}</div>
-            <div>Faits: {{weekStats.done}}</div>
-            <div>Nombre de reports: {{weekStats.reports}}</div>
-            <div>Nombre de reportés: {{weekStats.reported}}</div>
-        </ion-card-content>
-    </ion-card>
+    <week-stats-home [stats]="weekStats"></week-stats-home>
     <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
         <ion-slide *ngFor="let day of days">
             <h1 (click)="goToDay(day.date)">{{day.name ? day.name : day.date}}</h1>
@@ -44,7 +34,7 @@
                     </ion-card-header>
                     <ion-card-content>
                         Vous n'avez fixé aucun objectif pour ce jour.
-                        <button ion-button outline (click)="showAdd()">Ajouter un objectif</button>
+                        <button class="buttonAddObj" ion-button outline (click)="showAdd()">Ajouter un objectif</button>
                     </ion-card-content>
                 </ion-card>
             </div>

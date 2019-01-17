@@ -6,15 +6,20 @@
   padding-left: 16px;
 }
 
-.searchbar-search-icon { 
-  display:none; width:0; height:0; 
+.searchbar-search-icon {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 ion-auto-complete {
-  overflow    : hidden !important;
+  overflow: hidden !important;
   display: block;
-  width: 100%;
+  left: 0;
+  right: 0;
   display: inline-block;
+  position: absolute;
+
   ion-searchbar {
     padding: 1px !important;
   }
@@ -28,7 +33,7 @@ ion-auto-complete {
     margin: 0px 10px 0px 10px;
     background: color($colors, material-dark, contrast);
     list-style-type: none;
-    padding:0px;
+    padding: 0px;
     left: 0px;
     right: 0px;
     z-index: 999;

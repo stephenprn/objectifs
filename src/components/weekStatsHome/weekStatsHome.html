@@ -1,0 +1,28 @@
+<ion-card *ngIf="stats">
+  <ion-card-header text-center>
+    Stats de la semaine
+  </ion-card-header>
+  <ion-card-content *ngIf="!stats.isEmpty()">
+    <ion-grid text-center>
+      <ion-row>
+        <ion-col>
+          <div class="numberStat">{{stats.total}}</div>
+          <div class="labelStat">objectifs fixés</div>
+        </ion-col>
+        <ion-col>
+          <div class="numberStat">{{stats.done}}</div>
+          <div class="labelStat">objectifs atteints</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="numberStat">{{stats.reports}}</div>
+          <div class="labelStat">reports</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+  <ion-card-content *ngIf="stats.isEmpty()">
+    Pas de statistiques pour cette semaine.
+  </ion-card-content>
+</ion-card>

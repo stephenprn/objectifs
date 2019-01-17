@@ -5,13 +5,14 @@ export class AppConstants {
         black: '#000000',
         green: '#4CAF50',
         blue: '#2196F3',
-        yellow: '#FFEB3B'
+        yellow: '#FFEB3B',
+        purple: '#6200EE'
     };
 
     public static categories: any[] = [
         { id: 'health', title: 'santé', icon: 'medkit', color: AppConstants.colors.red },
         { id: 'relational', title: 'relationnel', icon: 'happy', color: AppConstants.colors.orange },
-        { id: 'professional', title: 'professionnel', icon: 'briefcase', color: AppConstants.colors.black },
+        { id: 'professional', title: 'professionnel', icon: 'briefcase', color: AppConstants.colors.purple },
         { id: 'financial', title: 'financier', icon: 'cash', color: AppConstants.colors.green },
         { id: 'spiritual', title: 'spirituel', icon: 'eye', color: AppConstants.colors.blue },
         { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
@@ -27,12 +28,25 @@ export class AppConstants {
 
     public static initialImportance: string = 'medium';
 
+    public static progressBarColors: any[] = [
+        { value: 10, color: AppConstants.colors.red },
+        { value: 20, color: '#F66D37' },
+        { value: 30, color: '#F99738' },
+        { value: 40, color: '#FCC139' },
+        { value: 50, color: AppConstants.colors.yellow },
+        { value: 60, color: '#DBDF3F' },
+        { value: 70, color: '#B7D343' },
+        { value: 80, color: '#93C747' },
+        { value: 90, color: '#6FBB4B' },
+        { value: 100, color: AppConstants.colors.green },
+    ];
+
     //Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 7;
 
     public static indexTriggerCache: number = 2;
 
-    public static limitDescription: number = 30;
+    public static limitDescription: number = 35;
 
     public static ionFormat: string = 'DD/MM/YYYY';
 
@@ -43,5 +57,5 @@ export class AppConstants {
             trivial: 3
         },
         reported: -1
-    }
+    };
 }

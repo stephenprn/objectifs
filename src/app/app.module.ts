@@ -19,6 +19,7 @@ import { ObjectifsLaterService } from '../services/objectifsLater.service';
 import { WeekStatsPage } from '../pages/weekStats/weekStats';
 import { ProgressBarComponent } from '../components/progressBar/progressBar';
 import { AutoCompleteModule } from '../components/ionic2-auto-complete';
+import { weekStatsHomeComponent } from '../components/weekStatsHome/weekStatsHome';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { AutoCompleteModule } from '../components/ionic2-auto-complete';
         ObjectifsPage,
         AddObjectifPage,
         WeekStatsPage,
-        ProgressBarComponent
+        ProgressBarComponent,
+        weekStatsHomeComponent
     ],
     imports: [
         BrowserModule,

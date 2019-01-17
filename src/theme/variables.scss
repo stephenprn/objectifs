@@ -34,10 +34,10 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #1976D2,
   secondary:  #32db64,
   danger:     #f53d3d,
-  light:      #f4f4f4,
+  light:      #ffffff,
   dark:       #222,
   material-dark: (
     base:     #424250,
@@ -47,23 +47,37 @@ $colors: (
 
 $background-color:      color($colors, material-dark, base);
 $list-background-color: color($colors, material-dark, contrast);
+$toolbar-background:    color($colors, material-dark, contrast);
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-$card-ios-header-color:     color($colors, light);
-$card-ios-background-color: color($colors, material-dark, contrast);
-$list-ios-border-color: #2e2e38;
+$card-ios-header-color:      color($colors, light);
+$card-ios-background-color:  color($colors, material-dark, contrast);
+$list-ios-border-color:      #2e2e38;
+$alert-ios-background-color: color($colors, material-dark, contrast);
+$alert-ios-input-text-color: color($colors, light);
+$alert-ios-sub-title-text-color: color($colors, light);
+$alert-ios-message-text-color: color($colors, light);
+$alert-ios-radio-label-text-color: color($colors, light);
+$alert-ios-radio-icon-border-color: color($colors, light);
+$alert-ios-input-border-color: #2e2e38;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$card-md-header-color:     color($colors, light);
-$card-md-background-color: color($colors, material-dark, contrast);
-$list-md-border-color: #2e2e38;
-
+$card-md-header-color:      color($colors, light);
+$card-md-background-color:  color($colors, material-dark, contrast);
+$list-md-border-color:     #2e2e38;
+$alert-md-background-color: color($colors, material-dark, contrast);
+$alert-md-input-text-color: color($colors, light);
+$alert-md-sub-title-text-color: color($colors, light);
+$alert-md-message-text-color: color($colors, light);
+$alert-md-radio-label-text-color: color($colors, light);
+$alert-md-radio-icon-border-color: color($colors, light);
+$alert-md-input-border-color: #2e2e38;
 
 // App Windows Variables
 // --------------------------------------------------
