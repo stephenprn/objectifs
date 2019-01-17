@@ -281,6 +281,10 @@ export class ObjectifsPage {
             ]
         });
 
+        alert.onWillDismiss(() => {
+            this.bluredContent = false;
+        });
+        
         alert.present();
         fab.close();
     }

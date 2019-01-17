@@ -8,4 +8,8 @@ export class Stats {
     getPropDone(): number {
         return Math.round(this.done*100/this.total);
     }
+
+    isEmpty(): boolean {
+        return this.total === 0;
+    }
 }

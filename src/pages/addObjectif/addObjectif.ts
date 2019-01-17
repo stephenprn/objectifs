@@ -23,6 +23,7 @@ export class AddObjectifPage {
     idLater: number = null;
     isLaterEmpty: boolean = true;
     importances: any[];
+    bluredContent: boolean = false;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
         private objectifsService: ObjectifsService, private dateService: DateService,
@@ -44,7 +45,7 @@ export class AddObjectifPage {
         this.isLaterEmpty = this.objectifsLaterService.isListEmpty();
     }
 
-    ionViewDidEnter() {
+    ionViewDidEnter(): void {
         // Set focus on the auto-focus at the init of the page
         this.autocomplete.setFocus();
     }
@@ -78,7 +79,9 @@ export class AddObjectifPage {
         this.viewCtrl.dismiss(objectif);
     }
 
-    showAddedForLater() {
+    showAddedForLater(): void {
+        this.bluredContent = true;
+
         const alert = this.alertCtrl.create({
             title: 'Choisissez un objectif',
             buttons: [
@@ -123,6 +126,10 @@ export class AddObjectifPage {
                 value: obj,
                 checked: selected
             });
+        });
+
+        alert.onWillDismiss(() => {
+            this.bluredContent = false;
         });
 
         alert.present();

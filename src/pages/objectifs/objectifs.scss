@@ -1,17 +1,17 @@
 page-objectifs {
-    .done {
-        text-decoration: line-through;
-        color: #808080;
-    }
+  .done {
+    text-decoration: line-through;
+    color: #808080;
+  }
 
-    .bluredContent .scroll-content {
-        filter: blur(5px);
-        transition: -webkit-filter 200ms linear;
-        overflow: hidden;
-    }
+  ion-slides {
+    height: auto;
+  }
 
-    .unbluredContent .scroll-content {
-        filter: blur(0px);
-        transition: -webkit-filter 200ms linear;
-    }
+  .buttonAddObj {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+  }
 }

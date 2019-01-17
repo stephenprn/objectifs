@@ -1,5 +1,4 @@
 progress-bar {
-
     .progress-outer {
         width: 96%;
         margin: 10px 2%;
@@ -7,12 +6,13 @@ progress-bar {
         text-align: center;
         background-color: color($colors, material-dark, contrast);
         border: 1px solid color($colors, material-dark, base);
-        color: #fff;
+        color: color($colors, light);
         border-radius: 20px;
     }
 
     .progress-inner {
-        min-width: 15%;
+        height: 2.2rem;
+        min-width: 8%;
         white-space: nowrap;
         overflow: hidden;
         padding: 5px;
@@ -21,5 +21,4 @@ progress-bar {
         transition: 0.8s ease;
         transition-property: width, background-color;
     }
-
 }

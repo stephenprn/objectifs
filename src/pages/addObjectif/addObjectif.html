@@ -12,13 +12,13 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
     <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
-        <ion-card>
+        <ion-card style="position: relative;">
             <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
                 #autocomplete></ion-auto-complete>
             
-            <button *ngIf="!isLaterEmpty" type="button" (click)="showAddedForLater()" ion-button icon-only>
+            <button [style.visibility]="isLaterEmpty ? 'hidden': ''" type="button" (click)="showAddedForLater()" style="left:85%; color: white;" ion-button icon-only clear>
                 <ion-icon name="time"></ion-icon>
             </button>
 
