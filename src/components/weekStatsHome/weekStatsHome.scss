@@ -6,4 +6,16 @@ week-stats-home {
     .labelStat {
         font-size: 1.2rem;
     }
+
+    ion-card {   
+        /* Set our transitions up. */
+        transition: height 0.8s ease;
+    }
+    .cardEmpty {
+        height: 10rem;
+    }
+
+    .cardFull {
+        height: 20rem;
+    }
 }
