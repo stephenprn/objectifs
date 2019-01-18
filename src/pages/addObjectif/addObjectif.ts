@@ -138,4 +138,8 @@ export class AddObjectifPage {
     setBluredContent(status: boolean): void {
         this.bluredContent = status;
     }
+
+    checkWarning() {
+        this.submitAttempted = false;
+    }
 }

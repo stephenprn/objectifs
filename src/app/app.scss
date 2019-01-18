@@ -43,3 +43,9 @@
     color: color($colors, light) !important;
     font-weight: bold;
 }
+
+.noScroll {
+    .scroll-content {
+        overflow: hidden;
+    }
+}

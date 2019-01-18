@@ -19,7 +19,6 @@ export class UtilsService {
             object[elt[key]] = eltJson;
         });
 
-        console.log(object);
         return object;
     }
 }
