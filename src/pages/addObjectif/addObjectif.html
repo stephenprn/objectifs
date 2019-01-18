@@ -14,7 +14,7 @@
 
 <ion-content [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
     <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
-        <ion-card style="position: relative;">
+        <ion-card>
             <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
                 #autocomplete></ion-auto-complete>
             

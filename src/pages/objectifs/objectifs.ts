@@ -11,6 +11,7 @@ import { Stats } from '../../models/stats.model';
 import { Day } from '../../models/day.model';
 import { ObjectifsLaterService } from '../../services/objectifsLater.service';
 import { UtilsService } from '../../services/utils.service';
+import _ from 'lodash';
 
 @Component({
     selector: 'page-objectifs',
@@ -29,6 +30,7 @@ export class ObjectifsPage {
     limitDescription: number;
     bluredContent: boolean = false;
     bigSlides: boolean = true;
+    dateFormat: string = AppConstants.dateFormat;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -82,8 +84,6 @@ export class ObjectifsPage {
                 this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
             });
         }
-
-        console.log(this.days);
     }
 
     private constructDay(addBegin: boolean, date: Date) {
@@ -95,6 +95,7 @@ export class ObjectifsPage {
 
         let day: Day = new Day();
 
+        day.dateObject = _.cloneDeep(date);
         day.date = this.dateService.getStringFromDate(date);
         day.objectifs = this.objectifs.filter((obj: Objectif) => {
             return obj.date === day.date;
@@ -229,7 +230,7 @@ export class ObjectifsPage {
         actionSheet.onWillDismiss(() => {
             this.bluredContent = false;
         });
-        
+
         this.bluredContent = true;
 
         actionSheet.present();

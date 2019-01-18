@@ -4,14 +4,6 @@ page-objectifs {
     color: #808080;
   }
 
-  .smallSlides {
-    height: 65vh;
-  }
-
-  .bigSlides {
-    height: 81vh;
-  }
-
   .buttonAddObj {
     display: block;
     margin-left: auto;
@@ -19,7 +11,26 @@ page-objectifs {
     margin-top: 1rem;
   }
 
+  ion-item {
+    height: 10vh;
+  }
+
   ion-scroll {
-    height: 45vh;
+    max-height: 45vh;
+  }
+
+  ion-scroll .scroll-content {
+    overflow-y: auto !important;
+  }
+
+  ion-slide {
+    height: auto !important;
+    display: block !important;
+  }
+
+  .noScroll {
+    .scroll-content {
+      overflow: hidden;
+    }
   }
 }

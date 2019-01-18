@@ -6,17 +6,26 @@
     <ion-grid text-center>
       <ion-row>
         <ion-col>
-          <div class="numberStat">{{stats.total}}</div>
+          <div class="numberStat">
+            {{stats.total}}
+            <ion-icon name="flag" [style.color]="colors.blue"></ion-icon>
+          </div>
           <div class="labelStat">objectifs fixés</div>
         </ion-col>
         <ion-col>
-          <div class="numberStat">{{stats.done}}</div>
+          <div class="numberStat">
+            {{stats.done}}
+            <ion-icon name="checkmark" [style.color]="colors.green"></ion-icon>
+          </div>
           <div class="labelStat">objectifs atteints</div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <div class="numberStat">{{stats.reports}}</div>
+          <div class="numberStat">
+            {{stats.reports}}
+            <ion-icon name="calendar" [style.color]="colors.orange"></ion-icon>
+          </div>
           <div class="labelStat">reports</div>
         </ion-col>
       </ion-row>
