@@ -18,8 +18,6 @@ export class AppConstants {
         { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
     ];
 
-    public static initialCategory: string = 'relational';
-
     public static importances: any[] = [
         { id: 'high', title: 'Haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 },
         { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },

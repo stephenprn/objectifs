@@ -34,7 +34,7 @@ export class AddObjectifPage {
         this.formGroup = formBuilder.group({
             title: ['', [Validators.required]],
             date: [this.navParams.get('date'), [Validators.required]],
-            category: [AppConstants.initialCategory, [Validators.required]],
+            category: [this.suggestionsService.getCategoryMostUsed(), [Validators.required]],
             description: ['', []],
             reportable: [true, [Validators.required]],
             importance: [AppConstants.initialImportance, [Validators.required]]

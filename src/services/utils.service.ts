@@ -10,7 +10,7 @@ export class UtilsService {
         let object: any = {};
 
         array.forEach((elt: any) => {
-            let eltJson: any = { };
+            let eltJson: any = {};
 
             values.forEach((val: string) => {
                 eltJson[val] = elt[val];
@@ -19,6 +19,7 @@ export class UtilsService {
             object[elt[key]] = eltJson;
         });
 
+        console.log(object);
         return object;
     }
 }
