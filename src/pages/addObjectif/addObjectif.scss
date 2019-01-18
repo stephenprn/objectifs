@@ -1,4 +1,4 @@
-add-objectif {
+page-add-objectif {
     .invalid {
         color: #ea6153;
     }
@@ -11,5 +11,25 @@ add-objectif {
 
     textarea {
         margin-left: 0px;
+    }
+
+    .bluredHeader {
+        filter: blur(5px);
+        transition: -webkit-filter 200ms linear;
+        overflow: hidden;
+    }
+
+    .unbluredHeader {
+        filter: blur(0px);
+        transition: -webkit-filter 200ms linear;
+    }
+
+    .timeButton {
+        left:85%; 
+        color: color($colors, light);
+    }
+
+    .importanceIcon {
+        font-size: 1.3rem;
     }
 }

@@ -134,4 +134,8 @@ export class AddObjectifPage {
 
         alert.present();
     }
+
+    setBluredContent(status: boolean): void {
+        this.bluredContent = status;
+    }
 }
