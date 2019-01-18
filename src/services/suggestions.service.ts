@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AutoCompleteService } from '../components/ionic2-auto-complete';
+import { AppConstants } from '../app/app.constants';
+import _ from 'lodash';
 
 @Injectable()
 export class SuggestionsService implements AutoCompleteService {
     suggestions: string[];
+    categoriesUsages: any;
 
     constructor() { }
 
@@ -38,5 +41,36 @@ export class SuggestionsService implements AutoCompleteService {
                 return sug;
             }
         });
+    }
+
+    //Functions for the pre-selected category when the user add an objectif
+
+    public incrementeCategory(id: string): void {
+        this.getCategoriesUsages();
+        this.categoriesUsages[id]++;
+        localStorage.setItem('categoriesUsages', JSON.stringify(this.categoriesUsages));
+    }
+
+    public getCategoryMostUsed(): string {
+        this.getCategoriesUsages();
+        return _.maxBy(Object.keys(this.categoriesUsages), (id: string) => this.categoriesUsages[id]);
+    }
+
+    private getCategoriesUsages(): void {
+        if (!this.categoriesUsages) {
+            let catUsagesStorage: string = localStorage.getItem('categoriesUsages');
+
+            if (!catUsagesStorage) {
+                this.categoriesUsages = {};
+
+                AppConstants.categories.forEach((cat: any) => {
+                    this.categoriesUsages[cat.id] = 0;
+                });
+
+                localStorage.setItem('categoriesUsages', JSON.stringify(this.categoriesUsages));
+            } else {
+                this.categoriesUsages = JSON.parse(catUsagesStorage);
+            }
+        }
     }
 }

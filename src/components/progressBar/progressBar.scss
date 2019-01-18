@@ -18,7 +18,7 @@ progress-bar {
         padding: 5px;
         border-radius: 20px;
         background-color: map-get($colors, primary);
-        transition: 0.8s ease;
+        transition: 0.8s ease-in-out;
         transition-property: width, background-color;
     }
 }

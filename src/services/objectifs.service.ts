@@ -31,6 +31,7 @@ export class ObjectifsService {
 
         this.objectifs.push(objectif);
         this.suggestionsService.save(objectif.title);
+        this.suggestionsService.incrementeCategory(objectif.category);
 
         this.saveChanges();
     }
