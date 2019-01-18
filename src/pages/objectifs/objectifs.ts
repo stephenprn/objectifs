@@ -141,8 +141,6 @@ export class ObjectifsPage {
             androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
         }).then(
             (date: Date) => {
-                console.log('new date: ' + date);
-
                 obj.reportCount++;
                 obj.date = this.dateService.getStringFromDate(date);
 

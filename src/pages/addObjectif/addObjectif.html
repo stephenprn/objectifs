@@ -12,10 +12,10 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
+<ion-content class="noScroll" [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
     <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
         <ion-card>
-            <ion-auto-complete [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
+            <ion-auto-complete (tap)="checkWarning()" [ngClass]="{ 'warning': submitAttempted }" [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
                 #autocomplete></ion-auto-complete>
             
             <button class="timeButton" [style.visibility]="isLaterEmpty ? 'hidden': ''" type="button" (click)="showAddedForLater()" ion-button icon-only clear>
@@ -37,9 +37,9 @@
                 <ion-label>Date</ion-label>
                 <ion-datetime (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)" formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
             </ion-item>
-            <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
+            <!-- <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
                 Date requise
-            </div>
+            </div> -->
 
             <ion-item>
                 <ion-label>Categorie</ion-label>

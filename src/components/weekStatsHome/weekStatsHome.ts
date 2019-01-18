@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { AppConstants } from '../../app/app.constants';
 import { Stats } from "../../models/stats.model";
 
@@ -6,15 +6,11 @@ import { Stats } from "../../models/stats.model";
     selector: 'week-stats-home',
     templateUrl: 'weekStatsHome.html'
 })
-export class weekStatsHomeComponent implements OnChanges {
+export class weekStatsHomeComponent {
     @Input('stats') stats: Stats;
     colors: any;
 
     constructor() {
         this.colors = AppConstants.colors;
-    }
-
-    ngOnChanges(changes) {
-        console.log(changes);
     }
 }

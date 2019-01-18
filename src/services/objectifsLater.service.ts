@@ -65,8 +65,6 @@ export class ObjectifsLaterService {
             return obj.id === id;
         });
 
-        console.log(index);
-
         if (index >= 0) {
             this.objectifsLater.splice(index, 1);
         }
