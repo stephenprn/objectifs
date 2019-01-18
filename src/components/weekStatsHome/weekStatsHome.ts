@@ -8,8 +8,10 @@ import { Stats } from "../../models/stats.model";
 })
 export class weekStatsHomeComponent implements OnChanges {
     @Input('stats') stats: Stats;
+    colors: any;
 
     constructor() {
+        this.colors = AppConstants.colors;
     }
 
     ngOnChanges(changes) {

@@ -1,10 +1,10 @@
 export class AppConstants {
-    private static colors: any = {
+    public static colors: any = {
         red: '#F44336',
         orange: '#FF9800',
         black: '#000000',
         green: '#4CAF50',
-        blue: '#2196F3',
+        blue: '#1976D2',
         yellow: '#FFEB3B',
         purple: '#6200EE'
     };
@@ -40,6 +40,8 @@ export class AppConstants {
         { value: 90, color: '#6FBB4B' },
         { value: 100, color: AppConstants.colors.green },
     ];
+
+    public static dateFormat: string = 'EEEE d MMMM';
 
     //Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 7;

@@ -1,7 +1,7 @@
 import { UtilsService } from './../services/utils.service';
 import { ObjectifsPage } from './../pages/objectifs/objectifs';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,7 +20,10 @@ import { WeekStatsPage } from '../pages/weekStats/weekStats';
 import { ProgressBarComponent } from '../components/progressBar/progressBar';
 import { AutoCompleteModule } from '../components/ionic2-auto-complete';
 import { weekStatsHomeComponent } from '../components/weekStatsHome/weekStatsHome';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
     declarations: [
@@ -55,7 +58,8 @@ import { weekStatsHomeComponent } from '../components/weekStatsHome/weekStatsHom
         UtilsService,
         DateService,
         DatePicker,
-        Firebase
+        Firebase,
+        { provide: LOCALE_ID, useValue: 'fr' }
     ]
 })
 export class AppModule { }

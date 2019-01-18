@@ -6,4 +6,5 @@ export class Day {
     objectifs: Objectif[] = [];
     stats?: Stats;
     name?: string;
+    dateObject?: Date;
 };
