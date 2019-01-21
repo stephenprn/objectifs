@@ -20,6 +20,7 @@
     filter: blur(5px);
     transition: -webkit-filter 200ms linear;
     overflow: hidden;
+    pointer-events: none
 }
 
 .unbluredContent .scroll-content {
@@ -37,6 +38,10 @@
 
 .action-sheet-button {
     color: color($colors, light) !important;
+}
+
+.action-sheet-button.activated {
+    background-color: color($colors, material-dark, contrast) !important;
 }
 
 .action-sheet-title {
