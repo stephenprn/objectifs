@@ -19,7 +19,10 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+<<<<<<< HEAD
     <preference name="android-targetSdkVersion" value="27" />
+=======
+>>>>>>> 6e294f20c10da068e01111eb10555b88fe0152a3
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
