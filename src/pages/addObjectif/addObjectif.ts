@@ -23,6 +23,7 @@ export class AddObjectifPage {
     idLater: number = null;
     isLaterEmpty: boolean = true;
     importances: any[];
+    periodicities: any[];
     bluredContent: boolean = false;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
@@ -30,18 +31,23 @@ export class AddObjectifPage {
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private toastCtrl: ToastController,
         private objectifsLaterService: ObjectifsLaterService) {
+            console.log(this.navParams.get('date'));
         // Initial category value: relational
         this.formGroup = formBuilder.group({
             title: ['', [Validators.required]],
             date: [this.navParams.get('date'), [Validators.required]],
             category: [this.suggestionsService.getCategoryMostUsed(), [Validators.required]],
+            customCategory: ['', []],
             description: ['', []],
             reportable: [true, [Validators.required]],
-            importance: [AppConstants.initialImportance, [Validators.required]]
+            importance: [AppConstants.initialImportance, [Validators.required]],
+            periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
+            dateEndPeriodicity: [this.dateService.addMonths(this.navParams.get('date')), [Validators.required]]
         });
 
         this.importances = AppConstants.importances;
         this.categories = AppConstants.categories;
+        this.periodicities = AppConstants.periodicities;
         this.isLaterEmpty = this.objectifsLaterService.isListEmpty();
     }
 
@@ -69,6 +75,10 @@ export class AddObjectifPage {
         objectif.date = this.dateService.formatDateString(objectif.date);
         objectif.done = false;
         objectif.reportCount = 0;
+
+        if (objectif.category === 'other') {
+            objectif.customCategory = this.formGroup.controls['customCategory'].value;
+        }
 
         this.objectifsService.add(objectif);
 

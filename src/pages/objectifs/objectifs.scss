@@ -27,4 +27,10 @@ page-objectifs {
     height: auto !important;
     display: block !important;
   }
+
+  ion-badge {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+  }
 }

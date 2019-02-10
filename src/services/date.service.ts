@@ -24,6 +24,22 @@ export class DateService {
         return str;
     }
 
+    //Add months to date (format: DD/MM/YYYY)
+    public addMonths(date: string, number?: number) {
+        if (!number) {
+            number = 1;
+        }
+
+        let array: string[] = date.split('/');
+        let month = Number(array[1]) + number;
+
+        if (month >= 10) {
+            return array[0] + '/' + month + '/' + array[2];
+        }
+
+        return array[0] + '/0' + month + '/' + array[2];
+    }
+
     //From DD/MM/YYYY to Date object
     public getDateFromString(str: string): Date {
         const array: string[] = str.split('/');
@@ -55,7 +71,7 @@ export class DateService {
         this.closeDays.tomorrow = this.getStringFromDate(dateClone);
     }
 
-    public checkCloseDay(day: Day) {
+    public checkCloseDay(day: Day): void {
         switch (day.date) {
             case this.closeDays.today: {
                 day.name = 'Aujourd\'hui';

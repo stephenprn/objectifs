@@ -31,6 +31,7 @@ export class ObjectifsPage {
     bluredContent: boolean = false;
     bigSlides: boolean = true;
     dateFormat: string = AppConstants.dateFormat;
+    nbrLater: string;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -47,6 +48,8 @@ export class ObjectifsPage {
         this.initDays(null, null);
         //Useful for checkWeekStats() 
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
+
+        this.nbrLater = this.objectifsLaterService.getNbr();
     }
 
     initDays(addBegin: boolean, currentIndex: number, date?: Date): void {
@@ -255,6 +258,7 @@ export class ObjectifsPage {
             if (obj != null) {
                 this.initDays(null, null);
                 this.checkWeekStats(true);
+                this.nbrLater = this.objectifsLaterService.getNbr();
             }
         })
     }
@@ -281,6 +285,7 @@ export class ObjectifsPage {
                     text: 'Sauvegarder',
                     handler: (data: any) => {
                         this.objectifsLaterService.add(data);
+                        this.nbrLater = this.objectifsLaterService.getNbr();
                     }
                 }
             ]

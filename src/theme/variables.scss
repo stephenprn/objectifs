@@ -48,6 +48,7 @@ $colors: (
 $background-color:      color($colors, material-dark, base);
 $list-background-color: color($colors, material-dark, contrast);
 $toolbar-background:    color($colors, material-dark, contrast);
+$badge-font-size: 1.5rem;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -77,7 +78,8 @@ $alert-md-sub-title-text-color: color($colors, light);
 $alert-md-message-text-color: color($colors, light);
 $alert-md-radio-label-text-color: color($colors, light);
 $alert-md-radio-icon-border-color: color($colors, light);
-$alert-md-input-border-color: color($colors, dark);;
+$alert-md-input-border-color: color($colors, dark);
+$badge-md-border-radius: 10px;
 
 // App Windows Variables
 // --------------------------------------------------

@@ -50,10 +50,29 @@
                 </ion-select>
             </ion-item>
 
+            <ion-item *ngIf="formGroup.controls['category'].value === 'other'">
+                <ion-input class="simpleInput" type="text" placeholder="Autre" formControlName="customCategory" clearInput></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Répéter</ion-label>
+                <ion-select (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)" formControlName="periodicity">
+                    <ion-option [value]="periodicity.id" *ngFor="let periodicity of periodicities">
+                        {{periodicity.title}}
+                    </ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item *ngIf="formGroup.get('periodicity').value !== 'punctual'">
+                <ion-label>Jusqu'à</ion-label>
+                <ion-datetime (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)" formControlName="dateEndPeriodicity" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+            </ion-item>
+
             <ion-item>
                 <ion-label>Peut être reporté</ion-label>
                 <ion-checkbox checked="true" formControlName="reportable"></ion-checkbox>
             </ion-item>
+
             <ion-item>
                 <button type="submit" ion-button clear item-end>Valider</button>
             </ion-item>

@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Objectif } from '../models/objectif.model';
-import { Filter } from '../models/filter.model';
 
 @Injectable()
 export class ObjectifsLaterService {
@@ -22,7 +20,7 @@ export class ObjectifsLaterService {
         return nbr;
     }
 
-    public getAll() {
+    public getAll(): any[] {
         if (this.objectifsLater != null) {
             return this.objectifsLater;
         }
@@ -42,7 +40,7 @@ export class ObjectifsLaterService {
         localStorage.setItem('objectifsLater', JSON.stringify(this.objectifsLater));
     }
 
-    public add(objLater: any) {
+    public add(objLater: any): void {
         this.getAll();
 
         objLater.id = this.getId();
@@ -56,10 +54,8 @@ export class ObjectifsLaterService {
         return this.getAll().length > 0 ? false: true;
     }
 
-    public remove(id: number) {
-        if (!this.objectifsLater) {
-            this.getAll();
-        }
+    public remove(id: number): void {
+        this.getAll();
 
         const index: number = this.objectifsLater.findIndex((obj: any) => {
             return obj.id === id;
@@ -70,5 +66,19 @@ export class ObjectifsLaterService {
         }
 
         this.saveChanges();
+    }
+
+    public getNbr(): string {
+        this.getAll();
+
+        if (this.objectifsLater.length === 0) {
+            return null;
+        }
+
+        if (this.objectifsLater.length >= 100) {
+            return '99+';
+        }
+
+        return String(this.objectifsLater.length);
     }
 }

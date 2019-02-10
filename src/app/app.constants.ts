@@ -26,6 +26,15 @@ export class AppConstants {
 
     public static initialImportance: string = 'medium';
 
+    public static periodicities: any[] = [
+        { id: 'punctual', title: 'jamais' },
+        { id: 'daily', title: 'tous les jours' },
+        { id: 'weekly', title: 'toutes les semaines' },
+        { id: 'monthly', title: 'tous les mois' }
+    ];
+
+    public static initialPeriodicity: string = 'punctual';
+
     public static progressBarColors: any[] = [
         { value: 10, color: AppConstants.colors.red },
         { value: 20, color: '#F66D37' },
