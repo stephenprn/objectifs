@@ -42,7 +42,7 @@ export class AddObjectifPage {
             reportable: [true, [Validators.required]],
             importance: [AppConstants.initialImportance, [Validators.required]],
             periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
-            dateEndPeriodicity: [this.dateService.addMonths(this.navParams.get('date')), [Validators.required]]
+            dateEndPeriodicity: [this.dateService.initDatePeriodic(this.navParams.get('date')), [Validators.required]]
         });
 
         this.importances = AppConstants.importances;
@@ -75,6 +75,10 @@ export class AddObjectifPage {
         objectif.date = this.dateService.formatDateString(objectif.date);
         objectif.done = false;
         objectif.reportCount = 0;
+
+        if (this.formGroup.get('periodicity').value !== 'punctual') {
+            objectif.dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity);
+        }
 
         if (objectif.category === 'other') {
             objectif.customCategory = this.formGroup.controls['customCategory'].value;

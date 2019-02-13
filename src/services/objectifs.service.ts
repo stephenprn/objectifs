@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Objectif } from '../models/objectif.model';
 import { SuggestionsService } from './suggestions.service';
 import { Filter } from '../models/filter.model';
+import { DateService } from './date.service';
+import _ from 'lodash';
 
 @Injectable()
 export class ObjectifsService {
@@ -9,7 +11,7 @@ export class ObjectifsService {
     objectifsLater: any[];
     objectifsPeriodic: Objectif[];
 
-    constructor(private suggestionsService: SuggestionsService) { }
+    constructor(private suggestionsService: SuggestionsService, private dateService: DateService) { }
 
     private getId(periodic?: boolean): number {
         let nameStorage: string;
@@ -38,6 +40,7 @@ export class ObjectifsService {
             this.getAll();
 
             objectif.id = this.getId();
+            delete objectif.periodicity;
 
             this.objectifs.push(objectif);
             this.suggestionsService.save(objectif.title);
@@ -54,7 +57,59 @@ export class ObjectifsService {
             this.suggestionsService.incrementeCategory(objectif.category);
 
             this.saveChanges(true);
+
+            objectif.idPeriodic = objectif.id;
+            this.generateObjectifsPeriodic(objectif);
+            
+            this.saveChanges();
         }
+    }
+
+    private generateObjectifsPeriodic(objectifPeriodic: Objectif) {
+        let date: Date = this.dateService.getDateFromString(objectifPeriodic.date);
+        let endDate: Date;
+
+        //Normally dateEndPeriodicity is never null but we never know...
+        if (objectifPeriodic.dateEndPeriodicity != null) {
+            endDate = this.dateService.getDateFromString(objectifPeriodic.dateEndPeriodicity);
+        } else {
+            endDate = _.cloneDeep(date);
+            endDate.setMonth(endDate.getMonth() + 1);
+        }
+
+        //If we don't do this, the while miss one objectif at the end
+        endDate.setDate(endDate.getDate() + 1);
+
+        switch (objectifPeriodic.periodicity) {
+            case 'daily':
+                while (date < endDate) {
+                    this.formatObjectifPeriodic(objectifPeriodic, date);
+                    date.setDate(date.getDate() + 1);
+                }
+                break;
+            case 'weekly':
+                while (date < endDate) {
+                    this.formatObjectifPeriodic(objectifPeriodic, date);
+                    date.setDate(date.getDate() + 7);
+                }
+                break;
+            case 'monthly':
+                while (date < endDate) {
+                    this.formatObjectifPeriodic(objectifPeriodic, date);
+                    date.setMonth(date.getMonth() + 1);
+                }
+                break;
+        }
+    }
+
+    private formatObjectifPeriodic(objectifPeriodic: Objectif, date: Date) {
+        let objectif: Objectif = _.cloneDeep(objectifPeriodic);
+
+        objectif.date = this.dateService.getStringFromDate(date);
+        objectif.periodicity = 'punctual';
+        delete objectif.dateEndPeriodicity;
+
+        this.add(objectif);
     }
 
     public saveChanges(periodic?: boolean): void {

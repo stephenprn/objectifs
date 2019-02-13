@@ -24,6 +24,18 @@ export class DateService {
         return str;
     }
 
+    //Initialize date for periodic objectifs (format: YYYY-MM-DD)
+    public initDatePeriodic(date: string) {
+        let array: string[] = date.split('-');
+        let month = Number(array[1]) + 1;
+
+        if (month >= 10) {
+            return array[0] + '-' + month + '-' + array[2];
+        }
+
+        return array[0] + '-0' + month + '-' + array[2];
+    }
+
     //Add months to date (format: DD/MM/YYYY)
     public addMonths(date: string, number?: number) {
         if (!number) {
