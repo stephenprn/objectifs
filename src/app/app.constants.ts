@@ -30,7 +30,8 @@ export class AppConstants {
         { id: 'punctual', title: 'jamais' },
         { id: 'daily', title: 'tous les jours' },
         { id: 'weekly', title: 'toutes les semaines' },
-        { id: 'monthly', title: 'tous les mois' }
+        { id: 'monthly', title: 'tous les mois' },
+        { id: 'custom', title: 'personnalisé' }
     ];
 
     public static initialPeriodicity: string = 'punctual';
@@ -56,6 +57,8 @@ export class AppConstants {
     public static indexTriggerCache: number = 2;
 
     public static limitDescription: number = 35;
+
+    public static nbrDaysPeriodDefault: number = 7;
 
     public static ionFormat: string = 'DD/MM/YYYY';
 

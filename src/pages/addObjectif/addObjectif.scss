@@ -11,6 +11,13 @@ page-add-objectif {
         position: relative;
     }
 
+    .labelNbrDaysPeriod {
+        position: absolute;
+        right: 15%;
+        top: 0;
+        bottom: 0;
+    }
+
     .bluredHeader {
         filter: blur(5px);
         transition: -webkit-filter 200ms linear;
@@ -35,12 +42,12 @@ page-add-objectif {
         background-color: color($colors, danger);
     }
 
-    .warning {
+    .warning, .warningSimpleInput>input {
         animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
         transform: translate3d(0, 0, 0);
         backface-visibility: hidden;
         perspective: 1000px;
-      }      
+      }
 
     @keyframes shake {
         10%, 90% {

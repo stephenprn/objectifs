@@ -4,6 +4,7 @@ import { SuggestionsService } from './suggestions.service';
 import { Filter } from '../models/filter.model';
 import { DateService } from './date.service';
 import _ from 'lodash';
+import { AppConstants } from '../app/app.constants';
 
 @Injectable()
 export class ObjectifsService {
@@ -97,6 +98,21 @@ export class ObjectifsService {
                 while (date < endDate) {
                     this.formatObjectifPeriodic(objectifPeriodic, date);
                     date.setMonth(date.getMonth() + 1);
+                }
+                break;
+            case 'custom':
+                let nbrDays: number;
+
+                if (objectifPeriodic.nbrDaysPeriod != null) {
+                    nbrDays = objectifPeriodic.nbrDaysPeriod;
+                } else {
+                    //Normally nbrDaysPeriod is never null but we never know
+                    nbrDays = AppConstants.nbrDaysPeriodDefault;
+                }
+
+                while (date < endDate) {
+                    this.formatObjectifPeriodic(objectifPeriodic, date);
+                    date.setDate(date.getDate() + nbrDays);
                 }
                 break;
         }

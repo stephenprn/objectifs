@@ -19,7 +19,7 @@ export class AddObjectifPage {
 
     categories: any[];
     formGroup: any;
-    submitAttempted: boolean = false;
+    errorsAfterSubmit: any = { title: false, nbrDaysPeriod: false };
     idLater: number = null;
     isLaterEmpty: boolean = true;
     importances: any[];
@@ -31,18 +31,20 @@ export class AddObjectifPage {
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private toastCtrl: ToastController,
         private objectifsLaterService: ObjectifsLaterService) {
-            console.log(this.navParams.get('date'));
+        const date = this.navParams.get('date');
+
         // Initial category value: relational
         this.formGroup = formBuilder.group({
             title: ['', [Validators.required]],
-            date: [this.navParams.get('date'), [Validators.required]],
+            date: [date, [Validators.required]],
             category: [this.suggestionsService.getCategoryMostUsed(), [Validators.required]],
             customCategory: ['', []],
             description: ['', []],
             reportable: [true, [Validators.required]],
             importance: [AppConstants.initialImportance, [Validators.required]],
             periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
-            dateEndPeriodicity: [this.dateService.initDatePeriodic(this.navParams.get('date')), [Validators.required]]
+            dateEndPeriodicity: [this.dateService.initDatePeriodic(date), [Validators.required]],
+            nbrDaysPeriod: [AppConstants.nbrDaysPeriodDefault, [Validators.required]]
         });
 
         this.importances = AppConstants.importances;
@@ -65,8 +67,17 @@ export class AddObjectifPage {
             title: this.autocomplete.keyword
         });
 
+        console.log(this.formGroup);
+
         if (!this.formGroup.valid) {
-            this.submitAttempted = true;
+            if (!this.formGroup.get('title').valid) {
+                this.errorsAfterSubmit.title = true;
+            }
+
+            if (!this.formGroup.get('nbrDaysPeriod').valid) {
+                this.errorsAfterSubmit.nbrDaysPeriod = true;
+            }
+
             return;
         }
 
@@ -153,7 +164,7 @@ export class AddObjectifPage {
         this.bluredContent = status;
     }
 
-    checkWarning() {
-        this.submitAttempted = false;
+    checkWarning(field: string) {
+        this.errorsAfterSubmit[field] = false;
     }
 }
