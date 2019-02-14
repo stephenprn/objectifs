@@ -78,7 +78,7 @@ export class AddObjectifPage {
     openPeriodicity(): void {
         const alert = this.alertCtrl.create({
             title: 'Intervalle personnalisé',
-            subTitle: 'Répéter cet objectif tous les <ion-input class="simpleInput" type="text" placeholder="Autre" formControlName="customCategory" clearInput></ion-input>',
+            subTitle: 'Répéter cet objectif tou(te)s les :',
             inputs: [
             ],
             buttons: [
@@ -149,7 +149,7 @@ export class AddObjectifPage {
 
             inputNumber.setAttribute('type', 'number');
             inputNumber.setAttribute('id', 'periodicityNbr');
-            inputNumber.setAttribute('placeholder', 'nombre');
+            inputNumber.setAttribute('placeholder', 'nbr');
             inputNumber.setAttribute('min', '2');
             inputNumber.setAttribute('max', '100');
             inputNumber.value = this.periodicityCustom.number;

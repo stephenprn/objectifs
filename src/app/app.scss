@@ -54,3 +54,24 @@
         overflow: hidden;
     }
 }
+
+#periodicityNbr {
+    background-color: color($colors, material-dark, contrast);
+    font-size: 2rem;
+    color: #ffffff;
+    text-align: center;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: auto;
+    width: 30%;
+    margin-top: 10px;
+}
+
+
+.alert-sub-title {
+    color: #999;
+}
