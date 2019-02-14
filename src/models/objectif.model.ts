@@ -12,5 +12,5 @@ export class Objectif {
     importance: string;
     periodicity: string;
     dateEndPeriodicity?: string;
-    nbrDaysPeriod?: number;
+    periodicityCustomNumber?: number;
 }

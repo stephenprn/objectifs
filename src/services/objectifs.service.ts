@@ -69,6 +69,7 @@ export class ObjectifsService {
     private generateObjectifsPeriodic(objectifPeriodic: Objectif) {
         let date: Date = this.dateService.getDateFromString(objectifPeriodic.date);
         let endDate: Date;
+        let nbr: number;
 
         //Normally dateEndPeriodicity is never null but we never know...
         if (objectifPeriodic.dateEndPeriodicity != null) {
@@ -78,6 +79,12 @@ export class ObjectifsService {
             endDate.setMonth(endDate.getMonth() + 1);
         }
 
+        if (objectifPeriodic.periodicityCustomNumber != null) {
+            nbr = objectifPeriodic.periodicityCustomNumber;
+        } else {
+            nbr = 1;
+        }
+
         //If we don't do this, the while miss one objectif at the end
         endDate.setDate(endDate.getDate() + 1);
 
@@ -85,34 +92,19 @@ export class ObjectifsService {
             case 'daily':
                 while (date < endDate) {
                     this.formatObjectifPeriodic(objectifPeriodic, date);
-                    date.setDate(date.getDate() + 1);
+                    date.setDate(date.getDate() + nbr);
                 }
                 break;
             case 'weekly':
                 while (date < endDate) {
                     this.formatObjectifPeriodic(objectifPeriodic, date);
-                    date.setDate(date.getDate() + 7);
+                    date.setDate(date.getDate() + 7 * nbr);
                 }
                 break;
             case 'monthly':
                 while (date < endDate) {
                     this.formatObjectifPeriodic(objectifPeriodic, date);
-                    date.setMonth(date.getMonth() + 1);
-                }
-                break;
-            case 'custom':
-                let nbrDays: number;
-
-                if (objectifPeriodic.nbrDaysPeriod != null) {
-                    nbrDays = objectifPeriodic.nbrDaysPeriod;
-                } else {
-                    //Normally nbrDaysPeriod is never null but we never know
-                    nbrDays = AppConstants.nbrDaysPeriodDefault;
-                }
-
-                while (date < endDate) {
-                    this.formatObjectifPeriodic(objectifPeriodic, date);
-                    date.setDate(date.getDate() + nbrDays);
+                    date.setMonth(date.getMonth() + nbr);
                 }
                 break;
         }

@@ -15,8 +15,9 @@
 <ion-content class="noScroll" [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
     <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
         <ion-card>
-            <ion-auto-complete (tap)="checkWarning('title')" [ngClass]="{ 'warning': errorsAfterSubmit.title }" [dataProvider]="suggestionsService"
-                [options]="{ placeholder : 'Titre' }" formControlName="title" #autocomplete></ion-auto-complete>
+            <ion-auto-complete (tap)="checkWarning('title')" [ngClass]="{ 'warning': errorsAfterSubmit.title }"
+                [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title"
+                #autocomplete></ion-auto-complete>
 
             <button class="timeButton" [style.visibility]="isLaterEmpty ? 'hidden': ''" type="button" (click)="showAddedForLater()"
                 ion-button icon-only clear>
@@ -36,8 +37,8 @@
 
             <ion-item>
                 <ion-label>Date</ion-label>
-                <ion-datetime (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)"
-                    formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+                <ion-datetime (click)="setBluredContent(true)" (ionBlur)="setBluredContent(false)" formControlName="date"
+                    displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
             </ion-item>
             <!-- <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
                 Date requise
@@ -45,8 +46,7 @@
 
             <ion-item>
                 <ion-label>Categorie</ion-label>
-                <ion-select (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)"
-                    formControlName="category">
+                <ion-select (click)="setBluredContent(true)" (ionBlur)="setBluredContent(false)" formControlName="category">
                     <ion-option [value]="category.id" *ngFor="let category of categories">
                         {{category.title}}
                     </ion-option>
@@ -60,23 +60,19 @@
 
             <ion-item>
                 <ion-label>Répéter</ion-label>
-                <ion-select (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)"
-                    formControlName="periodicity">
+                <ion-select (click)="setBluredContent(true)" (ionBlur)="setBluredContent(false)" formControlName="periodicity">
                     <ion-option [value]="periodicity.id" *ngFor="let periodicity of periodicities">
                         {{periodicity.title}}
                     </ion-option>
                 </ion-select>
             </ion-item>
-
-            <ion-item *ngIf="formGroup.get('periodicity').value === 'custom'">
-                <ion-input [ngClass]="{ 'warning': errorsAfterSubmit.nbrDaysPeriod }" (tap)="checkWarning('nbrDaysPeriod')" class="simpleInput" type="text" formControlName="nbrDaysPeriod" clearInput></ion-input>
-                <ion-label class="labelNbrDaysPeriod">jours</ion-label>
-            </ion-item>
+            
+            <button type="button" class="periodicityCustomButton" *ngIf="formGroup.get('periodicity').value === 'custom'" (click)="openPeriodicity()" ion-button outline>{{periodicityCustom.text}}</button>
 
             <ion-item *ngIf="formGroup.get('periodicity').value !== 'punctual'">
                 <ion-label>Jusqu'à</ion-label>
-                <ion-datetime (click)="setBluredContent(true)" (ionCancel)="setBluredContent(false)" (ionChange)="setBluredContent(false)"
-                    formControlName="dateEndPeriodicity" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+                <ion-datetime (click)="setBluredContent(true)" (ionBlur)="setBluredContent(false)" formControlName="dateEndPeriodicity"
+                    displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
             </ion-item>
 
             <ion-item>

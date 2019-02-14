@@ -35,6 +35,17 @@ export class AppConstants {
     ];
 
     public static initialPeriodicity: string = 'punctual';
+    
+    public static customPeriodicities: any[] = [
+        { id: 'daily', title: 'jours', every: 'Tous les ' },
+        { id: 'weekly', title: 'semaines', every: 'Toutes les ' },
+        { id: 'monthly', title: 'mois', every: 'Tous les ' }
+    ];
+
+    public static initialCustomPeriodicity: any = {
+        number: 7,
+        type: 'daily'
+    };
 
     public static progressBarColors: any[] = [
         { value: 10, color: AppConstants.colors.red },
