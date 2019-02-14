@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { NavParams } from "ionic-angular";
+import { Component } from '@angular/core';
+import { NavParams } from 'ionic-angular';
 
 @Component({
     selector: 'page-week-stats',

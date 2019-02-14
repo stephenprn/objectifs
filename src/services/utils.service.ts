@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Objectif } from '../models/objectif.model';
-import { Filter } from '../models/filter.model';
 
 @Injectable()
 export class UtilsService {

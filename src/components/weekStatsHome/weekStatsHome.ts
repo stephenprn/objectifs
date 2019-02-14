@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { AppConstants } from '../../app/app.constants';
+import { AppConstants } from "@appPRN/app.constants";
 import { Stats } from "../../models/stats.model";
 
 @Component({

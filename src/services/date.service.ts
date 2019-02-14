@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { Day } from '../models/day.model';
+import { Day } from '@modelsPRN/day.model';
 
 @Injectable()
 export class DateService {

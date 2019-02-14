@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AutoCompleteService } from '../components/ionic2-auto-complete';
-import { AppConstants } from '../app/app.constants';
+import { AutoCompleteService } from '@componentsPRN/ionic2-auto-complete';
 import _ from 'lodash';
+import { AppConstants } from "@appPRN/app.constants";
 
 @Injectable()
 export class SuggestionsService implements AutoCompleteService {

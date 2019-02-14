@@ -1,17 +1,28 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, Slides, Modal, AlertController, Alert, ActionSheet, FabContainer } from 'ionic-angular';
-import { ObjectifsService } from '../../services/objectifs.service';
-import { AddObjectifPage } from '../addObjectif/addObjectif';
-import { DateService } from '../../services/date.service';
+import { Component, ViewChild } from '@angular/core';
 import { DatePicker } from '@ionic-native/date-picker';
-import { AppConstants } from '../../app/app.constants';
-import { Objectif } from '../../models/objectif.model';
-import { StatsService } from '../../services/stats.service';
-import { Stats } from '../../models/stats.model';
-import { Day } from '../../models/day.model';
-import { ObjectifsLaterService } from '../../services/objectifsLater.service';
-import { UtilsService } from '../../services/utils.service';
+import { Day } from '@modelsPRN/day.model';
+import { Objectif } from '@modelsPRN/objectif.model';
+import { Stats } from '@modelsPRN/stats.model';
+import { AddObjectifPage } from '@pagesPRN/addObjectif/addObjectif';
+import { DateService } from '@servicesPRN/date.service';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
+import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
+import { StatsService } from '@servicesPRN/stats.service';
+import { UtilsService } from '@servicesPRN/utils.service';
+import { AppConstants } from "@appPRN/app.constants";
+import {
+    ActionSheet,
+    ActionSheetController,
+    Alert,
+    AlertController,
+    FabContainer,
+    Modal,
+    ModalController,
+    NavController,
+    Slides,
+} from 'ionic-angular';
 import _ from 'lodash';
+
 
 @Component({
     selector: 'page-objectifs',

@@ -47,6 +47,8 @@ export class AppConstants {
         type: 'daily'
     };
 
+    public static limitNbrPeriodicity: number = 366;
+
     public static progressBarColors: any[] = [
         { value: 10, color: AppConstants.colors.red },
         { value: 20, color: '#F66D37' },

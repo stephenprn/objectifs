@@ -10,6 +10,9 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint"
   },
+  "config": {
+    "ionic_webpack": "./config/webpack.config.js"
+  },
   "dependencies": {
     "@angular/animations": "5.2.11",
     "@angular/common": "5.2.11",

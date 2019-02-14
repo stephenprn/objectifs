@@ -1,17 +1,17 @@
-import { Component, ViewChild, Inject } from '@angular/core';
-import { ViewController, NavParams, AlertController, ToastController, Select } from 'ionic-angular';
-import { ObjectifsService } from '../../services/objectifs.service';
-import { AppConstants } from '../../app/app.constants';
-import { FormBuilder, Validators } from '@angular/forms';
-import * as _ from 'lodash';
-import { DateService } from '../../services/date.service';
-import { Objectif } from '../../models/objectif.model';
-import { SuggestionsService } from '../../services/suggestions.service';
-import { ObjectifsLaterService } from '../../services/objectifsLater.service';
-import { AutoCompleteComponent } from '../../components/ionic2-auto-complete';
 import { DOCUMENT } from '@angular/common';
-import { UtilsService } from '../../services/utils.service';
+import { Component, Inject, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AutoCompleteComponent } from '@componentsPRN/ionic2-auto-complete';
+import { Objectif } from '@modelsPRN/objectif.model';
+import { DateService } from '@servicesPRN/date.service';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
+import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
+import { SuggestionsService } from '@servicesPRN/suggestions.service';
+import { UtilsService } from '@servicesPRN/utils.service';
+import { AppConstants } from "@appPRN/app.constants";
+import { AlertController, NavParams, Select, ToastController, ViewController } from 'ionic-angular';
 import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-options';
+import _ from 'lodash';
 
 @Component({
     selector: 'page-add-objectif',
@@ -94,6 +94,7 @@ export class AddObjectifPage {
                     handler: (data: any) => {
                         const periodicityNbr = this.document.getElementById('periodicityNbr').value;
                         const type = data;
+                        const nbr = Number(periodicityNbr);
 
                         if (!type || !periodicityNbr) {
                             this.toastCtrl.create({
@@ -104,16 +105,23 @@ export class AddObjectifPage {
                             return false;
                         }
 
-                        if (isNaN(Number(periodicityNbr)) || Number(periodicityNbr) < 1) {
+                        if (isNaN(nbr) || nbr < 1) {
                             this.toastCtrl.create({
                                 message: 'Vous devez entrer un nombre valide',
                                 duration: 3000
                             }).present();
 
                             return false;
-                        }
+                        } else if (nbr > AppConstants.limitNbrPeriodicity) {
+                            this.toastCtrl.create({
+                                message: 'Le nombre entré est trop élevé',
+                                duration: 3000
+                            }).present();
 
-                        this.periodicityCustom.number = Number(periodicityNbr);
+                            return false;
+                        } 
+
+                        this.periodicityCustom.number = nbr;
                         this.periodicityCustom.type = type;
                         this.getTitlePeriodicityCustom();
                     }
@@ -151,7 +159,7 @@ export class AddObjectifPage {
             inputNumber.setAttribute('id', 'periodicityNbr');
             inputNumber.setAttribute('placeholder', 'nbr');
             inputNumber.setAttribute('min', '2');
-            inputNumber.setAttribute('max', '100');
+            inputNumber.setAttribute('max', String(AppConstants.limitNbrPeriodicity));
             inputNumber.value = this.periodicityCustom.number;
 
             alertHeader.append(inputNumber);

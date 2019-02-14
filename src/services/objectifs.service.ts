@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Objectif } from '../models/objectif.model';
-import { SuggestionsService } from './suggestions.service';
-import { Filter } from '../models/filter.model';
-import { DateService } from './date.service';
+import { Filter } from '@modelsPRN/filter.model';
+import { Objectif } from '@modelsPRN/objectif.model';
 import _ from 'lodash';
-import { AppConstants } from '../app/app.constants';
+
+import { DateService } from './date.service';
+import { SuggestionsService } from './suggestions.service';
 
 @Injectable()
 export class ObjectifsService {

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from "@angular/core";
-import { AppConstants } from '../../app/app.constants';
+import { AppConstants } from "@appPRN/app.constants";
 
 @Component({
     selector: 'progress-bar',
