@@ -8,7 +8,7 @@ import { ObjectifsService } from './objectifs.service';
 export class StatsService {
     constructor(private objectifsService: ObjectifsService) { }
 
-    public getNumberDone(objectifs?: Objectif[]) {
+    public getNumberDone(objectifs?: Objectif[]): number {
         if (!objectifs) {
             objectifs = this.objectifsService.getAll();
         }

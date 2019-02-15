@@ -1,3 +1,5 @@
+import { ToastOptions } from "ionic-angular";
+
 export class AppConstants {
     public static colors: any = {
         red: '#F44336',
@@ -9,7 +11,7 @@ export class AppConstants {
         purple: '#6200EE'
     };
 
-    public static categories: any[] = [
+    public static categories: {id: string, title: string, icon: string, color: string }[] = [
         { id: 'health', title: 'santé', icon: 'medkit', color: AppConstants.colors.red },
         { id: 'relational', title: 'relationnel', icon: 'happy', color: AppConstants.colors.orange },
         { id: 'professional', title: 'professionnel', icon: 'briefcase', color: AppConstants.colors.purple },
@@ -18,7 +20,7 @@ export class AppConstants {
         { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
     ];
 
-    public static importances: any[] = [
+    public static importances: {id: string, title: string, icon: string, color: string, index: number}[] = [
         { id: 'high', title: 'Haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 },
         { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },
         { id: 'low', title: 'Minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 }
@@ -26,7 +28,7 @@ export class AppConstants {
 
     public static initialImportance: string = 'medium';
 
-    public static periodicities: any[] = [
+    public static periodicities: {id: string, title: string}[] = [
         { id: 'punctual', title: 'jamais' },
         { id: 'daily', title: 'tous les jours' },
         { id: 'weekly', title: 'toutes les semaines' },
@@ -36,20 +38,21 @@ export class AppConstants {
 
     public static initialPeriodicity: string = 'punctual';
     
-    public static customPeriodicities: any[] = [
+    public static customPeriodicities: {id: string, title: string, every: string}[] = [
         { id: 'daily', title: 'jours', every: 'Tous les ' },
         { id: 'weekly', title: 'semaines', every: 'Toutes les ' },
         { id: 'monthly', title: 'mois', every: 'Tous les ' }
     ];
 
-    public static initialCustomPeriodicity: any = {
+    public static initialCustomPeriodicity: {number: number, type: string, text: string} = {
         number: 7,
-        type: 'daily'
+        type: 'daily',
+        text: null
     };
 
     public static limitNbrPeriodicity: number = 366;
 
-    public static progressBarColors: any[] = [
+    public static progressBarColors: {value: number, color: string}[] = [
         { value: 10, color: AppConstants.colors.red },
         { value: 20, color: '#F66D37' },
         { value: 30, color: '#F99738' },
@@ -74,6 +77,10 @@ export class AppConstants {
     public static nbrDaysPeriodDefault: number = 7;
 
     public static ionFormat: string = 'DD/MM/YYYY';
+
+    public static toastDefaultConfig: ToastOptions = {
+        duration: 3000
+    };
 
     public static scoresCoef: any = {
         done: {

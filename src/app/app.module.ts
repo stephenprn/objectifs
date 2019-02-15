@@ -21,6 +21,7 @@ import { UtilsService } from '@servicesPRN/utils.service';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+import { UiService } from '@servicesPRN/ui.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -55,6 +56,7 @@ registerLocaleData(localeFr, 'fr');
         SuggestionsService,
         StatsService,
         UtilsService,
+        UiService,
         DateService,
         DatePicker,
         { provide: LOCALE_ID, useValue: 'fr' }

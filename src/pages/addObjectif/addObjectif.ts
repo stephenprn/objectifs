@@ -1,15 +1,16 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppConstants } from '@appPRN/app.constants';
 import { AutoCompleteComponent } from '@componentsPRN/ionic2-auto-complete';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { DateService } from '@servicesPRN/date.service';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
 import { SuggestionsService } from '@servicesPRN/suggestions.service';
+import { UiService } from '@servicesPRN/ui.service';
 import { UtilsService } from '@servicesPRN/utils.service';
-import { AppConstants } from "@appPRN/app.constants";
-import { AlertController, NavParams, Select, ToastController, ViewController } from 'ionic-angular';
+import { Alert, AlertController, NavParams, Select, ViewController } from 'ionic-angular';
 import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-options';
 import _ from 'lodash';
 
@@ -21,25 +22,25 @@ export class AddObjectifPage {
     @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
     @ViewChild(Select) select: Select;
 
-    categories: any[];
-    formGroup: any;
+    categories: {id: string, title: string, icon: string, color: string }[];
+    formGroup: FormGroup;
     errorsAfterSubmit: any = { title: false };
     idLater: number = null;
     isLaterEmpty: boolean = true;
-    importances: any[];
-    periodicities: any[];
+    importances: {id: string, title: string, icon: string, color: string, index: number}[];
+    periodicities: {id: string, title: string}[];
     bluredContent: boolean = false;
-    periodicityCustom: any = {};
+    periodicityCustom: {number: number, type: string, text: string};
     periodicitiesCustomJson: any = {};
-    document: any;
+    document: Document;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
         private objectifsService: ObjectifsService, private dateService: DateService,
         public suggestionsService: SuggestionsService, private navParams: NavParams,
-        private alertCtrl: AlertController, private toastCtrl: ToastController,
+        private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
         private utilsService: UtilsService) {
-        const date = this.navParams.get('date');
+        const date: string = this.navParams.get('date');
 
         // Initial category value: relational
         this.formGroup = formBuilder.group({
@@ -67,8 +68,6 @@ export class AddObjectifPage {
     ionViewDidEnter(): void {
         // Set focus on the auto-focus at the init of the page
         this.autocomplete.setFocus();
-
-        console.log(this.select);
     }
 
     dismiss(): void {
@@ -76,7 +75,7 @@ export class AddObjectifPage {
     }
 
     openPeriodicity(): void {
-        const alert = this.alertCtrl.create({
+        const alert: Alert = this.alertCtrl.create({
             title: 'Intervalle personnalisé',
             subTitle: 'Répéter cet objectif tou(te)s les :',
             inputs: [
@@ -84,40 +83,24 @@ export class AddObjectifPage {
             buttons: [
                 {
                     text: 'Annuler',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
+                    role: 'cancel'
                 },
                 {
                     text: 'Ok',
-                    handler: (data: any) => {
-                        const periodicityNbr = this.document.getElementById('periodicityNbr').value;
-                        const type = data;
-                        const nbr = Number(periodicityNbr);
+                    handler: (type: string) => {
+                        const periodicityNbr: string = (<HTMLInputElement>this.document.getElementById('periodicityNbr')).value;
+                        const nbr: number = Number(periodicityNbr);
 
                         if (!type || !periodicityNbr) {
-                            this.toastCtrl.create({
-                                message: 'Vous devez remplir tous les champs',
-                                duration: 3000
-                            }).present();
-
+                            this.uiService.displayToast('Vous devez entrer un nombre');
                             return false;
                         }
 
                         if (isNaN(nbr) || nbr < 1) {
-                            this.toastCtrl.create({
-                                message: 'Vous devez entrer un nombre valide',
-                                duration: 3000
-                            }).present();
-
+                            this.uiService.displayToast('Vous devez entrer un nombre valide');
                             return false;
                         } else if (nbr > AppConstants.limitNbrPeriodicity) {
-                            this.toastCtrl.create({
-                                message: 'Le nombre entré est trop élevé',
-                                duration: 3000
-                            }).present();
-
+                            this.uiService.displayToast('Le nombre entré est trop élevé');
                             return false;
                         } 
 
@@ -148,19 +131,19 @@ export class AddObjectifPage {
     }
 
     private addInputNumberToAlert(): void {
-        let alertHeader;
+        let alertHeader: Element;
 
         setTimeout(() => {
             alertHeader = this.document.getElementsByClassName('alert-head')[0];
 
-            let inputNumber = this.document.createElement('input');
+            let inputNumber: HTMLInputElement = this.document.createElement('input');
 
             inputNumber.setAttribute('type', 'number');
             inputNumber.setAttribute('id', 'periodicityNbr');
             inputNumber.setAttribute('placeholder', 'nbr');
             inputNumber.setAttribute('min', '2');
             inputNumber.setAttribute('max', String(AppConstants.limitNbrPeriodicity));
-            inputNumber.value = this.periodicityCustom.number;
+            inputNumber.value = String(this.periodicityCustom.number);
 
             alertHeader.append(inputNumber);
         });
@@ -175,8 +158,6 @@ export class AddObjectifPage {
         this.formGroup.patchValue({
             title: this.autocomplete.keyword
         });
-
-        console.log(this.formGroup);
 
         if (!this.formGroup.valid) {
             if (!this.formGroup.get('title').valid) {
@@ -205,8 +186,6 @@ export class AddObjectifPage {
             objectif.customCategory = this.formGroup.controls['customCategory'].value;
         }
 
-        console.log(objectif);
-
         this.objectifsService.add(objectif);
 
         if (this.idLater) {
@@ -232,12 +211,7 @@ export class AddObjectifPage {
                     text: 'Valider',
                     handler: (data: any) => {
                         if (!data) {
-                            const toast = this.toastCtrl.create({
-                                message: 'Vous devez sélectionner un objectif',
-                                duration: 3000
-                            });
-                            toast.present();
-
+                            this.uiService.displayToast('Vous devez sélectionner un objectif');
                             return false;
                         }
 
@@ -276,7 +250,7 @@ export class AddObjectifPage {
         this.bluredContent = status;
     }
 
-    checkWarning(field: string) {
+    checkWarning(field: string): void {
         this.errorsAfterSubmit[field] = false;
     }
 }

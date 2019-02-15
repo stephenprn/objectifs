@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { AppConstants } from '@appPRN/app.constants';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Day } from '@modelsPRN/day.model';
 import { Objectif } from '@modelsPRN/objectif.model';
@@ -9,7 +10,6 @@ import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
 import { StatsService } from '@servicesPRN/stats.service';
 import { UtilsService } from '@servicesPRN/utils.service';
-import { AppConstants } from "@appPRN/app.constants";
 import {
     ActionSheet,
     ActionSheetController,
@@ -42,6 +42,7 @@ export class ObjectifsPage {
     bluredContent: boolean = false;
     bigSlides: boolean = true;
     dateFormat: string = AppConstants.dateFormat;
+    // It's a string because it can be equal to '99+'
     nbrLater: string;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
@@ -100,7 +101,7 @@ export class ObjectifsPage {
         }
     }
 
-    private constructDay(addBegin: boolean, date: Date) {
+    private constructDay(addBegin: boolean, date: Date): void {
         if (addBegin === null || addBegin === false) {
             date.setDate(date.getDate() + 1);
         } else {
@@ -248,7 +249,7 @@ export class ObjectifsPage {
         actionSheet.present();
     }
 
-    openFabList(): void {
+    setBluredContent(): void {
         this.bluredContent = !this.bluredContent;
     }
 

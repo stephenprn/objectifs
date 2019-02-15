@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { Day } from '@modelsPRN/day.model';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DateService {
@@ -25,7 +25,7 @@ export class DateService {
     }
 
     //Initialize date for periodic objectifs (format: YYYY-MM-DD)
-    public initDatePeriodic(date: string) {
+    public initDatePeriodic(date: string): string {
         let array: string[] = date.split('-');
         let month = Number(array[1]) + 1;
 
@@ -37,7 +37,7 @@ export class DateService {
     }
 
     //Add months to date (format: DD/MM/YYYY)
-    public addMonths(date: string, number?: number) {
+    public addMonths(date: string, number?: number): string {
         if (!number) {
             number = 1;
         }

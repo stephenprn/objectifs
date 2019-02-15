@@ -66,7 +66,7 @@ export class ObjectifsService {
         }
     }
 
-    private generateObjectifsPeriodic(objectifPeriodic: Objectif) {
+    private generateObjectifsPeriodic(objectifPeriodic: Objectif): void {
         let date: Date = this.dateService.getDateFromString(objectifPeriodic.date);
         let endDate: Date;
         let nbr: number;
@@ -110,7 +110,7 @@ export class ObjectifsService {
         }
     }
 
-    private formatObjectifPeriodic(objectifPeriodic: Objectif, date: Date) {
+    private formatObjectifPeriodic(objectifPeriodic: Objectif, date: Date): void {
         let objectif: Objectif = _.cloneDeep(objectifPeriodic);
 
         objectif.date = this.dateService.getStringFromDate(date);
