@@ -267,8 +267,10 @@ export class ObjectifsPage {
         modal.onDidDismiss((obj: Objectif) => {
             this.bluredContent = false;
 
+            console.log(obj);
             if (obj != null) {
-                this.initDays(null, null);
+                const date: Date = this.dateService.getDateFromString(obj.date);
+                this.initDays(null, null, date);
                 this.checkWeekStats(true);
                 this.nbrLater = this.objectifsLaterService.getNbr();
             }

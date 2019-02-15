@@ -201,6 +201,8 @@ export class AddObjectifPage {
 
         if (objectif.periodicity !== 'punctual') {
             objectif.dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity);
+        } else {
+            delete objectif.dateEndPeriodicity;
         }
 
         if (objectif.periodicity === 'custom') {
