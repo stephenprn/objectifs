@@ -33,6 +33,7 @@ export class AppConstants {
         { id: 'daily', title: 'tous les jours' },
         { id: 'weekly', title: 'toutes les semaines' },
         { id: 'monthly', title: 'tous les mois' },
+        { id: 'customDays', title: 'choisir les jours' },
         { id: 'custom', title: 'personnalisé' }
     ];
 
@@ -44,6 +45,18 @@ export class AppConstants {
         { id: 'monthly', title: 'mois', every: 'Tous les ' }
     ];
 
+    // The ids corresponds to the number returned by js date.getDay()
+    public static customDaysPeriodicities: {id: number, title: string, selected: boolean}[] = [
+        { id: 1, title: 'lun', selected: false },
+        { id: 2, title: 'mar', selected: false },
+        { id: 3, title: 'mer', selected: false },
+        { id: 4, title: 'jeu', selected: false },
+        { id: 5, title: 'ven', selected: false },
+        { id: 6, title: 'sam', selected: false },
+        { id: 0, title: 'dim', selected: false }
+    ];
+
+    // The text is generated in addObjectifComponent
     public static initialCustomPeriodicity: {number: number, type: string, text: string} = {
         number: 7,
         type: 'daily',

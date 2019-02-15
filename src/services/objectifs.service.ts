@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { DateService } from './date.service';
 import { SuggestionsService } from './suggestions.service';
+import { daysInMonth } from 'ionic-angular/umd/util/datetime-util';
 
 @Injectable()
 export class ObjectifsService {
@@ -61,7 +62,7 @@ export class ObjectifsService {
 
             objectif.idPeriodic = objectif.id;
             this.generateObjectifsPeriodic(objectif);
-            
+
             this.saveChanges();
         }
     }
@@ -107,6 +108,21 @@ export class ObjectifsService {
                     date.setMonth(date.getMonth() + nbr);
                 }
                 break;
+            case 'customDays':
+                const beginDate: Date = _.cloneDeep(date);
+
+                while (date < endDate) {
+                    objectifPeriodic.periodicityCustomDays.forEach((dayNbr: number) => {
+                        const currentDay = date.getDay();
+                        date.setDate(date.getDate() + dayNbr - currentDay);
+                        if (date >= beginDate && date <= endDate) {
+                            this.formatObjectifPeriodic(objectifPeriodic, date);
+                        }
+                    });
+
+                    date = this.nextWeekdayDate(date, 1);
+                }
+                break;
         }
     }
 
@@ -119,6 +135,13 @@ export class ObjectifsService {
 
         this.add(objectif);
     }
+
+    private nextWeekdayDate(date, day_in_week): Date {
+        // day_in_week: 1 (monday) - 7 (sunday)
+        let ret: Date = new Date(date||new Date());
+        ret.setDate(ret.getDate() + (day_in_week - 1 - ret.getDay() + 7) % 7 + 1);
+        return ret;
+      }
 
     public saveChanges(periodic?: boolean): void {
         if (!periodic) {

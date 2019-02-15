@@ -32,6 +32,7 @@ export class AddObjectifPage {
     bluredContent: boolean = false;
     periodicityCustom: {number: number, type: string, text: string};
     periodicitiesCustomJson: any = {};
+    periodicitiesCustomDays: {id: number, title: string, selected: boolean}[];
     document: Document;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
@@ -62,6 +63,7 @@ export class AddObjectifPage {
         this.document = document;
         this.periodicitiesCustomJson = this.utilsService.getObjectFromArray('id', ['title', 'every'], AppConstants.customPeriodicities);
         this.periodicityCustom = _.cloneDeep(AppConstants.initialCustomPeriodicity);
+        this.periodicitiesCustomDays = _.cloneDeep(AppConstants.customDaysPeriodicities);
         this.getTitlePeriodicityCustom();
     }
 
@@ -145,7 +147,7 @@ export class AddObjectifPage {
             inputNumber.setAttribute('max', String(AppConstants.limitNbrPeriodicity));
             inputNumber.value = String(this.periodicityCustom.number);
 
-            alertHeader.append(inputNumber);
+            alertHeader.appendChild(inputNumber);
         });
     }
 
@@ -167,19 +169,49 @@ export class AddObjectifPage {
             return;
         }
 
+        // Check if the begining date is before the ending date
+        if ((this.formGroup.get('periodicity').value !== 'punctual')) {
+            const beginDate: Date = this.dateService.getDateFromString(this.formGroup.value.date, true);
+            const endDate: Date = this.dateService.getDateFromString(this.formGroup.value.dateEndPeriodicity, true);
+            
+            if (beginDate >= endDate) {
+                this.uiService.displayToast('La date de début doit être antérieure à la date de fin');
+                return;
+            }
+        }
+
+        let selectedDays: {id: number, title: string, selected: boolean}[];
+        
+        if (this.formGroup.get('periodicity').value === 'customDays') {
+            selectedDays = this.periodicitiesCustomDays.filter((day: {id: number, title: string, selected: boolean}) => {
+                return day.selected;
+            });
+
+            if (selectedDays.length === 0) {
+                this.uiService.displayToast('Vous devez sélectionner au moins un jour de la semaine');
+                return;
+            }
+        }
+
         let objectif: Objectif = _.cloneDeep(this.formGroup.value);
 
         objectif.date = this.dateService.formatDateString(objectif.date);
         objectif.done = false;
         objectif.reportCount = 0;
 
-        if (this.formGroup.get('periodicity').value !== 'punctual') {
+        if (objectif.periodicity !== 'punctual') {
             objectif.dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity);
         }
 
-        if (this.formGroup.get('periodicity').value === 'custom') {
+        if (objectif.periodicity === 'custom') {
             objectif.periodicity = this.periodicityCustom.type;
             objectif.periodicityCustomNumber = this.periodicityCustom.number;
+        }
+
+        if (objectif.periodicity === 'customDays') {
+            objectif.periodicityCustomDays = selectedDays.map((day: {id: number, title: string, selected: boolean}) => {
+                return day.id;
+            }).sort();
         }
 
         if (objectif.category === 'other') {
@@ -252,5 +284,9 @@ export class AddObjectifPage {
 
     checkWarning(field: string): void {
         this.errorsAfterSubmit[field] = false;
+    }
+
+    selectPeriodicityCustomDays(periodicity: {id: number, title: string, selected: boolean}) {
+        periodicity.selected = !periodicity.selected;
     }
 }

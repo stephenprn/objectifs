@@ -13,4 +13,5 @@ export class Objectif {
     periodicity: string;
     dateEndPeriodicity?: string;
     periodicityCustomNumber?: number;
+    periodicityCustomDays?: number[];
 }

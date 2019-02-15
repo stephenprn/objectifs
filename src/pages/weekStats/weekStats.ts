@@ -6,7 +6,7 @@ import { NavParams } from 'ionic-angular';
     templateUrl: 'weekStats.html'
 })
 export class WeekStatsPage {
-    constructor(private navParams: NavParams) {
+    constructor() {
         
     }
 }
