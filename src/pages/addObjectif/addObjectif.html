@@ -70,8 +70,8 @@
             <button type="button" class="periodicityCustomButton" *ngIf="formGroup.get('periodicity').value === 'custom'"
                 (click)="openPeriodicity()" ion-button outline>{{periodicityCustom.text}}</button>
 
-            <ion-item *ngIf="formGroup.get('periodicity').value === 'customDays'" style="width: 100%;">
-                <button *ngFor="let periodicity of periodicitiesCustomDays" style="width: 13%;" [ngClass]="{ 'button-outline button-outline-md': !periodicity.selected }" (click)="selectPeriodicityCustomDays(periodicity)" type="button" ion-button round>{{periodicity.title}}</button>
+            <ion-item *ngIf="formGroup.get('periodicity').value === 'customDays'">
+                <button class="dayButton" *ngFor="let periodicity of periodicitiesCustomDays" [ngClass]="{ 'button-outline button-outline-md': !periodicity.selected }" (click)="selectPeriodicityCustomDays(periodicity)" type="button" ion-button round>{{periodicity.title}}</button>
             </ion-item>
 
             <ion-item *ngIf="formGroup.get('periodicity').value !== 'punctual'">
