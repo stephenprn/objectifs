@@ -19,6 +19,9 @@
                 </div>
                 <p>
                   <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+                  <span *ngIf="obj.description === '' || obj.description == null">
+                    Importance {{importancesJson[obj.importance].title}}
+                  </span>
                   <span *ngIf="obj.description.length <= limitDescription">
                     {{obj.description}}
                   </span>

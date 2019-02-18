@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { DateService } from './date.service';
 import { SuggestionsService } from './suggestions.service';
 import { daysInMonth } from 'ionic-angular/umd/util/datetime-util';
+import { UiService } from './ui.service';
 
 @Injectable()
 export class ObjectifsService {
@@ -13,7 +14,8 @@ export class ObjectifsService {
     objectifsLater: any[];
     objectifsPeriodic: Objectif[];
 
-    constructor(private suggestionsService: SuggestionsService, private dateService: DateService) { }
+    constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
+        private uiService: UiService) { }
 
     private getId(periodic?: boolean): number {
         let nameStorage: string;
@@ -65,6 +67,21 @@ export class ObjectifsService {
 
             this.saveChanges();
         }
+    }
+
+    public update(objectif: Objectif) {
+        this.getAll();
+
+        const objectifs: Objectif[] = this.filterObjectifs({ criteria: 'id', value: objectif.id, count: false });
+
+        if (objectifs == null || objectifs.length === 0) {
+            this.uiService.displayToast('Erreur lors de la modification de cet objectif, veuillez relancer l\'application');
+            return;
+        }
+
+        objectifs[0] = _.cloneDeep(objectif);
+
+        this.saveChanges();
     }
 
     private generateObjectifsPeriodic(objectifPeriodic: Objectif): void {

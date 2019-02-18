@@ -25,7 +25,7 @@
             </button>
 
             <ion-segment formControlName="importance">
-                <ion-segment-button *ngFor="let imp of importances" value="{{imp.id}}" [ngStyle]="{ color: imp.color }">
+                <ion-segment-button text-capitalize *ngFor="let imp of importances" value="{{imp.id}}" [ngStyle]="{ color: imp.color }">
                     <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
                     {{imp.title}}
                 </ion-segment-button>

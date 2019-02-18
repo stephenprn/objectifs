@@ -36,7 +36,7 @@ export class StatsService {
                 stats.done++;
             }
 
-            if (stats.reports > 0) {
+            if (obj.reportCount > 0) {
                 stats.reports += obj.reportCount;
                 stats.reported++;
             }

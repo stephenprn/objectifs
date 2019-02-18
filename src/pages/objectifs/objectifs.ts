@@ -44,6 +44,7 @@ export class ObjectifsPage {
     dateFormat: string = AppConstants.dateFormat;
     // It's a string because it can be equal to '99+'
     nbrLater: string;
+    updatingObj: boolean = false;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -51,24 +52,24 @@ export class ObjectifsPage {
         private statsService: StatsService, private alertCtrl: AlertController,
         private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
-        this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index'], AppConstants.importances);
+        this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index', 'title'], AppConstants.importances);
 
         this.limitDescription = AppConstants.limitDescription;
         this.nbrDaysDisplayed = AppConstants.nbrDaysDisplayed;
 
         this.objectifs = this.objectifsService.getAll();
-        this.initDays(null, null);
+        this.initDays(null, null, null, true);
         //Useful for checkWeekStats() 
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
 
         this.nbrLater = this.objectifsLaterService.getNbr();
     }
 
-    initDays(addBegin: boolean, currentIndex: number, date?: Date): void {
+    initDays(addBegin: boolean, currentIndex: number, date?: Date, firstInit?: boolean): void {
         if (!date) {
             date = new Date();
         }
-        
+
         let nbrDays: number;
         this.dateService.getCloseDays(date);
 
@@ -91,6 +92,13 @@ export class ObjectifsPage {
 
         for (let i = 0; i < nbrDays; i++) {
             this.constructDay(addBegin, date);
+        }
+
+        //If we reinitialize completely the days, we must go to the right slide
+        if (addBegin == null && currentIndex == null && !firstInit) {
+            setTimeout(() => {
+                this.slides.slideTo(this.nbrDaysDisplayed - 1, 0, false);
+            });
         }
 
         //If we add days at the begining, the index of the current slide changed
@@ -160,7 +168,7 @@ export class ObjectifsPage {
                 obj.date = this.dateService.getStringFromDate(date);
 
                 this.objectifsService.saveChanges();
-                this.initDays(null, null);
+                this.initDays(null, null, date);
             },
             (err: any) => {
                 console.log(err);
@@ -172,6 +180,7 @@ export class ObjectifsPage {
         this.datePicker.show({
             date: this.dateService.getDateFromString(initialDate),
             mode: 'date',
+            todayText: 'Aujourd\'hui',
             androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
         }).then(
             (date: Date) => {
@@ -209,6 +218,17 @@ export class ObjectifsPage {
             }
         ];
 
+        if (!obj.done) {
+            buttons.unshift({
+                text: 'Modifier',
+                handler: () => {
+                    this.updatingObj = true;
+                    this.showUpdate(obj);
+                    return true;
+                }
+            })
+        }
+
         if (obj.reportable) {
             buttons.unshift({
                 text: 'Reporter',
@@ -241,7 +261,9 @@ export class ObjectifsPage {
         });
 
         actionSheet.onWillDismiss(() => {
-            this.bluredContent = false;
+            if (!this.updatingObj) {
+                this.bluredContent = false;
+            }
         });
 
         this.bluredContent = true;
@@ -267,14 +289,49 @@ export class ObjectifsPage {
         modal.onDidDismiss((obj: Objectif) => {
             this.bluredContent = false;
 
-            console.log(obj);
             if (obj != null) {
                 const date: Date = this.dateService.getDateFromString(obj.date);
                 this.initDays(null, null, date);
-                this.checkWeekStats(true);
                 this.nbrLater = this.objectifsLaterService.getNbr();
             }
         })
+    }
+
+    showUpdate(objectif: Objectif) {
+        const alert: Alert = this.alertCtrl.create({
+            title: 'Modifier un objectif',
+            inputs: [
+                {
+                    name: 'title',
+                    placeholder: 'Titre',
+                    value: objectif.title
+                },
+                {
+                    name: 'description',
+                    placeholder: 'Description',
+                    value: objectif.description
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Annuler'
+                },
+                {
+                    text: 'Sauvegarder',
+                    handler: (data: any) => {
+                        objectif.title = data.title;
+                        objectif.description = data.description;
+                        this.objectifsService.update(objectif);
+                    }
+                }
+            ]
+        });
+
+        alert.onWillDismiss(() => {
+            this.bluredContent = false;
+        });
+
+        alert.present();
     }
 
     showAddLater(event: any, fab: FabContainer): void {
@@ -308,7 +365,7 @@ export class ObjectifsPage {
         alert.onWillDismiss(() => {
             this.bluredContent = false;
         });
-        
+
         alert.present();
         fab.close();
     }
@@ -328,9 +385,12 @@ export class ObjectifsPage {
         }
     }
 
-    checkWeekStats(reset?: boolean): void {
+    checkWeekStats(reset?: boolean, date?: Date): void {
         //Get week from the current day
-        let date: Date = this.dateService.getDateFromString(this.days[this.slides.getActiveIndex()].date);
+        if (!date) {
+            date = this.dateService.getDateFromString(this.days[this.slides.getActiveIndex()].date);
+        }
+
         date.setDate(date.getDate() - (date.getDay() + 6) % 7);
 
         const weekNbr: number = 1 + Math.round(((date.getTime() - this.week1.getTime()) / 86400000

@@ -21,9 +21,9 @@ export class AppConstants {
     ];
 
     public static importances: {id: string, title: string, icon: string, color: string, index: number}[] = [
-        { id: 'high', title: 'Haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 },
-        { id: 'medium', title: 'Moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },
-        { id: 'low', title: 'Minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 }
+        { id: 'low', title: 'minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 },
+        { id: 'medium', title: 'moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },
+        { id: 'high', title: 'haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 }
     ];
 
     public static initialImportance: string = 'medium';

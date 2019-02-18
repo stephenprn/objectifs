@@ -12,6 +12,7 @@ import { UiService } from '@servicesPRN/ui.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import { Alert, AlertController, NavParams, Select, ViewController } from 'ionic-angular';
 import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-options';
+import { Keyboard } from '@ionic-native/keyboard';
 import _ from 'lodash';
 
 @Component({
@@ -40,7 +41,7 @@ export class AddObjectifPage {
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
-        private utilsService: UtilsService) {
+        private utilsService: UtilsService, private keyboard: Keyboard) {
         const date: string = this.navParams.get('date');
 
         // Initial category value: relational
@@ -70,6 +71,7 @@ export class AddObjectifPage {
     ionViewDidEnter(): void {
         // Set focus on the auto-focus at the init of the page
         this.autocomplete.setFocus();
+        this.keyboard.show();
     }
 
     dismiss(): void {
