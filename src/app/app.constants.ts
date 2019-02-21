@@ -80,7 +80,7 @@ export class AppConstants {
 
     public static dateFormat: string = 'EEEE d MMMM';
 
-    //Number of days displayed at the initialization of the objectives
+    // Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 7;
 
     public static indexTriggerCache: number = 2;
@@ -90,6 +90,9 @@ export class AppConstants {
     public static nbrDaysPeriodDefault: number = 7;
 
     public static ionFormat: string = 'DD/MM/YYYY';
+
+    // Used
+    public static separator: string = '*£$';
 
     public static toastDefaultConfig: ToastOptions = {
         duration: 3000

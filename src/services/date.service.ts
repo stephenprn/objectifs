@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 export class DateService {
     closeDays: any = null;
 
-    //From Date object to DD/MM/YYYY
+    // From Date object to DD/MM/YYYY
     public getStringFromDate(date: Date, reformat?: boolean): string {
         if (date == null) {
             date = new Date();
@@ -24,7 +24,7 @@ export class DateService {
         return str;
     }
 
-    //Initialize date for periodic objectifs (format: YYYY-MM-DD)
+    // Initialize date for periodic objectifs (format: YYYY-MM-DD)
     public initDatePeriodic(date: string): string {
         let array: string[] = date.split('-');
         let month = Number(array[1]) + 1;
@@ -36,7 +36,7 @@ export class DateService {
         return array[0] + '-0' + month + '-' + array[2];
     }
 
-    //Add months to date (format: DD/MM/YYYY)
+    // Add months to date (format: DD/MM/YYYY)
     public addMonths(date: string, number?: number): string {
         if (!number) {
             number = 1;
@@ -52,7 +52,7 @@ export class DateService {
         return array[0] + '/0' + month + '/' + array[2];
     }
 
-    //From DD/MM/YYYY (YYYY-MM-DD if inverse === true) to Date object
+    // From DD/MM/YYYY (YYYY-MM-DD if inverse === true) to Date object
     public getDateFromString(str: string, inverse?: boolean): Date {
         if (!inverse) {
             const array: string[] = str.split('/');
@@ -63,7 +63,7 @@ export class DateService {
         }
     }
 
-    //From YYYY-MM-DD to DD/MM/YYYY or DD/MM/YYYY to YYYY-MM-DD if inverse = true
+    // From YYYY-MM-DD to DD/MM/YYYY or DD/MM/YYYY to YYYY-MM-DD if inverse = true
     public formatDateString(date: string, inverse?: boolean): string {
         if (inverse) {
             return date.split('/').reverse().join('-');
@@ -72,8 +72,8 @@ export class DateService {
         return date.split('-').reverse().join('/');
     }
 
-    //Return yesterday's, today's and tomorrow's date in format DD/MM/YYYY
-    public getCloseDays(date: Date): any {
+    // Return yesterday's, today's and tomorrow's date in format DD/MM/YYYY
+    public getCloseDays(date: Date): void {
         if (this.closeDays !== null) {
             return;
         }

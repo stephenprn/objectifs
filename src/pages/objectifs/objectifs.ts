@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
 import { DatePicker } from '@ionic-native/date-picker';
+import { Keyboard } from '@ionic-native/keyboard';
 import { Day } from '@modelsPRN/day.model';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { Stats } from '@modelsPRN/stats.model';
@@ -12,8 +13,10 @@ import { StatsService } from '@servicesPRN/stats.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import {
     ActionSheet,
+    ActionSheetButton,
     ActionSheetController,
     Alert,
+    AlertButton,
     AlertController,
     FabContainer,
     Modal,
@@ -50,7 +53,8 @@ export class ObjectifsPage {
         public modalCtrl: ModalController, private dateService: DateService,
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
         private statsService: StatsService, private alertCtrl: AlertController,
-        private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
+        private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService,
+        private keyboard: Keyboard) {
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
         this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index', 'title'], AppConstants.importances);
 
@@ -59,7 +63,7 @@ export class ObjectifsPage {
 
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null, null, true);
-        //Useful for checkWeekStats() 
+        // Useful for checkWeekStats() 
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
 
         this.nbrLater = this.objectifsLaterService.getNbr();
@@ -73,7 +77,7 @@ export class ObjectifsPage {
         let nbrDays: number;
         this.dateService.getCloseDays(date);
 
-        //If addBegin is null, we totally reinitialize the days
+        // If addBegin is null, we totally reinitialize the days
         if (addBegin === null) {
             this.days = [];
 
@@ -94,67 +98,19 @@ export class ObjectifsPage {
             this.constructDay(addBegin, date);
         }
 
-        //If we reinitialize completely the days, we must go to the right slide
+        // If we reinitialize completely the days, we must go to the right slide
         if (addBegin == null && currentIndex == null && !firstInit) {
             setTimeout(() => {
                 this.slides.slideTo(this.nbrDaysDisplayed - 1, 0, false);
             });
         }
 
-        //If we add days at the begining, the index of the current slide changed
+        // If we add days at the begining, the index of the current slide changed
         if (addBegin !== null && addBegin === true) {
             setTimeout(() => {
                 this.slides.slideTo(currentIndex.valueOf() + this.nbrDaysDisplayed, 0, false);
             });
         }
-    }
-
-    private constructDay(addBegin: boolean, date: Date): void {
-        if (addBegin === null || addBegin === false) {
-            date.setDate(date.getDate() + 1);
-        } else {
-            date.setDate(date.getDate() - 1);
-        }
-
-        let day: Day = new Day();
-
-        day.dateObject = _.cloneDeep(date);
-        day.date = this.dateService.getStringFromDate(date);
-        day.objectifs = this.objectifs.filter((obj: Objectif) => {
-            return obj.date === day.date;
-        });
-        this.orderObjectives(day.objectifs);
-        day.stats = this.statsService.getStats(day.objectifs);
-
-        //We replace the date by yesterday, today or tomorrow
-        if (addBegin === null) {
-            this.dateService.checkCloseDay(day);
-        }
-
-        if (addBegin === null || addBegin === false) {
-            this.days.push(day);
-        } else {
-            this.days.unshift(day);
-        }
-    }
-
-    //Sort objectives by not done first and name
-    orderObjectives(objs: Objectif[]): void {
-        objs.sort((a: Objectif, b: Objectif) => {
-            if (a.done && !b.done) {
-                return 1;
-            } else if (!a.done && b.done) {
-                return -1;
-            } else {
-                if (this.importancesJson[a.importance].index > this.importancesJson[b.importance].index) {
-                    return -1;
-                } else if (this.importancesJson[a.importance].index < this.importancesJson[b.importance].index) {
-                    return 1;
-                } else {
-                    return a.title.localeCompare(b.title);
-                }
-            }
-        });
     }
 
     report(obj: Objectif): void {
@@ -195,23 +151,32 @@ export class ObjectifsPage {
     setDone(obj: Objectif, done: boolean): void {
         obj.done = done;
 
-        //Update number of objectives done
+        // Update number of objectives done
         if (done) {
-            this.days[this.slides.getActiveIndex()].stats.done++;
+            this.getCurrentDay().stats.done++;
             this.weekStats.done++;
         } else {
-            this.days[this.slides.getActiveIndex()].stats.done--;
+            this.getCurrentDay().stats.done--;
             this.weekStats.done--;
         }
 
-        //Reorder objectives after status change
-        this.orderObjectives(this.days[this.slides.getActiveIndex()].objectifs);
+        // Reorder objectives after status change
+        this.orderObjectives(this.getCurrentDay().objectifs);
         this.objectifsService.saveChanges();
     }
 
     showActions(obj: Objectif): void {
-        //Buttons that are displayed in the action sheet
-        let buttons: any[] = [
+        // Buttons that are displayed in the action sheet
+        let buttons: ActionSheetButton[] = [
+            {
+                text: 'Supprimer',
+                cssClass: 'buttonDeleteActionSheet',
+                handler: () => {
+                    this.updatingObj = true;
+                    this.showDelete(obj);
+                    return true;
+                }
+            },
             {
                 text: 'Annuler',
                 role: 'cancel'
@@ -226,7 +191,7 @@ export class ObjectifsPage {
                     this.showUpdate(obj);
                     return true;
                 }
-            })
+            });
         }
 
         if (obj.reportable) {
@@ -245,19 +210,20 @@ export class ObjectifsPage {
                 handler: () => {
                     this.setDone(obj, false);
                 }
-            })
+            });
         } else {
             buttons.unshift({
                 text: 'Objectif atteint !',
                 handler: () => {
                     this.setDone(obj, true);
                 }
-            })
+            });
         }
 
         const actionSheet: ActionSheet = this.actionSheetCtrl.create({
             title: obj.title,
-            buttons: buttons
+            buttons: buttons,
+            enableBackdropDismiss: false
         });
 
         actionSheet.onWillDismiss(() => {
@@ -271,13 +237,9 @@ export class ObjectifsPage {
         actionSheet.present();
     }
 
-    setBluredContent(): void {
-        this.bluredContent = !this.bluredContent;
-    }
-
     showAdd(event: any, fab: FabContainer): void {
         //Get the date of the current slide and convert it to format YYYY-MM-DD
-        const date: string = this.dateService.formatDateString(this.days[this.slides.getActiveIndex()].date, true);
+        const date: string = this.dateService.formatDateString(this.getCurrentDay().date, true);
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
         modal.present();
@@ -293,13 +255,18 @@ export class ObjectifsPage {
                 const date: Date = this.dateService.getDateFromString(obj.date);
                 this.initDays(null, null, date);
                 this.nbrLater = this.objectifsLaterService.getNbr();
+
+                setTimeout(() => {
+                    this.checkWeekStats(true);
+                }, 100);
             }
         })
     }
 
-    showUpdate(objectif: Objectif) {
+    showUpdate(objectif: Objectif): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Modifier un objectif',
+            enableBackdropDismiss: false,
             inputs: [
                 {
                     name: 'title',
@@ -314,7 +281,8 @@ export class ObjectifsPage {
             ],
             buttons: [
                 {
-                    text: 'Annuler'
+                    text: 'Annuler',
+                    role: 'cancel'
                 },
                 {
                     text: 'Sauvegarder',
@@ -332,12 +300,106 @@ export class ObjectifsPage {
         });
 
         alert.present();
+
+        this.keyboard.show();
+    }
+
+    showDelete(objectif: Objectif): void {
+        let buttons: AlertButton[] = [
+            {
+                text: 'Supprimer',
+                handler: () => {
+                    this.objectifsService.delete(objectif);
+                    this.deleteObjectifFromDay(objectif);
+                    this.updatingObj = false;
+                    this.bluredContent = false;
+                }
+            },
+            {
+                text: 'Annuler',
+                role: 'destructive'
+            }
+        ];
+
+        let subTitle: string;
+
+        if (objectif.idPeriodic != null) {
+            subTitle = 'Cet objectif est périodique. Vous voulez supprimer :';
+            buttons[0].text = 'Uniquement cet obj.';
+
+            buttons.unshift({
+                text: 'Tous les obj. associés',
+                handler: () => {
+                    const objectifs: Objectif[] = this.objectifsService.filterObjectifs([{ criteria: 'idPeriodic', value: objectif.idPeriodic }]);
+
+                    objectifs.forEach((obj: Objectif) => {
+                        this.objectifsService.delete(obj);
+                        this.deleteObjectifFromAllDays(obj);
+                    });
+
+                    this.updatingObj = false;
+                    this.bluredContent = false;
+                }
+            });
+
+            buttons.unshift({
+                text: 'Les obj. associés à venir',
+                handler: () => {
+                    const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
+                        { criteria: 'idPeriodic', value: objectif.idPeriodic },
+                        { criteria: 'date', value: '>=DATE' + AppConstants.separator + objectif.date, custom: true }
+                    ]);
+
+                    objectifs.forEach((obj: Objectif) => {
+                        this.objectifsService.delete(obj);
+                        this.deleteObjectifFromAllDays(obj);
+                    });
+
+                    this.updatingObj = false;
+                    this.bluredContent = false;
+                }
+            });
+
+            buttons.unshift({
+                text: 'Les obj. associés passés',
+                handler: () => {
+                    const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
+                        { criteria: 'idPeriodic', value: objectif.idPeriodic },
+                        { criteria: 'date', value: '<=DATE' + AppConstants.separator + objectif.date, custom: true }
+                    ]);
+
+                    objectifs.forEach((obj: Objectif) => {
+                        this.objectifsService.delete(obj);
+                        this.deleteObjectifFromAllDays(obj);
+                    });
+
+                    this.updatingObj = false;
+                    this.bluredContent = false;
+                }
+            });
+        } else {
+            subTitle = 'Voulez-vous vraiment supprimer cet objectif ?'
+        }
+
+        let alert: Alert = this.alertCtrl.create({
+            title: 'Supprimer un objectif',
+            subTitle: subTitle,
+            enableBackdropDismiss: false,
+            buttons: buttons
+        });
+
+        alert.onWillDismiss(() => {
+            this.bluredContent = false;
+        });
+
+        alert.present();
     }
 
     showAddLater(event: any, fab: FabContainer): void {
         const alert: Alert = this.alertCtrl.create({
             title: 'Ajouter pour plus tard',
             message: 'Objectif que vous pourrez programmer plus tard',
+            enableBackdropDismiss: false,
             inputs: [
                 {
                     name: 'title',
@@ -388,7 +450,7 @@ export class ObjectifsPage {
     checkWeekStats(reset?: boolean, date?: Date): void {
         //Get week from the current day
         if (!date) {
-            date = this.dateService.getDateFromString(this.days[this.slides.getActiveIndex()].date);
+            date = this.dateService.getDateFromString(this.getCurrentDay().date);
         }
 
         date.setDate(date.getDate() - (date.getDay() + 6) % 7);
@@ -400,7 +462,7 @@ export class ObjectifsPage {
             return;
         }
 
-        //The list of the objectives of the current week
+        // The list of the objectives of the current week
         let objectifs: Objectif[] = [];
 
         for (let i = 0; i <= 6; i++) {
@@ -423,5 +485,86 @@ export class ObjectifsPage {
         } else {
             this.bigSlides = false;
         }
+    }
+
+    // UTILS FUNCTIONS
+
+    private constructDay(addBegin: boolean, date: Date): void {
+        if (addBegin === null || addBegin === false) {
+            date.setDate(date.getDate() + 1);
+        } else {
+            date.setDate(date.getDate() - 1);
+        }
+
+        let day: Day = new Day();
+
+        day.dateObject = _.cloneDeep(date);
+        day.date = this.dateService.getStringFromDate(date);
+        day.objectifs = this.objectifs.filter((obj: Objectif) => {
+            return obj.date === day.date;
+        });
+        this.orderObjectives(day.objectifs);
+        day.stats = this.statsService.getStats(day.objectifs);
+
+        // We replace the date by yesterday, today or tomorrow
+        if (addBegin === null) {
+            this.dateService.checkCloseDay(day);
+        }
+
+        if (addBegin === null || addBegin === false) {
+            this.days.push(day);
+        } else {
+            this.days.unshift(day);
+        }
+    }
+
+    private deleteObjectifFromDay(objectif: Objectif, day?: Day): boolean {
+        if (!day) {
+            day = this.getCurrentDay();
+        }
+
+        for (let i = 0; i < day.objectifs.length; i++) {
+            if (day.objectifs[i].id === objectif.id) {
+                day.objectifs.splice(i, 1);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private deleteObjectifFromAllDays(objectif: Objectif): void {
+        for (let i = 0; i < this.days.length; i++) {
+            if (this.deleteObjectifFromDay(objectif, this.days[i])) {
+                break;
+            }
+        }
+    }
+
+    // Sort objectives by not done first and name
+    private orderObjectives(objs: Objectif[]): void {
+        objs.sort((a: Objectif, b: Objectif) => {
+            if (a.done && !b.done) {
+                return 1;
+            } else if (!a.done && b.done) {
+                return -1;
+            } else {
+                if (this.importancesJson[a.importance].index > this.importancesJson[b.importance].index) {
+                    return -1;
+                } else if (this.importancesJson[a.importance].index < this.importancesJson[b.importance].index) {
+                    return 1;
+                } else {
+                    return a.title.localeCompare(b.title);
+                }
+            }
+        });
+    }
+
+    private getCurrentDay(): Day {
+        return this.days[this.slides.getActiveIndex()];
+    }
+
+    setBluredContent(): void {
+        this.bluredContent = !this.bluredContent;
     }
 }

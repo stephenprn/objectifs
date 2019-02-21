@@ -7,7 +7,7 @@ import _ from 'lodash';
 export class UiService {
     constructor(private toastCtrl: ToastController) { }
 
-    public displayToast(text: string) {
+    public displayToast(text: string): void {
         let options: ToastOptions = _.cloneDeep(AppConstants.toastDefaultConfig);
         options.message = text;
 

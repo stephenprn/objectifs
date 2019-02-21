@@ -20,12 +20,12 @@ import _ from 'lodash';
     templateUrl: 'addObjectif.html'
 })
 export class AddObjectifPage {
-    @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
+    @ViewChild(AutoCompleteComponent) autocomplete: AutoCompleteComponent;
     @ViewChild(Select) select: Select;
 
     categories: {id: string, title: string, icon: string, color: string }[];
     formGroup: FormGroup;
-    errorsAfterSubmit: any = { title: false };
+    errorsAfterSubmit: { title: boolean } = { title: false };
     idLater: number = null;
     isLaterEmpty: boolean = true;
     importances: {id: string, title: string, icon: string, color: string, index: number}[];
@@ -74,7 +74,7 @@ export class AddObjectifPage {
         this.keyboard.show();
     }
 
-    dismiss(): void {
+    dismissModal(): void {
         this.viewCtrl.dismiss(null);
     }
 
@@ -82,6 +82,7 @@ export class AddObjectifPage {
         const alert: Alert = this.alertCtrl.create({
             title: 'Intervalle personnalisé',
             subTitle: 'Répéter cet objectif tou(te)s les :',
+            enableBackdropDismiss: false,
             inputs: [
             ],
             buttons: [
@@ -134,6 +135,7 @@ export class AddObjectifPage {
         this.addInputNumberToAlert();
     }
 
+    // Hack to add input number to radio type alert
     private addInputNumberToAlert(): void {
         let alertHeader: Element;
 
@@ -236,6 +238,7 @@ export class AddObjectifPage {
 
         const alert = this.alertCtrl.create({
             title: 'Choisissez un objectif',
+            enableBackdropDismiss: false,
             buttons: [
                 {
                     text: 'Annuler',
@@ -290,7 +293,7 @@ export class AddObjectifPage {
         this.errorsAfterSubmit[field] = false;
     }
 
-    selectPeriodicityCustomDays(periodicity: {id: number, title: string, selected: boolean}) {
+    selectPeriodicityCustomDays(periodicity: {id: number, title: string, selected: boolean}): void {
         periodicity.selected = !periodicity.selected;
     }
 }

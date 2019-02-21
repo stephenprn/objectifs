@@ -17,61 +17,64 @@
 @import "../components/ionic2-auto-complete/auto-complete.scss";
 
 .bluredContent .scroll-content {
-    filter: blur(5px);
-    transition: -webkit-filter 200ms linear;
-    overflow: hidden;
-    pointer-events: none
+  filter: blur(5px);
+  transition: -webkit-filter 200ms linear;
+  overflow: hidden;
+  pointer-events: none
 }
 
 .unbluredContent .scroll-content {
-    filter: blur(0px);
-    transition: -webkit-filter 200ms linear;
+  filter: blur(0px);
+  transition: -webkit-filter 200ms linear;
 }
 
 .alert-title {
-    color: color($colors, light);
+  color: color($colors, light);
 }
 
 .action-sheet-group {
-    background: color($colors, dark) !important;
+  background: color($colors, dark) !important;
 }
 
 .action-sheet-button {
-    color: color($colors, light) !important;
+  color: color($colors, light) !important;
 }
 
 .action-sheet-button.activated {
-    background-color: color($colors, material-dark, contrast) !important;
+  background-color: color($colors, material-dark, contrast) !important;
 }
 
 .action-sheet-title {
-    color: color($colors, light) !important;
-    font-weight: bold;
+  color: color($colors, light) !important;
+  font-weight: bold;
 }
 
 .noScroll {
-    .scroll-content {
-        overflow: hidden;
-    }
+  .scroll-content {
+    overflow: hidden;
+  }
 }
 
 #periodicityNbr {
-    background-color: color($colors, material-dark, contrast);
-    font-size: 2rem;
-    color: #ffffff;
-    text-align: center;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: auto;
-    width: 30%;
-    margin-top: 10px;
+  background-color: color($colors, material-dark, contrast);
+  font-size: 2rem;
+  color: #ffffff;
+  text-align: center;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: auto;
+  width: 30%;
+  margin-top: 10px;
 }
 
+.buttonDeleteActionSheet {
+  background-color: color($colors, danger) !important;
+}
 
 .alert-sub-title {
-    color: #999;
+  color: #999;
 }

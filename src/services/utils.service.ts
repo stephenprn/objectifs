@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Objectif } from '@modelsPRN/objectif.model';
 
 @Injectable()
 export class UtilsService {

@@ -7,6 +7,7 @@ import { DateService } from './date.service';
 import { SuggestionsService } from './suggestions.service';
 import { daysInMonth } from 'ionic-angular/umd/util/datetime-util';
 import { UiService } from './ui.service';
+import { AppConstants } from '@appPRN/app.constants';
 
 @Injectable()
 export class ObjectifsService {
@@ -14,7 +15,7 @@ export class ObjectifsService {
     objectifsLater: any[];
     objectifsPeriodic: Objectif[];
 
-    constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
+    constructor(private suggestionsService: SuggestionsService, private dateService: DateService,
         private uiService: UiService) { }
 
     private getId(periodic?: boolean): number {
@@ -69,10 +70,10 @@ export class ObjectifsService {
         }
     }
 
-    public update(objectif: Objectif) {
+    public update(objectif: Objectif): void {
         this.getAll();
 
-        const objectifs: Objectif[] = this.filterObjectifs({ criteria: 'id', value: objectif.id, count: false });
+        const objectifs: Objectif[] = this.filterObjectifs([{ criteria: 'id', value: objectif.id }]);
 
         if (objectifs == null || objectifs.length === 0) {
             this.uiService.displayToast('Erreur lors de la modification de cet objectif, veuillez relancer l\'application');
@@ -84,12 +85,25 @@ export class ObjectifsService {
         this.saveChanges();
     }
 
+    public delete(objectif: Objectif): void {
+        this.getAll();
+
+        for (let i = 0; i < this.objectifs.length; i++) {
+            if (this.objectifs[i].id === objectif.id) {
+                this.objectifs.splice(i, 1);
+                break;
+            }
+        }
+
+        this.saveChanges();
+    }
+
     private generateObjectifsPeriodic(objectifPeriodic: Objectif): void {
         let date: Date = this.dateService.getDateFromString(objectifPeriodic.date);
         let endDate: Date;
         let nbr: number;
 
-        //Normally dateEndPeriodicity is never null but we never know...
+        // Normally dateEndPeriodicity is never null but we never know...
         if (objectifPeriodic.dateEndPeriodicity != null) {
             endDate = this.dateService.getDateFromString(objectifPeriodic.dateEndPeriodicity);
         } else {
@@ -103,7 +117,7 @@ export class ObjectifsService {
             nbr = 1;
         }
 
-        //If we don't do this, the while miss one objectif at the end
+        // If we don't do this, the while miss one objectif at the end
         endDate.setDate(endDate.getDate() + 1);
 
         switch (objectifPeriodic.periodicity) {
@@ -155,10 +169,10 @@ export class ObjectifsService {
 
     private nextWeekdayDate(date, day_in_week): Date {
         // day_in_week: 1 (monday) - 7 (sunday)
-        let ret: Date = new Date(date||new Date());
+        let ret: Date = new Date(date || new Date());
         ret.setDate(ret.getDate() + (day_in_week - 1 - ret.getDay() + 7) % 7 + 1);
         return ret;
-      }
+    }
 
     public saveChanges(periodic?: boolean): void {
         if (!periodic) {
@@ -209,17 +223,54 @@ export class ObjectifsService {
         return objectifs.length;
     }
 
-    public filterObjectifs(filter: Filter, objectifs?: Objectif[]): any {
+    // Filter objectifs : return the list or the length of the list if filter.count
+    public filterObjectifs(filters: Filter[], objectifs?: Objectif[], count?: boolean): any {
         if (!objectifs) {
             objectifs = this.getAll();
         }
 
-        let objs: Objectif[] = objectifs.filter((obj: Objectif) => {
-            if (obj[filter.criteria] === filter.value) {
-                return obj;
+        objectifs = _.cloneWith(objectifs);
+
+        filters.forEach((filter: Filter) => {
+            let filterFunction;
+            let dateFilter: Date;
+
+            if (filter.custom) {
+                const type: string = filter.value.substr(0, filter.value.indexOf(AppConstants.separator));
+
+                switch (type) {
+                    case '>=DATE': case '<=DATE':
+                        dateFilter = this.dateService.getDateFromString(
+                            filter.value.substr(
+                                filter.value.indexOf(AppConstants.separator) + AppConstants.separator.length, 
+                                filter.value.length - 1
+                            ));
+                    case '>=DATE':
+                        filterFunction = (obj: Objectif) => {
+                            if (this.dateService.getDateFromString(obj.date) >= dateFilter) {
+                                return obj;
+                            }
+                        }
+                        break;
+                    case '<=DATE':
+                        filterFunction = (obj: Objectif) => {
+                            if (this.dateService.getDateFromString(obj.date) <= dateFilter) {
+                                return obj;
+                            }
+                        }
+                        break;
+                }
+            } else {
+                filterFunction = (obj: Objectif) => {
+                    if (obj[filter.criteria] === filter.value) {
+                        return obj;
+                    }
+                }
             }
+
+            objectifs = objectifs.filter(filterFunction);
         });
 
-        return filter.count ? objs.length : objs;
+        return count ? objectifs.length : objectifs;
     }
 }

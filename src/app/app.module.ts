@@ -22,6 +22,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { UiService } from '@servicesPRN/ui.service';
+import { Keyboard } from '@ionic-native/keyboard';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -59,7 +60,8 @@ registerLocaleData(localeFr, 'fr');
         UiService,
         DateService,
         DatePicker,
-        { provide: LOCALE_ID, useValue: 'fr' }
+        { provide: LOCALE_ID, useValue: 'fr' },
+        Keyboard
     ]
 })
 export class AppModule { }
