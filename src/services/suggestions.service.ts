@@ -15,13 +15,13 @@ export class SuggestionsService implements AutoCompleteService {
 
         this.suggestions.push(sug);
 
-        localStorage.setItem('suggestions', JSON.stringify(this.suggestions));
+        localStorage.setItem(AppConstants.storageNames.suggestion.suggestion, JSON.stringify(this.suggestions));
     }
 
     public getResults(text: string): string[] {
         //text: text entered by the user. If null, we return all the results
         if (!this.suggestions) {
-            let sugStorage: string = localStorage.getItem('suggestions');
+            let sugStorage: string = localStorage.getItem(AppConstants.storageNames.suggestion.suggestion);
 
             if (!sugStorage) {
                 this.suggestions = [];
@@ -48,7 +48,7 @@ export class SuggestionsService implements AutoCompleteService {
     public incrementeCategory(id: string): void {
         this.getCategoriesUsages();
         this.categoriesUsages[id]++;
-        localStorage.setItem('categoriesUsages', JSON.stringify(this.categoriesUsages));
+        localStorage.setItem(AppConstants.storageNames.suggestion.category, JSON.stringify(this.categoriesUsages));
     }
 
     public getCategoryMostUsed(): string {
@@ -58,7 +58,7 @@ export class SuggestionsService implements AutoCompleteService {
 
     private getCategoriesUsages(): void {
         if (!this.categoriesUsages) {
-            let catUsagesStorage: string = localStorage.getItem('categoriesUsages');
+            let catUsagesStorage: string = localStorage.getItem(AppConstants.storageNames.suggestion.category);
 
             if (!catUsagesStorage) {
                 this.categoriesUsages = {};
@@ -67,7 +67,7 @@ export class SuggestionsService implements AutoCompleteService {
                     this.categoriesUsages[cat.id] = 0;
                 });
 
-                localStorage.setItem('categoriesUsages', JSON.stringify(this.categoriesUsages));
+                localStorage.setItem(AppConstants.storageNames.suggestion.category, JSON.stringify(this.categoriesUsages));
             } else {
                 this.categoriesUsages = JSON.parse(catUsagesStorage);
             }

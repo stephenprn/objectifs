@@ -22,6 +22,7 @@ import {
     Slides,
 } from 'ionic-angular';
 import _ from 'lodash';
+import { NotificationsService } from '@servicesPRN/notifications.service';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class ObjectifsPage {
         public modalCtrl: ModalController, private dateService: DateService,
         public actionSheetCtrl: ActionSheetController, private datePicker: DatePicker,
         private statsService: StatsService, private alertCtrl: AlertController,
-        private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService) {
+        private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService,
+        private notificationsService: NotificationsService) {
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
         this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index', 'title'], AppConstants.importances);
 
@@ -165,7 +167,10 @@ export class ObjectifsPage {
         }).then(
             (date: Date) => {
                 obj.reportCount++;
+
+                this.notificationsService.delete(obj);
                 obj.date = this.dateService.getStringFromDate(date);
+                this.notificationsService.add(obj);
 
                 this.objectifsService.saveChanges();
                 this.initDays(null, null, date);

@@ -1,6 +1,22 @@
 import { ToastOptions } from "ionic-angular";
 
 export class AppConstants {
+    public static storageNames: any = {
+        id: {
+            base: 'id',
+            periodic: 'idPeriodic',
+            later: 'idLater'
+        },
+        objectif: {
+            base: 'objectifs',
+            periodic: 'objectifsLater'
+        },
+        suggestion: {
+            category: 'categoriesUsages',
+            suggestion: 'suggestions'
+        }
+    };
+
     public static colors: any = {
         red: '#F44336',
         orange: '#FF9800',
@@ -102,5 +118,14 @@ export class AppConstants {
             trivial: 3
         },
         reported: -1
+    };
+
+    public static notificationsDefaultParameters: {
+        hourOfDay: {
+            hours: 18,
+            min: 0,
+            sec: 0,
+            ms: 0
+        }
     };
 }

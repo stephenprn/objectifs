@@ -1,3 +1,5 @@
+import { NotificationsService } from '@servicesPRN/notifications.service';
+import { AppConstants } from '@appPRN/app.constants';
 import { Injectable } from '@angular/core';
 import { Filter } from '@modelsPRN/filter.model';
 import { Objectif } from '@modelsPRN/objectif.model';
@@ -5,7 +7,6 @@ import _ from 'lodash';
 
 import { DateService } from './date.service';
 import { SuggestionsService } from './suggestions.service';
-import { daysInMonth } from 'ionic-angular/umd/util/datetime-util';
 import { UiService } from './ui.service';
 
 @Injectable()
@@ -15,15 +16,15 @@ export class ObjectifsService {
     objectifsPeriodic: Objectif[];
 
     constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
-        private uiService: UiService) { }
+        private uiService: UiService, private notificationsService: NotificationsService) { }
 
     private getId(periodic?: boolean): number {
         let nameStorage: string;
 
         if (!periodic) {
-            nameStorage = 'id';
+            nameStorage = AppConstants.storageNames.id.base;
         } else {
-            nameStorage = 'idPeriodic';
+            nameStorage = AppConstants.storageNames.id.periodic;
         }
 
         if (localStorage.getItem(nameStorage) == null) {
@@ -50,6 +51,7 @@ export class ObjectifsService {
             this.suggestionsService.save(objectif.title);
             this.suggestionsService.incrementeCategory(objectif.category);
 
+            this.notificationsService.add(objectif);
             this.saveChanges();
         } else {
             this.getAll(true);
@@ -162,9 +164,9 @@ export class ObjectifsService {
 
     public saveChanges(periodic?: boolean): void {
         if (!periodic) {
-            localStorage.setItem('objectifs', JSON.stringify(this.objectifs));
+            localStorage.setItem(AppConstants.storageNames.objectif.base, JSON.stringify(this.objectifs));
         } else {
-            localStorage.setItem('objectifsPeriodic', JSON.stringify(this.objectifsPeriodic));
+            localStorage.setItem(AppConstants.storageNames.objectif.periodic, JSON.stringify(this.objectifsPeriodic));
         }
     }
 
@@ -173,10 +175,10 @@ export class ObjectifsService {
         let nameStorage: string;
 
         if (!periodic) {
-            nameStorage = 'objectifs';
+            nameStorage = AppConstants.storageNames.objectif.base;
             array = this.objectifs;
         } else {
-            nameStorage = 'objectifsPeriodic';
+            nameStorage = AppConstants.storageNames.objectif.periodic;
             array = this.objectifsPeriodic;
         }
 
