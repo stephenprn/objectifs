@@ -74,6 +74,25 @@ export class NotificationsService {
         });
     }
 
+    public updateTitle(objectif: Objectif, oldTitle: string): void {
+        const id: number = this.getId(objectif);
+
+        this.localNotifications.get(id).then((notification: ILocalNotification) => {
+            if (typeof notification.text === 'string') {
+                notification.text = objectif.title;
+            } else {
+                for (let i = 0; i < notification.text.length; i++) {
+                    if (notification.text[i] === oldTitle) {
+                        notification.text[i] = objectif.title;
+                        break;
+                    }
+                }
+            }
+            
+            this.localNotifications.update(notification);
+        });
+    }
+
     private getId(objectif: Objectif): number {
         return Number(objectif.date.replace('/', ''));
     } 

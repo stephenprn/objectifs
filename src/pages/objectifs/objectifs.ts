@@ -159,9 +159,11 @@ export class ObjectifsPage {
         if (done) {
             this.getCurrentDay().stats.done++;
             this.weekStats.done++;
+            this.notificationsService.delete(obj);
         } else {
             this.getCurrentDay().stats.done--;
             this.weekStats.done--;
+            this.notificationsService.add(obj);
         }
 
         // Reorder objectives after status change
@@ -291,9 +293,13 @@ export class ObjectifsPage {
                 {
                     text: 'Sauvegarder',
                     handler: (data: any) => {
+                        const oldTitle: string = _.cloneDeep(objectif.title);
+
                         objectif.title = data.title;
                         objectif.description = data.description;
+
                         this.objectifsService.update(objectif);
+                        this.notificationsService.updateTitle(objectif, oldTitle);
                     }
                 }
             ]
@@ -314,6 +320,7 @@ export class ObjectifsPage {
                 text: 'Supprimer',
                 handler: () => {
                     this.objectifsService.delete(objectif);
+                    this.notificationsService.delete(objectif);
                     this.deleteObjectifFromDay(objectif);
                     this.updatingObj = false;
                     this.bluredContent = false;
@@ -338,6 +345,7 @@ export class ObjectifsPage {
 
                     objectifs.forEach((obj: Objectif) => {
                         this.objectifsService.delete(obj);
+                        this.notificationsService.delete(objectif);
                         this.deleteObjectifFromAllDays(obj);
                     });
 
@@ -356,6 +364,7 @@ export class ObjectifsPage {
 
                     objectifs.forEach((obj: Objectif) => {
                         this.objectifsService.delete(obj);
+                        this.notificationsService.delete(objectif);
                         this.deleteObjectifFromAllDays(obj);
                     });
 
@@ -374,6 +383,7 @@ export class ObjectifsPage {
 
                     objectifs.forEach((obj: Objectif) => {
                         this.objectifsService.delete(obj);
+                        this.notificationsService.delete(objectif);
                         this.deleteObjectifFromAllDays(obj);
                     });
 

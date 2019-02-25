@@ -14,6 +14,7 @@ import { Alert, AlertController, NavParams, Select, ViewController } from 'ionic
 import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-options';
 import { Keyboard } from '@ionic-native/keyboard';
 import _ from 'lodash';
+import { NotificationsService } from '@servicesPRN/notifications.service';
 
 @Component({
     selector: 'page-add-objectif',
@@ -41,7 +42,8 @@ export class AddObjectifPage {
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
-        private utilsService: UtilsService, private keyboard: Keyboard) {
+        private utilsService: UtilsService, private keyboard: Keyboard,
+        private notificationsService: NotificationsService) {
         const date: string = this.navParams.get('date');
 
         // Initial category value: relational
@@ -225,6 +227,7 @@ export class AddObjectifPage {
         }
 
         this.objectifsService.add(objectif);
+        this.notificationsService.add(objectif);
 
         if (this.idLater) {
             this.objectifsLaterService.remove(this.idLater);
