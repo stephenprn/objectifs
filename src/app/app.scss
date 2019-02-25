@@ -17,7 +17,7 @@
 @import "../components/ionic2-auto-complete/auto-complete.scss";
 
 .bluredContent .scroll-content {
-  filter: blur(5px);
+  filter: blur(3px);
   transition: -webkit-filter 200ms linear;
   overflow: hidden;
   pointer-events: none
