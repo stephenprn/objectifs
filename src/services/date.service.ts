@@ -6,7 +6,9 @@ import * as _ from 'lodash';
 export class DateService {
     closeDays: any = null;
 
-    // From Date object to DD/MM/YYYY
+    constructor() { }
+
+    //From Date object to DD/MM/YYYY
     public getStringFromDate(date: Date, reformat?: boolean): string {
         if (date == null) {
             date = new Date();

@@ -1,3 +1,4 @@
+import { AppConstants } from './../app/app.constants';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -7,15 +8,15 @@ export class ObjectifsLaterService {
     constructor() { }
 
     private getId(): number {
-        if (localStorage.getItem('idLater') == null) {
-            localStorage.setItem('idLater', '1');
+        if (localStorage.getItem(AppConstants.storageNames.id.later) == null) {
+            localStorage.setItem(AppConstants.storageNames.id.later, '1');
             return 1;
         }
 
-        let nbr: number = Number(localStorage.getItem('idLater'));
+        let nbr: number = Number(localStorage.getItem(AppConstants.storageNames.id.later));
         nbr++;
 
-        localStorage.setItem('idLater', nbr.toString());
+        localStorage.setItem(AppConstants.storageNames.id.later, nbr.toString());
 
         return nbr;
     }
@@ -25,7 +26,7 @@ export class ObjectifsLaterService {
             return this.objectifsLater;
         }
 
-        const objStorage: string = localStorage.getItem('objectifsLater');
+        const objStorage: string = localStorage.getItem(AppConstants.storageNames.objectif.later);
 
         if (!objStorage) {
             this.objectifsLater = [];
@@ -37,7 +38,7 @@ export class ObjectifsLaterService {
     }
 
     public saveChanges(): void {
-        localStorage.setItem('objectifsLater', JSON.stringify(this.objectifsLater));
+        localStorage.setItem(AppConstants.storageNames.objectif.later, JSON.stringify(this.objectifsLater));
     }
 
     public add(objLater: any): void {

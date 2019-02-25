@@ -22,7 +22,12 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { UiService } from '@servicesPRN/ui.service';
+<<<<<<< HEAD
 import { Keyboard } from '@ionic-native/keyboard';
+=======
+import { NotificationsService } from '@servicesPRN/notifications.service';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+>>>>>>> 8b6a73ef3dfe3956b5ffde644b96e9f654f7295c
 
 registerLocaleData(localeFr, 'fr');
 
@@ -60,8 +65,14 @@ registerLocaleData(localeFr, 'fr');
         UiService,
         DateService,
         DatePicker,
+<<<<<<< HEAD
         { provide: LOCALE_ID, useValue: 'fr' },
         Keyboard
+=======
+        NotificationsService,
+        LocalNotifications,
+        { provide: LOCALE_ID, useValue: 'fr' }
+>>>>>>> 8b6a73ef3dfe3956b5ffde644b96e9f654f7295c
     ]
 })
 export class AppModule { }
