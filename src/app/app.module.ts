@@ -65,7 +65,8 @@ registerLocaleData(localeFr, 'fr');
         Keyboard,
         NotificationsService,
         LocalNotifications,
-        { provide: LOCALE_ID, useValue: 'fr' }
+        { provide: LOCALE_ID, useValue: 'fr' },
+        { provide: ErrorHandler, useClass: ErrorHandler }
     ]
 })
 export class AppModule { }
