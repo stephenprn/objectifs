@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs';
@@ -17,6 +17,10 @@ export class MyApp {
             statusBar.styleDefault();
             splashScreen.hide();
         });
+
+        if (isDevMode()) {
+            console.log('%cThis app run in dev mode', 'color: red; font-size: 20px;');
+        }
     }
 }
 
