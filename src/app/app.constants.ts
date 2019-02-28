@@ -94,10 +94,31 @@ export class AppConstants {
         { value: 100, color: AppConstants.colors.green },
     ];
 
+    public static statsPages: any = {
+        weekStats: {
+            title: 'Semaines'
+        }
+    };
+
+    public static closeDays: any = {
+        yesterday: 'Hier',
+        today: 'Aujourd\'hui',
+        tomorrow: 'Demain'
+    };
+
+    public static weeksNames: any = {
+        previous: 'Semaine dernière',
+        current: 'Cette semaine',
+        next: 'Semaine prochaine',
+        default: 'Semaine du '
+    };
+
     public static dateFormat: string = 'EEEE d MMMM';
 
     // Number of days displayed at the initialization of the objectives
     public static nbrDaysDisplayed: number = 7;
+
+    public static nbrWeeksDisplayed: number = 7;
 
     public static indexTriggerCache: number = 2;
 

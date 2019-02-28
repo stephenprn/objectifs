@@ -26,6 +26,7 @@ import {
 } from 'ionic-angular';
 import _ from 'lodash';
 import { NotificationsService } from '@servicesPRN/notifications.service';
+import { WeekStatsPage } from '@pagesPRN/stats/weekStats/weekStats';
 
 
 @Component({
@@ -501,6 +502,12 @@ export class ObjectifsPage {
         }
     }
 
+    openWeekStats() {
+        const currentDate: Date = this.dateService.getDateFromString(this.getCurrentDay().date);
+        const modal: Modal = this.modalCtrl.create(WeekStatsPage, { date: currentDate });
+        modal.present();
+    }
+
     // UTILS FUNCTIONS
 
     private constructDay(addBegin: boolean, date: Date): void {
@@ -517,7 +524,9 @@ export class ObjectifsPage {
         day.objectifs = this.objectifs.filter((obj: Objectif) => {
             return obj.date === day.date;
         });
+
         this.orderObjectives(day.objectifs);
+        
         day.stats = this.statsService.getStats(day.objectifs);
 
         // We replace the date by yesterday, today or tomorrow

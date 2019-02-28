@@ -1,5 +1,5 @@
 <ion-content class="noScroll" [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
-  <week-stats-home [stats]="weekStats"></week-stats-home>
+  <stats-card [stats]="weekStats" (click)="openWeekStats()"></stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days">
       <h1 (click)="goToDay(day.date)">

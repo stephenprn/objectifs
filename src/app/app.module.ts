@@ -6,25 +6,26 @@ import { AutoCompleteModule } from '@componentsPRN/ionic2-auto-complete';
 import { ProgressBarComponent } from '@componentsPRN/progressBar/progressBar';
 import { weekStatsHomeComponent } from '@componentsPRN/weekStatsHome/weekStatsHome';
 import { DatePicker } from '@ionic-native/date-picker';
+import { Keyboard } from '@ionic-native/keyboard';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { AddObjectifPage } from '@pagesPRN/addObjectif/addObjectif';
 import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs';
-import { WeekStatsPage } from '@pagesPRN/weekStats/weekStats';
+import { StatsPage } from '@pagesPRN/stats/stats';
 import { DateService } from '@servicesPRN/date.service';
+import { NotificationsService } from '@servicesPRN/notifications.service';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
 import { StatsService } from '@servicesPRN/stats.service';
 import { SuggestionsService } from '@servicesPRN/suggestions.service';
+import { UiService } from '@servicesPRN/ui.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { UiService } from '@servicesPRN/ui.service';
-import { Keyboard } from '@ionic-native/keyboard';
-import { NotificationsService } from '@servicesPRN/notifications.service';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { WeekStatsPage } from '@pagesPRN/stats/weekStats/weekStats';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -32,8 +33,9 @@ registerLocaleData(localeFr, 'fr');
     declarations: [
         MyApp,
         ObjectifsPage,
-        AddObjectifPage,
+        StatsPage,
         WeekStatsPage,
+        AddObjectifPage,
         ProgressBarComponent,
         weekStatsHomeComponent
     ],
@@ -47,8 +49,9 @@ registerLocaleData(localeFr, 'fr');
     entryComponents: [
         MyApp,
         ObjectifsPage,
-        AddObjectifPage,
-        WeekStatsPage
+        StatsPage,
+        WeekStatsPage,
+        AddObjectifPage
     ],
     providers: [
         StatusBar,

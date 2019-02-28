@@ -22,7 +22,7 @@ export class StatsService {
         return countDone;
     }
 
-    public getStats(objectifs?: Objectif[]): any {
+    public getStats(objectifs?: Objectif[]): Stats {
         if (objectifs == null) {
             objectifs = this.objectifsService.getAll();
         }

@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Day } from '@modelsPRN/day.model';
 import * as _ from 'lodash';
+import { WeekStats } from '@modelsPRN/weekStats.model';
+import { AppConstants } from '@appPRN/app.constants';
 
 @Injectable()
 export class DateService {
     closeDays: any = null;
+    closeMondays: any = {
+        previous: null,
+        current: null,
+        next: null
+    };
 
     constructor() { }
 
@@ -93,17 +100,59 @@ export class DateService {
     public checkCloseDay(day: Day): void {
         switch (day.date) {
             case this.closeDays.today: {
-                day.name = 'Aujourd\'hui';
+                day.name = AppConstants.closeDays.today;
                 break;
             }
             case this.closeDays.yesterday: {
-                day.name = 'Hier';
+                day.name = AppConstants.closeDays.yesterday;
                 break;
             }
             case this.closeDays.tomorrow: {
-                day.name = 'Demain';
+                day.name = AppConstants.closeDays.tomorrow;
                 break;
             }
         }
+    }
+
+    public checkCloseWeek(weekStats: WeekStats): void {
+        if (!this.closeMondays.current) {
+            let date: Date = new Date();
+            date = this.getMonday(date);
+
+            this.closeMondays.current = this.getStringFromDate(date);
+            date.setDate(date.getDate() - 7);
+            this.closeMondays.previous = this.getStringFromDate(date);
+            date.setDate(date.getDate() + 14);
+            this.closeMondays.next = this.getStringFromDate(date);
+        }
+
+        switch (weekStats.monday) {
+            case this.closeMondays.current: {
+                weekStats.title = AppConstants.weeksNames.current;
+                break;
+            }
+            case this.closeMondays.previous: {
+                weekStats.title = AppConstants.weeksNames.previous;
+                break;
+            }
+            case this.closeMondays.next: {
+                weekStats.title = AppConstants.weeksNames.next;
+                break;
+            }
+            default: {
+                weekStats.title = AppConstants.weeksNames.default + weekStats.monday;
+            }
+        }
+    }
+
+    public getMonday(date?: Date): Date {
+        if (!date) {
+            date = new Date();
+        }
+
+        var day = date.getDay(),
+            diff = date.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+
+        return new Date(date.setDate(diff));
     }
 }
