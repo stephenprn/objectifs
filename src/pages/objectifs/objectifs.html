@@ -1,7 +1,7 @@
 <ion-content class="noScroll" [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
   <stats-card [stats]="weekStats" (click)="openWeekStats()"></stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
-    <ion-slide *ngFor="let day of days">
+    <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">
       <h1 (click)="goToDay(day.date)">
         <span *ngIf="day.name">{{day.name}}</span>
         <span *ngIf="!day.name">{{day.dateObject | date: dateFormat}}</span>
@@ -9,9 +9,9 @@
       <div *ngIf="day.objectifs.length > 0">
         <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
         <ion-card>
-          <ion-scroll [style.height]="10*(day.objectifs.length) + 'vh'" scrollY="true">
+          <ion-scroll [style.height]="10 * (day.objectifs.length) + 'vh'" scrollY="true">
             <ion-list>
-              <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs">
+              <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;">
                 <ion-icon name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
                   item-start></ion-icon>
                 <div [ngClass]="{'done': obj.done}">

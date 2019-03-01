@@ -144,12 +144,13 @@ export class AppConstants {
         reported: -1
     };
 
-    public static notificationsDefaultParameters: {
+    public static notificationsDefaultParameters: any = {
         hourOfDay: {
             hours: 18,
             min: 0,
             sec: 0,
             ms: 0
-        }
+        },
+        nbrLinesMax: 5
     };
 }

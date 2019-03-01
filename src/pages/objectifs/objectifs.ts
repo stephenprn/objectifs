@@ -132,7 +132,7 @@ export class ObjectifsPage {
                 this.initDays(null, null, date);
             },
             (err: any) => {
-                console.log(err);
+                console.error(err);
             }
         );
     }
@@ -148,7 +148,7 @@ export class ObjectifsPage {
                 this.initDays(null, null, date);
             },
             (err: any) => {
-                console.log(err);
+                console.error(err);
             }
         );
     }
@@ -201,7 +201,7 @@ export class ObjectifsPage {
             });
         }
 
-        if (obj.reportable) {
+        if (obj.reportable && !obj.done) {
             buttons.unshift({
                 text: 'Reporter',
                 handler: () => {
@@ -589,5 +589,21 @@ export class ObjectifsPage {
 
     setBluredContent(): void {
         this.bluredContent = !this.bluredContent;
+    }
+
+    trackObjectifsFunction(index: number, objectif: Objectif) {
+        if (!objectif) {
+            return null;
+        }
+
+        return objectif.id;
+    }
+
+    trackDaysFunction(index: number, day: Day) {
+        if (!day) {
+            return null;
+        }
+
+        return day.date;
     }
 }

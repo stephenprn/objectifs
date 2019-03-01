@@ -18,11 +18,11 @@ export class NotificationsService {
                     notification = notificationBase;
 
                     notification.badge++;
-                    notification.title = 'Vous avez ' + notification.badge + ' objectifs non-atteints';
+                    notification.title = `Vous avez ${notification.badge} objectifs non-atteints`;
 
                     if (typeof notification.text === 'string') {
                         notification.text = [notification.text, objectif.title];
-                    } else {
+                    } else if (notification.text.length < AppConstants.notificationsDefaultParameters.nbrLinesMax) {
                         notification.text.push(objectif.title);
                     }
 
@@ -60,7 +60,7 @@ export class NotificationsService {
                 });
             } else {
                 notification.badge--;
-                notification.title = 'Vous avez ' + notification.badge + ' objectifs non-atteints';
+                notification.title = `Vous avez ${notification.badge} objectifs non-atteints`;
                 
                 for (let i = 0; i < notification.text.length; i++) {
                     if (notification.text[i] === objectif.title) {
