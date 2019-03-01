@@ -1,4 +1,6 @@
 import { ToastOptions } from "ionic-angular";
+import { Achievement } from "@modelsPRN/achievement.model";
+import { AchievementType } from "@enumsPRN/achievementType.enum";
 
 export class AppConstants {
     public static storageNames: any = {
@@ -153,4 +155,21 @@ export class AppConstants {
         },
         nbrLinesMax: 5
     };
+
+    public static achievementsDefault: Achievement[] = [
+        { description: '', type: AchievementType.NbrObjectifs, number: 5, priority: 1 },
+        { description: '', type: AchievementType.NbrObjectifs, number: 10, priority: 2 },
+        { description: '', type: AchievementType.NbrObjectifs, number: 50, priority: 3 },
+        { description: '', type: AchievementType.NbrObjectifs, number: 100, priority: 4 },
+        { description: '', type: AchievementType.NbrObjectifs, number: 200, priority: 5 },
+        { description: '', type: AchievementType.NbrObjectifs, number: 500, priority: 6 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 5, priority: 1 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 10, priority: 2 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 50, priority: 3 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 100, priority: 4 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 200, priority: 5 },
+        { description: '', type: AchievementType.NbrObjectifsDone, number: 500, priority: 6 }
+    ];
+
+    public static achivementsTitleDialog: string = 'Félicitations !'
 }

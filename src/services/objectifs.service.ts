@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { DateService } from './date.service';
 import { SuggestionsService } from './suggestions.service';
 import { UiService } from './ui.service';
+import { AchievementsService } from './achievements.service';
 
 @Injectable()
 export class ObjectifsService {
@@ -16,7 +17,8 @@ export class ObjectifsService {
     objectifsPeriodic: Objectif[];
 
     constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
-        private uiService: UiService, private notificationsService: NotificationsService) { }
+        private uiService: UiService, private notificationsService: NotificationsService,
+        private achievementsService: AchievementsService) { }
 
     private getId(periodic?: boolean): number {
         let nameStorage: string;
@@ -68,6 +70,8 @@ export class ObjectifsService {
             this.generateObjectifsPeriodic(objectif);
 
             this.saveChanges();
+
+            this.achievementsService.checkAchievements();
         }
     }
 
@@ -216,6 +220,7 @@ export class ObjectifsService {
         return array;
     }
 
+    // TODO : delete this function
     public getNbrObjectifs(objectifs?: Objectif[]): number {
         if (!objectifs) {
             objectifs = this.getAll();

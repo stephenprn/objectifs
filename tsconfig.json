@@ -18,7 +18,8 @@
       "@componentsPRN/*": ["components/*"],
       "@modelsPRN/*": ["models/*"],
       "@servicesPRN/*": ["services/*"],
-      "@appPRN/*": ["app/*"]
+      "@appPRN/*": ["app/*"],
+      "@enumsPRN/*": ["enums/*"]
     }
   },
   "include": [

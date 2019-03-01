@@ -26,6 +26,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { WeekStatsPage } from '@pagesPRN/stats/weekStats/weekStats';
+import { AchievementsService } from '@servicesPRN/achievements.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -57,6 +58,7 @@ registerLocaleData(localeFr, 'fr');
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
+        AchievementsService,
         ObjectifsService,
         ObjectifsLaterService,
         SuggestionsService,

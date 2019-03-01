@@ -6,7 +6,8 @@ conf.dev.resolve.alias = {
   "@componentsPRN": path.resolve("./src/components"),
   "@modelsPRN": path.resolve("./src/models"),
   "@servicesPRN": path.resolve("./src/services"),
-  "@appPRN": path.resolve("./src/app")
+  "@appPRN": path.resolve("./src/app"),
+  "@enumsPRN": path.resolve("./src/enums")
 }
 
 conf.prod.resolve.alias = {
@@ -14,7 +15,8 @@ conf.prod.resolve.alias = {
   "@componentsPRN": path.resolve("./src/components"),
   "@modelsPRN": path.resolve("./src/models"),
   "@servicesPRN": path.resolve("./src/services"),
-  "@appPRN": path.resolve("./src/app")
+  "@appPRN": path.resolve("./src/app"),
+  "@enumsPRN": path.resolve("./src/enums")
 }
 
 module.exports = conf;
