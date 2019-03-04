@@ -24,13 +24,13 @@ export class AchievementsService {
 
         // We store all the objectives done classed by type
         let achievementsJson: any = {};
-        achievementsJson[AchievementType.NbrObjectifsDone] = [];
-        achievementsJson[AchievementType.NbrObjectifs] = [];
+        achievementsJson[AchievementType.NbrObjectifsDone.toString().toString()] = [];
+        achievementsJson[AchievementType.NbrObjectifs.toString()] = [];
 
         this.achievements.forEach((achievement: Achievement) => {
             if (!achievement.done) {
                 switch (achievement.type) {
-                    case AchievementType.NbrObjectifsDone: {
+                    case AchievementType.NbrObjectifsDone.toString().toString(): {
                         if (nbrObjectifsDone == null) {
                             nbrObjectifsDone = this.objectifsService.filterObjectifs([{ criteria: 'done', value: true }], null, true);
                         }
@@ -38,11 +38,11 @@ export class AchievementsService {
                         if (achievement.number >= nbrObjectifsDone) {
                             achievement.done = true;
                             achievementDone = true;
-                            achievementsJson[AchievementType.NbrObjectifsDone].push(achievement);
+                            achievementsJson[AchievementType.NbrObjectifsDone.toString().toString()].push(achievement);
                         }
                     }
 
-                    case AchievementType.NbrObjectifs: {
+                    case AchievementType.NbrObjectifs.toString(): {
                         if (nbrObjectifs == null) {
                             nbrObjectifs = this.objectifsService.filterObjectifs([], null, true);
                         }
@@ -50,7 +50,7 @@ export class AchievementsService {
                         if (achievement.number >= nbrObjectifs) {
                             achievement.done = true;
                             achievementDone = true;
-                            achievementsJson[AchievementType.NbrObjectifs].push(achievement);
+                            achievementsJson[AchievementType.NbrObjectifs.toString()].push(achievement);
                         }
                     }
                 }
@@ -65,7 +65,8 @@ export class AchievementsService {
     }
 
     private displayTheHighestPriority(achievementsJson: any) {
-        achievementsJson.forEach((key: AchievementType) => {
+        console.log(achievementsJson);
+        achievementsJson.forEach((key: string) => {
             if (achievementsJson[key].length > 0) {
                 const achievement: Achievement = achievementsJson[key].reduce((prev, current) => {
                     return (prev.priority > current.priority) ? prev : current;

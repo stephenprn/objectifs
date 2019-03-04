@@ -21,6 +21,10 @@ export class MyApp {
         if (isDevMode()) {
             console.log('%cThis app run in dev mode', 'color: red; font-size: 20px;');
         }
+
+        if (platform.is('cordova')) {
+            console.log('%cThis app run on a real device, log in alert activated', 'color: red; font-size: 20px;');            
+        }
     }
 }
 

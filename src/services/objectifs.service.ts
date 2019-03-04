@@ -17,8 +17,7 @@ export class ObjectifsService {
     objectifsPeriodic: Objectif[];
 
     constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
-        private uiService: UiService, private notificationsService: NotificationsService,
-        private achievementsService: AchievementsService) { }
+        private uiService: UiService, private notificationsService: NotificationsService) { }
 
     private getId(periodic?: boolean): number {
         let nameStorage: string;
@@ -70,8 +69,6 @@ export class ObjectifsService {
             this.generateObjectifsPeriodic(objectif);
 
             this.saveChanges();
-
-            this.achievementsService.checkAchievements();
         }
     }
 

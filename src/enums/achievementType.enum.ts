@@ -1,4 +1,4 @@
 export enum AchievementType {
-    NbrObjectifs,
-    NbrObjectifsDone
+    NbrObjectifs = 'NBR_OBJECTIFS',
+    NbrObjectifsDone = 'NBR_OBJECTIFS_DONE'
 }

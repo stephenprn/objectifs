@@ -1,3 +1,4 @@
+import { AchievementsService } from '@servicesPRN/achievements.service';
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -43,7 +44,7 @@ export class AddObjectifPage {
         private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
         private utilsService: UtilsService, private keyboard: Keyboard,
-        private notificationsService: NotificationsService) {
+        private notificationsService: NotificationsService, private achievementsService: AchievementsService) {
         const date: string = this.navParams.get('date');
 
         // Initial category value: relational
@@ -227,6 +228,7 @@ export class AddObjectifPage {
         }
 
         this.objectifsService.add(objectif);
+        this.achievementsService.checkAchievements();
         this.notificationsService.add(objectif);
 
         if (this.idLater) {
