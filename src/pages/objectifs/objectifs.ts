@@ -325,6 +325,7 @@ export class ObjectifsPage {
                     this.deleteObjectifFromDay(objectif);
                     this.updatingObj = false;
                     this.bluredContent = false;
+                    this.checkWeekStats(true);
                 }
             },
             {
@@ -352,6 +353,7 @@ export class ObjectifsPage {
 
                     this.updatingObj = false;
                     this.bluredContent = false;
+                    this.checkWeekStats(true);
                 }
             });
 
@@ -371,6 +373,7 @@ export class ObjectifsPage {
 
                     this.updatingObj = false;
                     this.bluredContent = false;
+                    this.checkWeekStats(true);
                 }
             });
 
@@ -390,6 +393,7 @@ export class ObjectifsPage {
 
                     this.updatingObj = false;
                     this.bluredContent = false;
+                    this.checkWeekStats(true);
                 }
             });
         } else {
@@ -462,7 +466,7 @@ export class ObjectifsPage {
         }
     }
 
-    checkWeekStats(reset?: boolean, date?: Date): void {
+    checkWeekStats(reset?: boolean, date?: Date, resetAll?: boolean): void {
         //Get week from the current day
         if (!date) {
             date = this.dateService.getDateFromString(this.getCurrentDay().date);
@@ -477,20 +481,13 @@ export class ObjectifsPage {
             return;
         }
 
-        // The list of the objectives of the current week
-        let objectifs: Objectif[] = [];
-
-        for (let i = 0; i <= 6; i++) {
-            for (let j = 0; j < this.days.length; j++) {
-                const dateStr: string = this.dateService.getStringFromDate(date);
-                if (this.days[j].date === dateStr) {
-                    objectifs = objectifs.concat(this.days[j].objectifs);
-                    break;
-                }
-            }
-
-            date.setDate(date.getDate() + 1);
-        }
+        let sunday: Date = _.cloneDeep(date);
+        sunday.setDate(sunday.getDate() + 6);
+    
+        const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
+          { criteria: 'date', value: '>=DATE' + AppConstants.separator + this.dateService.getStringFromDate(date), custom: true },
+          { criteria: 'date', value: '<=DATE' + AppConstants.separator + this.dateService.getStringFromDate(sunday), custom: true }
+        ]);
 
         this.weekStats = this.statsService.getStats(objectifs);
         this.weekStats.weekNbr = weekNbr;

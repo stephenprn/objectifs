@@ -16,7 +16,7 @@ export class ObjectifsService {
     objectifsLater: any[];
     objectifsPeriodic: Objectif[];
 
-    constructor(private suggestionsService: SuggestionsService, private dateService: DateService, 
+    constructor(private suggestionsService: SuggestionsService, private dateService: DateService,
         private uiService: UiService, private notificationsService: NotificationsService) { }
 
     private getId(periodic?: boolean): number {
@@ -242,13 +242,8 @@ export class ObjectifsService {
                 const type: string = filter.value.substr(0, filter.value.indexOf(AppConstants.separator));
 
                 switch (type) {
-                    case '>=DATE': case '<=DATE':
-                        dateFilter = this.dateService.getDateFromString(
-                            filter.value.substr(
-                                filter.value.indexOf(AppConstants.separator) + AppConstants.separator.length, 
-                                filter.value.length - 1
-                            ));
                     case '>=DATE':
+                        dateFilter = this.getDateFilter(filter);
                         filterFunction = (obj: Objectif) => {
                             if (this.dateService.getDateFromString(obj.date) >= dateFilter) {
                                 return obj;
@@ -256,6 +251,7 @@ export class ObjectifsService {
                         }
                         break;
                     case '<=DATE':
+                        dateFilter = this.getDateFilter(filter);
                         filterFunction = (obj: Objectif) => {
                             if (this.dateService.getDateFromString(obj.date) <= dateFilter) {
                                 return obj;
@@ -270,10 +266,17 @@ export class ObjectifsService {
                     }
                 }
             }
-
             objectifs = objectifs.filter(filterFunction);
         });
 
         return count ? objectifs.length : objectifs;
+    }
+
+    private getDateFilter(filter: Filter) {
+        return this.dateService.getDateFromString(
+            filter.value.substr(
+                filter.value.indexOf(AppConstants.separator) + AppConstants.separator.length,
+                filter.value.length - 1
+            ));
     }
 }

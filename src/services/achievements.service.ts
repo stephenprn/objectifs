@@ -65,8 +65,7 @@ export class AchievementsService {
     }
 
     private displayTheHighestPriority(achievementsJson: any) {
-        console.log(achievementsJson);
-        achievementsJson.forEach((key: string) => {
+        Object.keys(achievementsJson).forEach((key: string) => {
             if (achievementsJson[key].length > 0) {
                 const achievement: Achievement = achievementsJson[key].reduce((prev, current) => {
                     return (prev.priority > current.priority) ? prev : current;
