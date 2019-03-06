@@ -12,7 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { AddObjectifPage } from '@pagesPRN/add-objectif/add-objectif.page';
-import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs-page';
+import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs.page';
 import { StatsPage } from '@pagesPRN/stats/stats.page';
 import { WeekStatsPage } from '@pagesPRN/stats/week-stats/week-stats.page';
 import { AchievementsService } from '@servicesPRN/achievements.service';

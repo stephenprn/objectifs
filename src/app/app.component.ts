@@ -1,7 +1,7 @@
 import { Component, isDevMode } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs-page';
+import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs.page';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { Platform } from 'ionic-angular';
 
