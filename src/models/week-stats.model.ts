@@ -1,4 +1,4 @@
-import { Stats } from './stats.model';
+import { Stats } from '@modelsPRN/stats.model';
 
 export class WeekStats {
     title: string;

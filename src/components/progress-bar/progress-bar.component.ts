@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges, OnInit } from "@angular/core";
-import { AppConstants } from "@appPRN/app.constants";
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AppConstants } from '@appPRN/app.constants';
 
 @Component({
     selector: 'progress-bar',
-    templateUrl: 'progressBar.html'
+    templateUrl: 'progress-bar.component.html'
 })
 export class ProgressBarComponent implements OnChanges, OnInit {
     @Input('progress') progress: number;

@@ -1,11 +1,11 @@
-import { ToastOptions } from "ionic-angular";
-import { Achievement } from "@modelsPRN/achievement.model";
-import { AchievementType } from "@enumsPRN/achievementType.enum";
-import { Importance } from "@modelsPRN/importance.model";
-import { Category } from "@modelsPRN/category.model";
-import { Periodicity } from "@modelsPRN/periodicity.model";
-import { CustomDayPeriodicity } from "@modelsPRN/customDayPeriodicity.model";
-import { CustomPeriodicity } from "@modelsPRN/customPeriodicity.model";
+import { AchievementType } from '@enumsPRN/achievement-type.enum';
+import { Achievement } from '@modelsPRN/achievement.model';
+import { Category } from '@modelsPRN/category.model';
+import { CustomDayPeriodicity } from '@modelsPRN/custom-day-periodicity.model';
+import { CustomPeriodicity } from '@modelsPRN/custom-periodicity.model';
+import { Importance } from '@modelsPRN/importance.model';
+import { Periodicity } from '@modelsPRN/periodicity.model';
+import { ToastOptions } from 'ionic-angular';
 
 export class AppConstants {
     public static storageNames: any = {
@@ -16,7 +16,8 @@ export class AppConstants {
         },
         objectif: {
             base: 'objectifs',
-            periodic: 'objectifsLater'
+            later: 'objectifsLater',
+            periodic: 'objectifsPeriodic'
         },
         suggestion: {
             category: 'categoriesUsages',

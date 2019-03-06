@@ -1,5 +1,3 @@
-import { AchievementType } from "@enumsPRN/achievementType.enum";
-
 export class Category {
     id: string;
     title: string;

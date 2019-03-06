@@ -1,8 +1,8 @@
-import { AppConstants } from '@appPRN/app.constants';
-import { DateService } from '@servicesPRN/date.service';
 import { Injectable } from '@angular/core';
-import { LocalNotifications, ILocalNotification } from '@ionic-native/local-notifications';
+import { AppConstants } from '@appPRN/app.constants';
+import { ILocalNotification, LocalNotifications } from '@ionic-native/local-notifications';
 import { Objectif } from '@modelsPRN/objectif.model';
+import { DateService } from '@servicesPRN/date.service';
 
 @Injectable()
 export class NotificationsService {

@@ -1,30 +1,30 @@
-import { AchievementsService } from '@servicesPRN/achievements.service';
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppConstants } from '@appPRN/app.constants';
 import { AutoCompleteComponent } from '@componentsPRN/ionic2-auto-complete';
+import { Keyboard } from '@ionic-native/keyboard';
+import { Category } from '@modelsPRN/category.model';
+import { CustomDayPeriodicity } from '@modelsPRN/custom-day-periodicity.model';
+import { CustomPeriodicity } from '@modelsPRN/custom-periodicity.model';
+import { Importance } from '@modelsPRN/importance.model';
 import { Objectif } from '@modelsPRN/objectif.model';
+import { Periodicity } from '@modelsPRN/periodicity.model';
+import { AchievementsService } from '@servicesPRN/achievements.service';
 import { DateService } from '@servicesPRN/date.service';
+import { NotificationsService } from '@servicesPRN/notifications.service';
+import { ObjectifsLaterService } from '@servicesPRN/objectifs-later.service';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
-import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
 import { SuggestionsService } from '@servicesPRN/suggestions.service';
 import { UiService } from '@servicesPRN/ui.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import { Alert, AlertController, NavParams, Select, ViewController } from 'ionic-angular';
 import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-options';
-import { Keyboard } from '@ionic-native/keyboard';
 import _ from 'lodash';
-import { NotificationsService } from '@servicesPRN/notifications.service';
-import { Importance } from '@modelsPRN/importance.model';
-import { Category } from '@modelsPRN/category.model';
-import { Periodicity } from '@modelsPRN/periodicity.model';
-import { CustomDayPeriodicity } from '@modelsPRN/customDayPeriodicity.model';
-import { CustomPeriodicity } from '@modelsPRN/customPeriodicity.model';
 
 @Component({
     selector: 'page-add-objectif',
-    templateUrl: 'addObjectif.html'
+    templateUrl: 'add-objectif.page.html'
 })
 export class AddObjectifPage {
     @ViewChild(AutoCompleteComponent) autocomplete: AutoCompleteComponent;

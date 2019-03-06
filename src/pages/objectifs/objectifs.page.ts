@@ -5,10 +5,12 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { Day } from '@modelsPRN/day.model';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { Stats } from '@modelsPRN/stats.model';
-import { AddObjectifPage } from '@pagesPRN/addObjectif/addObjectif';
+import { AddObjectifPage } from '@pagesPRN/add-objectif/add-objectif.page';
+import { WeekStatsPage } from '@pagesPRN/stats/week-stats/week-stats.page';
 import { DateService } from '@servicesPRN/date.service';
+import { NotificationsService } from '@servicesPRN/notifications.service';
+import { ObjectifsLaterService } from '@servicesPRN/objectifs-later.service';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
-import { ObjectifsLaterService } from '@servicesPRN/objectifsLater.service';
 import { StatsService } from '@servicesPRN/stats.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import {
@@ -25,13 +27,11 @@ import {
     Slides,
 } from 'ionic-angular';
 import _ from 'lodash';
-import { NotificationsService } from '@servicesPRN/notifications.service';
-import { WeekStatsPage } from '@pagesPRN/stats/weekStats/weekStats';
 
 
 @Component({
     selector: 'page-objectifs',
-    templateUrl: 'objectifs.html'
+    templateUrl: 'objectifs.page.html'
 })
 export class ObjectifsPage {
     @ViewChild(Slides) slides: Slides;

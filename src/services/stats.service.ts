@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { Stats } from '@modelsPRN/stats.model';
-
-import { ObjectifsService } from './objectifs.service';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
 
 @Injectable()
 export class StatsService {

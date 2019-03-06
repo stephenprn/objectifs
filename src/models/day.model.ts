@@ -1,5 +1,6 @@
-import { Objectif } from './objectif.model';
-import { Stats } from './stats.model';
+import { Objectif } from "@modelsPRN/objectif.model";
+import { Stats } from "@modelsPRN/stats.model";
+
 
 export class Day {
     date: string;

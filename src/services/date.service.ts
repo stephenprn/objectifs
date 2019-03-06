@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Day } from '@modelsPRN/day.model';
-import * as _ from 'lodash';
-import { WeekStats } from '@modelsPRN/weekStats.model';
 import { AppConstants } from '@appPRN/app.constants';
+import { Day } from '@modelsPRN/day.model';
+import { WeekStats } from '@modelsPRN/week-stats.model';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DateService {

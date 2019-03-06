@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
-import { ToastController, ToastOptions, AlertController, Alert } from 'ionic-angular';
+import { Alert, AlertController, ToastController, ToastOptions } from 'ionic-angular';
 import _ from 'lodash';
 
 @Injectable()

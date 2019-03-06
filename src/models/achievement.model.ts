@@ -1,4 +1,4 @@
-import { AchievementType } from "@enumsPRN/achievementType.enum";
+import { AchievementType } from "@enumsPRN/achievement-type.enum";
 
 export class Achievement {
     description: string;

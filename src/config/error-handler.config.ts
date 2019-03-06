@@ -1,6 +1,6 @@
-import { Injectable, isDevMode } from "@angular/core";
+import { Injectable, isDevMode } from '@angular/core';
+import { UiService } from '@servicesPRN/ui.service';
 import { Platform } from 'ionic-angular';
-import { UiService } from "@servicesPRN/ui.service";
 
 @Injectable()
 export class ErrorHandler implements ErrorHandler {

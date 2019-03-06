@@ -1,17 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Slides, ViewController } from 'ionic-angular';
-import { DateService } from '@servicesPRN/date.service';
-import _ from 'lodash';
-import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { AppConstants } from '@appPRN/app.constants';
 import { Objectif } from '@modelsPRN/objectif.model';
+import { WeekStats } from '@modelsPRN/week-stats.model';
+import { DateService } from '@servicesPRN/date.service';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { StatsService } from '@servicesPRN/stats.service';
-import { Stats } from '@modelsPRN/stats.model';
-import { WeekStats } from '@modelsPRN/weekStats.model';
+import { NavController, NavParams, Slides, ViewController } from 'ionic-angular';
+import _ from 'lodash';
 
 @Component({
   selector: 'page-week-stats',
-  templateUrl: 'weekStats.html',
+  templateUrl: 'week-stats.page.html',
 })
 export class WeekStatsPage {
   weekStats: WeekStats[];

@@ -1,5 +1,5 @@
-import { AppConstants } from './../app/app.constants';
 import { Injectable } from '@angular/core';
+import { AppConstants } from '@appPRN/app.constants';
 
 @Injectable()
 export class ObjectifsLaterService {

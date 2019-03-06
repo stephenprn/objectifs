@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import _ from 'lodash';
-import { Achievement } from '@modelsPRN/achievement.model';
 import { AppConstants } from '@appPRN/app.constants';
-import { ObjectifsService } from './objectifs.service';
-import { UiService } from './ui.service';
-import { AchievementType } from '@enumsPRN/achievementType.enum';
+import { AchievementType } from '@enumsPRN/achievement-type.enum';
+import { Achievement } from '@modelsPRN/achievement.model';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
+import { UiService } from '@servicesPRN/ui.service';
+import _ from 'lodash';
 
 @Injectable()
 export class AchievementsService {

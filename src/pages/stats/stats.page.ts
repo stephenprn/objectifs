@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { WeekStatsPage } from './weekStats/weekStats';
 import { AppConstants } from '@appPRN/app.constants';
+import { NavController, NavParams } from 'ionic-angular';
+
+import { WeekStatsPage } from './week-stats/week-stats.page';
 
 @Component({
   selector: 'page-stats',
-  templateUrl: 'stats.html',
+  templateUrl: 'stats.page.html',
 })
 export class StatsPage {
   tabs: any[] = [];
@@ -16,7 +17,7 @@ export class StatsPage {
     ];
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() { 
     console.log('ionViewDidLoad StatsPage');
   }
 
