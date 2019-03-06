@@ -7,4 +7,4 @@ export class Day {
     stats?: Stats;
     name?: string;
     dateObject?: Date;
-};
+}

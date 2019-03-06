@@ -1,6 +1,11 @@
 import { ToastOptions } from "ionic-angular";
 import { Achievement } from "@modelsPRN/achievement.model";
 import { AchievementType } from "@enumsPRN/achievementType.enum";
+import { Importance } from "@modelsPRN/importance.model";
+import { Category } from "@modelsPRN/category.model";
+import { Periodicity } from "@modelsPRN/periodicity.model";
+import { CustomDayPeriodicity } from "@modelsPRN/customDayPeriodicity.model";
+import { CustomPeriodicity } from "@modelsPRN/customPeriodicity.model";
 
 export class AppConstants {
     public static storageNames: any = {
@@ -16,7 +21,8 @@ export class AppConstants {
         suggestion: {
             category: 'categoriesUsages',
             suggestion: 'suggestions'
-        }
+        },
+        achievements: 'achievements'
     };
 
     public static colors: any = {
@@ -29,7 +35,7 @@ export class AppConstants {
         purple: '#6200EE'
     };
 
-    public static categories: {id: string, title: string, icon: string, color: string }[] = [
+    public static categories: Category[] = [
         { id: 'health', title: 'santé', icon: 'medkit', color: AppConstants.colors.red },
         { id: 'relational', title: 'relationnel', icon: 'happy', color: AppConstants.colors.orange },
         { id: 'professional', title: 'professionnel', icon: 'briefcase', color: AppConstants.colors.purple },
@@ -38,13 +44,13 @@ export class AppConstants {
         { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
     ];
 
-    public static importances: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}[] = [
+    public static importances: Importance[] = [
         { id: 'low', title: 'minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 },
         { id: 'medium', title: 'moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1, selected: true },
         { id: 'high', title: 'haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 }
     ];
 
-    public static periodicities: {id: string, title: string}[] = [
+    public static periodicities: Periodicity[] = [
         { id: 'punctual', title: 'jamais' },
         { id: 'daily', title: 'tous les jours' },
         { id: 'weekly', title: 'toutes les semaines' },
@@ -55,14 +61,14 @@ export class AppConstants {
 
     public static initialPeriodicity: string = 'punctual';
     
-    public static customPeriodicities: {id: string, title: string, every: string}[] = [
+    public static customPeriodicities: Periodicity[] = [
         { id: 'daily', title: 'jours', every: 'Tous les ' },
         { id: 'weekly', title: 'semaines', every: 'Toutes les ' },
         { id: 'monthly', title: 'mois', every: 'Tous les ' }
     ];
 
     // The ids corresponds to the number returned by js date.getDay()
-    public static customDaysPeriodicities: {id: number, title: string, selected: boolean}[] = [
+    public static customDaysPeriodicities: CustomDayPeriodicity[] = [
         { id: 1, title: 'lun', selected: false },
         { id: 2, title: 'mar', selected: false },
         { id: 3, title: 'mer', selected: false },
@@ -73,7 +79,7 @@ export class AppConstants {
     ];
 
     // The text is generated in addObjectifComponent
-    public static initialCustomPeriodicity: {number: number, type: string, text: string} = {
+    public static initialCustomPeriodicity: CustomPeriodicity = {
         number: 7,
         type: 'daily',
         text: null
@@ -155,18 +161,18 @@ export class AppConstants {
     };
 
     public static achievementsDefault: Achievement[] = [
-        { description: '', type: AchievementType.NbrObjectifs, number: 5, priority: 1 },
-        { description: '', type: AchievementType.NbrObjectifs, number: 10, priority: 2 },
-        { description: '', type: AchievementType.NbrObjectifs, number: 50, priority: 3 },
-        { description: '', type: AchievementType.NbrObjectifs, number: 100, priority: 4 },
-        { description: '', type: AchievementType.NbrObjectifs, number: 200, priority: 5 },
-        { description: '', type: AchievementType.NbrObjectifs, number: 500, priority: 6 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 5, priority: 1 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 10, priority: 2 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 50, priority: 3 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 100, priority: 4 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 200, priority: 5 },
-        { description: '', type: AchievementType.NbrObjectifsDone, number: 500, priority: 6 }
+        { description: 'Vous vous êtes fixé 5 objectifs !', type: AchievementType.NbrObjectifs, number: 5, priority: 1 },
+        { description: 'Vous vous êtes fixé 10 objectifs !', type: AchievementType.NbrObjectifs, number: 10, priority: 2 },
+        { description: 'Vous vous êtes fixé 50 objectifs !', type: AchievementType.NbrObjectifs, number: 50, priority: 3 },
+        { description: 'Vous vous êtes fixé 100 objectifs !', type: AchievementType.NbrObjectifs, number: 100, priority: 4 },
+        { description: 'Vous vous êtes fixé 200 objectifs !', type: AchievementType.NbrObjectifs, number: 200, priority: 5 },
+        { description: 'Vous vous êtes fixé 500 objectifs !', type: AchievementType.NbrObjectifs, number: 500, priority: 6 },
+        { description: 'Vous avez atteint 5 objectifs !', type: AchievementType.NbrObjectifsDone, number: 5, priority: 1 },
+        { description: 'Vous avez atteint 10 objectifs !', type: AchievementType.NbrObjectifsDone, number: 10, priority: 2 },
+        { description: 'Vous avez atteint 50 objectifs !', type: AchievementType.NbrObjectifsDone, number: 50, priority: 3 },
+        { description: 'Vous avez atteint 100 objectifs !', type: AchievementType.NbrObjectifsDone, number: 100, priority: 4 },
+        { description: 'Vous avez atteint 200 objectifs !', type: AchievementType.NbrObjectifsDone, number: 200, priority: 5 },
+        { description: 'Vous avez atteint 500 objectifs !', type: AchievementType.NbrObjectifsDone, number: 500, priority: 6 }
     ];
 
     public static achivementsTitleDialog: string = 'Félicitations !'

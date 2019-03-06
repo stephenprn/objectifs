@@ -4,4 +4,4 @@ export class WeekStats {
     title: string;
     stats: Stats;
     monday: string;
-};
+}

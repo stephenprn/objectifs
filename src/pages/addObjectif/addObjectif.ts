@@ -16,6 +16,11 @@ import { AlertInputOptions } from 'ionic-angular/umd/components/alert/alert-opti
 import { Keyboard } from '@ionic-native/keyboard';
 import _ from 'lodash';
 import { NotificationsService } from '@servicesPRN/notifications.service';
+import { Importance } from '@modelsPRN/importance.model';
+import { Category } from '@modelsPRN/category.model';
+import { Periodicity } from '@modelsPRN/periodicity.model';
+import { CustomDayPeriodicity } from '@modelsPRN/customDayPeriodicity.model';
+import { CustomPeriodicity } from '@modelsPRN/customPeriodicity.model';
 
 @Component({
     selector: 'page-add-objectif',
@@ -25,17 +30,17 @@ export class AddObjectifPage {
     @ViewChild(AutoCompleteComponent) autocomplete: AutoCompleteComponent;
     @ViewChild(Select) select: Select;
 
-    categories: {id: string, title: string, icon: string, color: string }[];
+    categories: Category[];
     formGroup: FormGroup;
     errorsAfterSubmit: { title: boolean } = { title: false };
     idLater: number = null;
     isLaterEmpty: boolean = true;
-    importances: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}[];
-    periodicities: {id: string, title: string}[];
+    importances: Importance[];
+    periodicities: Periodicity[];
     bluredContent: boolean = false;
-    periodicityCustom: {number: number, type: string, text: string};
+    periodicityCustom: CustomPeriodicity;
     periodicitiesCustomJson: any = {};
-    periodicitiesCustomDays: {id: number, title: string, selected: boolean}[];
+    periodicitiesCustomDays: CustomDayPeriodicity[];
     document: Document;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
@@ -186,10 +191,10 @@ export class AddObjectifPage {
             }
         }
 
-        let selectedDays: {id: number, title: string, selected: boolean}[];
+        let selectedDays: CustomDayPeriodicity[];
         
         if (this.formGroup.get('periodicity').value === 'customDays') {
-            selectedDays = this.periodicitiesCustomDays.filter((day: {id: number, title: string, selected: boolean}) => {
+            selectedDays = this.periodicitiesCustomDays.filter((day: CustomDayPeriodicity) => {
                 return day.selected;
             });
 
@@ -223,7 +228,7 @@ export class AddObjectifPage {
         }
 
         if (objectif.periodicity === 'customDays') {
-            objectif.periodicityCustomDays = selectedDays.map((day: {id: number, title: string, selected: boolean}) => {
+            objectif.periodicityCustomDays = selectedDays.map((day: CustomDayPeriodicity) => {
                 return day.id;
             }).sort();
         }
@@ -303,16 +308,16 @@ export class AddObjectifPage {
         this.errorsAfterSubmit[field] = false;
     }
 
-    selectPeriodicityCustomDays(periodicity: {id: number, title: string, selected: boolean}): void {
+    selectPeriodicityCustomDays(periodicity: CustomDayPeriodicity): void {
         periodicity.selected = !periodicity.selected;
     }
 
-    selectImportance(importance: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}): void {
+    selectImportance(importance: Importance): void {
         if (importance.selected) {
             return;
         }
 
-        this.importances.forEach((imp: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}) => {
+        this.importances.forEach((imp: Importance) => {
             if (imp.id === importance.id) {
                 imp.selected = true;
             } else {
