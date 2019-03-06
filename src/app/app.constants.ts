@@ -6,6 +6,7 @@ import { CustomPeriodicity } from '@modelsPRN/custom-periodicity.model';
 import { Importance } from '@modelsPRN/importance.model';
 import { Periodicity } from '@modelsPRN/periodicity.model';
 import { ToastOptions } from 'ionic-angular';
+import { DatePickerOptions } from '@ionic-native/date-picker';
 
 export class AppConstants {
     public static storageNames: any = {
@@ -135,11 +136,18 @@ export class AppConstants {
 
     public static ionFormat: string = 'DD/MM/YYYY';
 
-    // Used
     public static separator: string = '*£$';
 
     public static toastDefaultConfig: ToastOptions = {
         duration: 3000
+    };
+
+    // androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+    public static datepickerDefaultConfig: DatePickerOptions = {
+        date: null,
+        mode: 'date',
+        todayText: 'Aujourd\'hui',
+        androidTheme: 2
     };
 
     public static scoresCoef: any = {

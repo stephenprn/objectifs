@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
+import { Storage } from '@ionic/storage';
 import { Filter } from '@modelsPRN/filter.model';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { DateService } from '@servicesPRN/date.service';
@@ -15,64 +16,73 @@ export class ObjectifsService {
     objectifsPeriodic: Objectif[];
 
     constructor(private suggestionsService: SuggestionsService, private dateService: DateService,
-        private uiService: UiService, private notificationsService: NotificationsService) { }
+        private uiService: UiService, private notificationsService: NotificationsService,
+        private storage: Storage) { }
 
-    private getId(periodic?: boolean): number {
-        let nameStorage: string;
-
-        if (!periodic) {
-            nameStorage = AppConstants.storageNames.id.base;
+    public getAll(periodic?: boolean): Objectif[] {
+        if (periodic) {
+            return this.objectifsPeriodic;
         } else {
-            nameStorage = AppConstants.storageNames.id.periodic;
+            return this.objectifs;
         }
+    }
 
-        if (localStorage.getItem(nameStorage) == null) {
-            localStorage.setItem(nameStorage, '1');
-            return 1;
-        }
+    private getId(periodic?: boolean): Promise<number> {
+        return new Promise((resolve, reject) => {
+            let nameStorage: string;
 
-        let nbr: number = Number(localStorage.getItem(nameStorage));
-        nbr++;
+            if (!periodic) {
+                nameStorage = AppConstants.storageNames.id.base;
+            } else {
+                nameStorage = AppConstants.storageNames.id.periodic;
+            }
 
-        localStorage.setItem(nameStorage, nbr.toString());
+            this.storage.get(nameStorage).then((id: number) => {
+                if (!id) {
+                    id = 1;
+                } else {
+                    id++;
+                }
 
-        return nbr;
+                this.storage.set(nameStorage, id);
+                resolve(id);
+            });
+        });
     }
 
     public add(objectif: Objectif): void {
         if (objectif.periodicity === 'punctual') {
-            this.getAll();
+            this.getId().then((id: number) => {
+                objectif.id = id;
 
-            objectif.id = this.getId();
-            delete objectif.periodicity;
+                delete objectif.periodicity;
 
-            this.objectifs.push(objectif);
-            this.suggestionsService.save(objectif.title);
-            this.suggestionsService.incrementeCategory(objectif.category);
+                this.objectifs.push(objectif);
+                this.suggestionsService.save(objectif.title);
+                this.suggestionsService.incrementeCategory(objectif.category);
 
-            this.notificationsService.add(objectif);
-            this.saveChanges();
+                this.notificationsService.add(objectif);
+                this.saveChanges();
+            });
         } else {
-            this.getAll(true);
+            this.getId(true).then((id: number) => {
+                objectif.id = id;
 
-            objectif.id = this.getId(true);
+                this.objectifsPeriodic.push(objectif);
+                this.suggestionsService.save(objectif.title);
+                this.suggestionsService.incrementeCategory(objectif.category);
 
-            this.objectifsPeriodic.push(objectif);
-            this.suggestionsService.save(objectif.title);
-            this.suggestionsService.incrementeCategory(objectif.category);
+                this.saveChanges(true);
 
-            this.saveChanges(true);
+                objectif.idPeriodic = objectif.id;
+                this.generateObjectifsPeriodic(objectif);
 
-            objectif.idPeriodic = objectif.id;
-            this.generateObjectifsPeriodic(objectif);
-
-            this.saveChanges();
+                this.saveChanges();
+            });
         }
     }
 
     public update(objectif: Objectif): void {
-        this.getAll();
-
         const objectifs: Objectif[] = this.filterObjectifs([{ criteria: 'id', value: objectif.id }]);
 
         if (objectifs == null || objectifs.length === 0) {
@@ -86,8 +96,6 @@ export class ObjectifsService {
     }
 
     public delete(objectif: Objectif): void {
-        this.getAll();
-
         for (let i = 0; i < this.objectifs.length; i++) {
             if (this.objectifs[i].id === objectif.id) {
                 this.objectifs.splice(i, 1);
@@ -176,49 +184,52 @@ export class ObjectifsService {
 
     public saveChanges(periodic?: boolean): void {
         if (!periodic) {
-            localStorage.setItem(AppConstants.storageNames.objectif.base, JSON.stringify(this.objectifs));
+            this.storage.set(AppConstants.storageNames.objectif.base, this.objectifs);
         } else {
-            localStorage.setItem(AppConstants.storageNames.objectif.periodic, JSON.stringify(this.objectifsPeriodic));
+            this.storage.set(AppConstants.storageNames.objectif.periodic, this.objectifsPeriodic);
         }
     }
 
-    public getAll(periodic?: boolean): Objectif[] {
-        let array: Objectif[];
-        let nameStorage: string;
+    public loadStored(periodic?: boolean): Promise<Objectif[]> {
+        return new Promise((resolve, reject) => {
+            let array: Objectif[];
+            let nameStorage: string;
 
-        if (!periodic) {
-            nameStorage = AppConstants.storageNames.objectif.base;
-            array = this.objectifs;
-        } else {
-            nameStorage = AppConstants.storageNames.objectif.periodic;
-            array = this.objectifsPeriodic;
-        }
+            if (!periodic) {
+                nameStorage = AppConstants.storageNames.objectif.base;
+                array = this.objectifs;
+            } else {
+                nameStorage = AppConstants.storageNames.objectif.periodic;
+                array = this.objectifsPeriodic;
+            }
 
-        if (array != null) {
-            return array;
-        }
+            if (array != null) {
+                resolve(array);
+                return;
+            }
 
-        let objStorage: string = localStorage.getItem(nameStorage);
+            this.storage.get(nameStorage).then((objectifs: Objectif[]) => {
+                if (!objectifs) {
+                    array = [];
+                } else {
+                    array = objectifs;
+                }
 
-        if (!objStorage) {
-            array = [];
-        } else {
-            array = JSON.parse(objStorage);
-        }
+                if (!periodic) {
+                    this.objectifs = array;
+                } else {
+                    this.objectifsPeriodic = array;
+                }
 
-        if (!periodic) {
-            this.objectifs = array;
-        } else {
-            this.objectifsPeriodic = array;
-        }
-
-        return array;
+                resolve(array);
+            });
+        });
     }
 
     // TODO : delete this function
     public getNbrObjectifs(objectifs?: Objectif[]): number {
         if (!objectifs) {
-            objectifs = this.getAll();
+            objectifs = this.objectifs;
         }
 
         return objectifs.length;
@@ -227,7 +238,7 @@ export class ObjectifsService {
     // Filter objectifs : return the list or the length of the list if filter.count
     public filterObjectifs(filters: Filter[], objectifs?: Objectif[], count?: boolean): any {
         if (!objectifs) {
-            objectifs = this.getAll();
+            objectifs = this.objectifs;
         }
 
         objectifs = _.cloneWith(objectifs);

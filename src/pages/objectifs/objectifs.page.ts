@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
-import { DatePicker } from '@ionic-native/date-picker';
+import { DatePicker, DatePickerOptions } from '@ionic-native/date-picker';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Day } from '@modelsPRN/day.model';
 import { Objectif } from '@modelsPRN/objectif.model';
@@ -57,6 +57,9 @@ export class ObjectifsPage {
         private statsService: StatsService, private alertCtrl: AlertController,
         private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService,
         private keyboard: Keyboard, private notificationsService: NotificationsService) {
+        // Useful for checkWeekStats() 
+        this.week1 = new Date(new Date().getFullYear(), 0, 4);
+
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
         this.importancesJson = this.utilsService.getObjectFromArray('id', ['icon', 'color', 'index', 'title'], AppConstants.importances);
 
@@ -65,9 +68,6 @@ export class ObjectifsPage {
 
         this.objectifs = this.objectifsService.getAll();
         this.initDays(null, null, null, true);
-        // Useful for checkWeekStats() 
-        this.week1 = new Date(new Date().getFullYear(), 0, 4);
-
         this.nbrLater = this.objectifsLaterService.getNbr();
     }
 
@@ -138,12 +138,10 @@ export class ObjectifsPage {
     }
 
     goToDay(initialDate: string): void {
-        this.datePicker.show({
-            date: this.dateService.getDateFromString(initialDate),
-            mode: 'date',
-            todayText: 'Aujourd\'hui',
-            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-        }).then(
+        let options: DatePickerOptions = AppConstants.datepickerDefaultConfig;
+        options.date = this.dateService.getDateFromString(initialDate);
+
+        this.datePicker.show(options).then(
             (date: Date) => {
                 this.initDays(null, null, date);
             },

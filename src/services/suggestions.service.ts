@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
 import { AutoCompleteService } from '@componentsPRN/ionic2-auto-complete';
+import { Storage } from '@ionic/storage';
 import _ from 'lodash';
 
 @Injectable()
@@ -8,32 +9,29 @@ export class SuggestionsService implements AutoCompleteService {
     suggestions: string[];
     categoriesUsages: any;
 
-    constructor() { }
+    constructor(private storage: Storage) { }
 
     public save(sug: string): void {
-        this.getResults(null);
-
         this.suggestions.push(sug);
+        this.storage.set(AppConstants.storageNames.suggestion.suggestion, this.suggestions);
+    }
 
-        localStorage.setItem(AppConstants.storageNames.suggestion.suggestion, JSON.stringify(this.suggestions));
+    public loadStored(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.storage.get(AppConstants.storageNames.suggestion.suggestion).then((suggestions: string[]) => {
+                if (!suggestions) {
+                    this.suggestions = [];
+                } else {
+                    this.suggestions = suggestions;
+                }
+
+                resolve();
+            });
+        });
+
     }
 
     public getResults(text: string): string[] {
-        //text: text entered by the user. If null, we return all the results
-        if (!this.suggestions) {
-            let sugStorage: string = localStorage.getItem(AppConstants.storageNames.suggestion.suggestion);
-
-            if (!sugStorage) {
-                this.suggestions = [];
-            } else {
-                this.suggestions = JSON.parse(sugStorage);
-            }
-        }
-
-        if (text === null) {
-            return;
-        }
-
         const textNormalized = text.normalize('NFD');
 
         return this.suggestions.filter((sug: string) => {
@@ -46,31 +44,35 @@ export class SuggestionsService implements AutoCompleteService {
     //Functions for the pre-selected category when the user add an objectif
 
     public incrementeCategory(id: string): void {
-        this.getCategoriesUsages();
         this.categoriesUsages[id]++;
-        localStorage.setItem(AppConstants.storageNames.suggestion.category, JSON.stringify(this.categoriesUsages));
+        this.storage.set(AppConstants.storageNames.suggestion.category, this.categoriesUsages);
     }
 
     public getCategoryMostUsed(): string {
-        this.getCategoriesUsages();
         return _.maxBy(Object.keys(this.categoriesUsages), (id: string) => this.categoriesUsages[id]);
     }
 
-    private getCategoriesUsages(): void {
-        if (!this.categoriesUsages) {
-            let catUsagesStorage: string = localStorage.getItem(AppConstants.storageNames.suggestion.category);
+    public getCategoriesUsages(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (!this.categoriesUsages) {
+                this.storage.get(AppConstants.storageNames.suggestion.category).then((categoriesUsages: any) => {
+                    if (!categoriesUsages) {
+                        this.categoriesUsages = {};
 
-            if (!catUsagesStorage) {
-                this.categoriesUsages = {};
+                        AppConstants.categories.forEach((cat: any) => {
+                            this.categoriesUsages[cat.id] = 0;
+                        });
 
-                AppConstants.categories.forEach((cat: any) => {
-                    this.categoriesUsages[cat.id] = 0;
+                        this.storage.set(AppConstants.storageNames.suggestion.category, this.categoriesUsages);
+                    } else {
+                        this.categoriesUsages = categoriesUsages;
+                    }
+
+                    resolve();
                 });
-
-                localStorage.setItem(AppConstants.storageNames.suggestion.category, JSON.stringify(this.categoriesUsages));
             } else {
-                this.categoriesUsages = JSON.parse(catUsagesStorage);
+                resolve();
             }
-        }
+        });
     }
 }

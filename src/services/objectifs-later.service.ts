@@ -1,49 +1,56 @@
 import { Injectable } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class ObjectifsLaterService {
     objectifsLater: any[];
 
-    constructor() { }
+    constructor(private storage: Storage) { }
 
-    private getId(): number {
-        if (localStorage.getItem(AppConstants.storageNames.id.later) == null) {
-            localStorage.setItem(AppConstants.storageNames.id.later, '1');
-            return 1;
-        }
+    private getId(): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.storage.get(AppConstants.storageNames.id.later).then((id: number) => {
+                if (!id) {
+                    id = 1;
+                } else {
+                    id++;
+                }
 
-        let nbr: number = Number(localStorage.getItem(AppConstants.storageNames.id.later));
-        nbr++;
-
-        localStorage.setItem(AppConstants.storageNames.id.later, nbr.toString());
-
-        return nbr;
+                this.storage.set(AppConstants.storageNames.id.later, id);
+                resolve(id);
+            });
+        });
     }
 
     public getAll(): any[] {
-        if (this.objectifsLater != null) {
-            return this.objectifsLater;
-        }
+        return this.objectifsLater;
+    }
 
-        const objStorage: string = localStorage.getItem(AppConstants.storageNames.objectif.later);
+    public loadStored(): Promise<any[]> {
+        return new Promise((resolve, reject) => {
+            if (this.objectifsLater != null) {
+                resolve(this.objectifsLater);
+                return;
+            }
 
-        if (!objStorage) {
-            this.objectifsLater = [];
-        } else {
-            this.objectifsLater = JSON.parse(objStorage);
-        }
+            this.storage.get(AppConstants.storageNames.objectif.later).then((objectifsLater: any[]) => {
+                if (!objectifsLater) {
+                    this.objectifsLater = [];
+                } else {
+                    this.objectifsLater = objectifsLater;
+                }
 
-        return this.objectifsLater;    
+                resolve(this.objectifsLater);
+            });
+        });
     }
 
     public saveChanges(): void {
-        localStorage.setItem(AppConstants.storageNames.objectif.later, JSON.stringify(this.objectifsLater));
+        this.storage.set(AppConstants.storageNames.objectif.later, this.objectifsLater);
     }
 
     public add(objLater: any): void {
-        this.getAll();
-
         objLater.id = this.getId();
 
         this.objectifsLater.push(objLater);
@@ -52,34 +59,34 @@ export class ObjectifsLaterService {
     }
 
     public isListEmpty(): boolean {
-        return this.getAll().length > 0 ? false: true;
+        if (this.objectifsLater.length > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public remove(id: number): void {
-        this.getAll();
+    const index: number = this.objectifsLater.findIndex((obj: any) => {
+        return obj.id === id;
+    });
 
-        const index: number = this.objectifsLater.findIndex((obj: any) => {
-            return obj.id === id;
-        });
+    if(index >= 0) {
+    this.objectifsLater.splice(index, 1);
+}
 
-        if (index >= 0) {
-            this.objectifsLater.splice(index, 1);
-        }
-
-        this.saveChanges();
+this.saveChanges();
     }
 
     public getNbr(): string {
-        this.getAll();
-
-        if (this.objectifsLater.length === 0) {
-            return null;
-        }
-
-        if (this.objectifsLater.length >= 100) {
-            return '99+';
-        }
-
-        return String(this.objectifsLater.length);
+    if (this.objectifsLater.length === 0) {
+        return null;
     }
+
+    if (this.objectifsLater.length >= 100) {
+        return '99+';
+    }
+
+    return String(this.objectifsLater.length);
+}
 }

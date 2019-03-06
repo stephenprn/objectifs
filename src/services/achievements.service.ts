@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppConstants } from '@appPRN/app.constants';
 import { AchievementType } from '@enumsPRN/achievement-type.enum';
+import { Storage } from '@ionic/storage';
 import { Achievement } from '@modelsPRN/achievement.model';
 import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { UiService } from '@servicesPRN/ui.service';
@@ -10,14 +11,11 @@ import _ from 'lodash';
 export class AchievementsService {
     achievements: Achievement[];
 
-    constructor(private objectifsService: ObjectifsService, private uiService: UiService) { }
+    constructor(private objectifsService: ObjectifsService, private uiService: UiService,
+        private storage: Storage) { }
 
     // TODO : Optimize this function
     checkAchievements(): void {
-        if (this.achievements == null) {
-            this.getAll();
-        }
-
         let nbrObjectifsDone: number;
         let nbrObjectifs: number;
         let achievementDone: boolean = false;
@@ -95,29 +93,32 @@ export class AchievementsService {
         this.uiService.displaySimpleAlert(AppConstants.achivementsTitleDialog, achievement.description);
     }
 
-    getAll(): Achievement[] {
-        if (this.achievements != null) {
-            return this.achievements;
-        }
-
-        let achievStorage: string = localStorage.getItem(AppConstants.storageNames.achievements);
-
-        if (!achievStorage) {
-            let achievements = _.cloneDeep(AppConstants.achievementsDefault);
-
-            achievements.map((achievement: Achievement) => {
-                achievement.done = false;
+    loadStored(): Promise<Achievement[]> {
+        return new Promise((resolve, reject) => {
+            if (this.achievements != null) {
+                resolve(this.achievements);
+                return;
+            }
+    
+            this.storage.get(AppConstants.storageNames.achievements).then((achievements: Achievement[]) => {
+                if (!achievements) {
+                    let achievementsDefault = _.cloneDeep(AppConstants.achievementsDefault);
+        
+                    achievementsDefault.map((achievement: Achievement) => {
+                        achievement.done = false;
+                    });
+        
+                    this.achievements = achievementsDefault;
+                } else {
+                    this.achievements = achievements;
+                }
+    
+                resolve(this.achievements);
             });
-
-            this.achievements = achievements;
-        } else {
-            this.achievements = JSON.parse(achievStorage);
-        }
-
-        return this.achievements;
+        });
     }
 
     saveChanges(): void {
-        localStorage.setItem(AppConstants.storageNames.achievements, JSON.stringify(this.achievements));
+        this.storage.set(AppConstants.storageNames.achievements, this.achievements);
     }
 }
