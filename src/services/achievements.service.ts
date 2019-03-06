@@ -65,15 +65,30 @@ export class AchievementsService {
     }
 
     private displayTheHighestPriority(achievementsJson: any) {
+        let achievements: Achievement[] = [];
+
         Object.keys(achievementsJson).forEach((key: string) => {
             if (achievementsJson[key].length > 0) {
                 const achievement: Achievement = achievementsJson[key].reduce((prev, current) => {
                     return (prev.priority > current.priority) ? prev : current;
                 });
-    
-                this.displayAlertDone(achievement);
+
+                achievements.push(achievement);
             }
         });
+
+        if (!achievements || achievements.length === 0) {
+            return;
+        }
+
+        const achievement: Achievement = achievements.reduce((prev, current) => {
+            return (prev.priority > current.priority) ? prev : current;
+        });
+
+        console.log('Achievement reached');
+        console.log(achievement);
+
+        this.displayAlertDone(achievement);
     }
 
     private displayAlertDone(achievement: Achievement): void {

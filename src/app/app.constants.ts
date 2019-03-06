@@ -38,13 +38,11 @@ export class AppConstants {
         { id: 'other', title: 'autre', icon: 'bulb', color: AppConstants.colors.yellow }
     ];
 
-    public static importances: {id: string, title: string, icon: string, color: string, index: number}[] = [
+    public static importances: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}[] = [
         { id: 'low', title: 'minime', icon: 'arrow-down', color: AppConstants.colors.green, index: 0 },
-        { id: 'medium', title: 'moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1 },
+        { id: 'medium', title: 'moyenne', icon: 'arrow-forward', color: AppConstants.colors.orange, index: 1, selected: true },
         { id: 'high', title: 'haute', icon: 'arrow-up', color: AppConstants.colors.red, index: 2 }
     ];
-
-    public static initialImportance: string = 'medium';
 
     public static periodicities: {id: string, title: string}[] = [
         { id: 'punctual', title: 'jamais' },

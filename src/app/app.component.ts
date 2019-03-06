@@ -3,6 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { ObjectifsPage } from '@pagesPRN/objectifs/objectifs';
 import { Platform } from 'ionic-angular';
+import { ObjectifsService } from '@servicesPRN/objectifs.service';
 
 @Component({
     templateUrl: 'app.html'
@@ -10,10 +11,11 @@ import { Platform } from 'ionic-angular';
 export class MyApp {
     rootPage: any = ObjectifsPage;
 
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, objectifsService: ObjectifsService) {
         platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
+            // Load objectives before enter in app
+            objectifsService.getAll(false);
+            objectifsService.getAll(true);
             statusBar.styleBlackTranslucent();
             splashScreen.hide();
         });

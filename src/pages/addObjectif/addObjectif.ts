@@ -30,7 +30,7 @@ export class AddObjectifPage {
     errorsAfterSubmit: { title: boolean } = { title: false };
     idLater: number = null;
     isLaterEmpty: boolean = true;
-    importances: {id: string, title: string, icon: string, color: string, index: number}[];
+    importances: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}[];
     periodicities: {id: string, title: string}[];
     bluredContent: boolean = false;
     periodicityCustom: {number: number, type: string, text: string};
@@ -55,7 +55,6 @@ export class AddObjectifPage {
             customCategory: ['', []],
             description: ['', []],
             reportable: [true, [Validators.required]],
-            importance: [AppConstants.initialImportance, [Validators.required]],
             periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
             dateEndPeriodicity: [this.dateService.initDatePeriodic(date), [Validators.required]]
         });
@@ -206,6 +205,12 @@ export class AddObjectifPage {
         objectif.done = false;
         objectif.reportCount = 0;
 
+        for (let i = 0; i < this.importances.length; i++) {
+            if (this.importances[i].selected) {
+                objectif.importance = this.importances[i].id;
+            }
+        }
+
         if (objectif.periodicity !== 'punctual') {
             objectif.dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity);
         } else {
@@ -300,5 +305,19 @@ export class AddObjectifPage {
 
     selectPeriodicityCustomDays(periodicity: {id: number, title: string, selected: boolean}): void {
         periodicity.selected = !periodicity.selected;
+    }
+
+    selectImportance(importance: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}): void {
+        if (importance.selected) {
+            return;
+        }
+
+        this.importances.forEach((imp: {id: string, title: string, icon: string, color: string, index: number, selected?: boolean}) => {
+            if (imp.id === importance.id) {
+                imp.selected = true;
+            } else {
+                imp.selected = false;
+            }
+        });
     }
 }

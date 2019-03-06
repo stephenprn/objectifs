@@ -23,13 +23,15 @@
                 ion-button icon-only clear>
                 <ion-icon name="time"></ion-icon>
             </button>
-
-            <ion-segment formControlName="importance">
-                <ion-segment-button text-capitalize *ngFor="let imp of importances" value="{{imp.id}}" [ngStyle]="{ color: imp.color }">
-                    <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
-                    {{imp.title}}
-                </ion-segment-button>
-            </ion-segment>
+            
+            <ion-item>
+                <button text-capitalize class="importanceButton" *ngFor="let imp of importances" 
+                [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : '') }" [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" 
+                (click)="selectImportance(imp)" type="button" color="dark" ion-button round>
+                <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
+                {{imp.title}}
+            </button>
+            </ion-item>
 
             <ion-item>
                 <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
