@@ -57,7 +57,7 @@ export class ObjectifsPage {
         private statsService: StatsService, private alertCtrl: AlertController,
         private objectifsLaterService: ObjectifsLaterService, private utilsService: UtilsService,
         private keyboard: Keyboard, private notificationsService: NotificationsService) {
-        // Useful for checkWeekStats() 
+        // Useful for checkWeekStats()
         this.week1 = new Date(new Date().getFullYear(), 0, 4);
 
         this.categoriesJson = this.utilsService.getObjectFromArray('id', ['title', 'icon', 'color'], AppConstants.categories);
@@ -227,8 +227,7 @@ export class ObjectifsPage {
 
         const actionSheet: ActionSheet = this.actionSheetCtrl.create({
             title: obj.title,
-            buttons: buttons,
-            enableBackdropDismiss: false
+            buttons: buttons
         });
 
         actionSheet.onWillDismiss(() => {
