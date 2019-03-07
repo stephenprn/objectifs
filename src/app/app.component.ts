@@ -15,7 +15,7 @@ import { UiService } from '@servicesPRN/ui.service';
 export class MyApp {
     rootPage: any;
 
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, 
+    constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, 
         objectifsService: ObjectifsService, achievementsService: AchievementsService,
         objectifsLaterService: ObjectifsLaterService, suggestionsService: SuggestionsService,
         uiService: UiService) {
@@ -29,7 +29,9 @@ export class MyApp {
             promises.push(achievementsService.loadStored());
             promises.push(objectifsLaterService.loadStored());
             promises.push(suggestionsService.getCategoriesUsages());
-            promises.push(suggestionsService.loadStored())
+            promises.push(suggestionsService.loadStored());
+            promises.push(objectifsService.loadStoredId(false));
+            promises.push(objectifsService.loadStoredId(true));
 
             Promise.all(promises).then(() => {
                 if (isDevMode()) {
@@ -41,13 +43,17 @@ export class MyApp {
                 splashScreen.hide();
                 this.rootPage = ObjectifsPage;
             });
-        });
 
+            this.logInfos();
+        });
+    }
+
+    private logInfos() {
         if (isDevMode()) {
             console.log('%cThis app run in dev mode', 'color: red; font-size: 20px;');
         }
 
-        if (platform.is('cordova')) {
+        if (this.platform.is('cordova')) {
             console.log('%cThis app run on a real device, log in alert activated', 'color: red; font-size: 20px;');            
         }
     }

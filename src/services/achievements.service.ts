@@ -33,11 +33,12 @@ export class AchievementsService {
                             nbrObjectifsDone = this.objectifsService.filterObjectifs([{ criteria: 'done', value: true }], null, true);
                         }
 
-                        if (achievement.number >= nbrObjectifsDone) {
+                        if (nbrObjectifsDone >= achievement.number) {
                             achievement.done = true;
                             achievementDone = true;
                             achievementsJson[AchievementType.NbrObjectifsDone.toString().toString()].push(achievement);
                         }
+                        break;
                     }
 
                     case AchievementType.NbrObjectifs.toString(): {
@@ -45,11 +46,12 @@ export class AchievementsService {
                             nbrObjectifs = this.objectifsService.filterObjectifs([], null, true);
                         }
 
-                        if (achievement.number >= nbrObjectifs) {
+                        if (nbrObjectifs >= achievement.number) {
                             achievement.done = true;
                             achievementDone = true;
                             achievementsJson[AchievementType.NbrObjectifs.toString()].push(achievement);
                         }
+                        break;
                     }
                 }
             }

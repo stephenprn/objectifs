@@ -32,13 +32,16 @@ export class SuggestionsService implements AutoCompleteService {
     }
 
     public getResults(text: string): string[] {
+        console.log('getr');
         const textNormalized = text.normalize('NFD');
 
-        return this.suggestions.filter((sug: string) => {
+        let test = this.suggestions.filter((sug: string) => {
             if (sug.normalize('NFD').includes(textNormalized)) {
                 return sug;
             }
         });
+        console.log(test);
+        return test;
     }
 
     //Functions for the pre-selected category when the user add an objectif

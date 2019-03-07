@@ -14,6 +14,8 @@ export class ObjectifsService {
     objectifs: Objectif[];
     objectifsLater: any[];
     objectifsPeriodic: Objectif[];
+    id: number;
+    idPeriodic: number;
 
     constructor(private suggestionsService: SuggestionsService, private dateService: DateService,
         private uiService: UiService, private notificationsService: NotificationsService,
@@ -27,7 +29,7 @@ export class ObjectifsService {
         }
     }
 
-    private getId(periodic?: boolean): Promise<number> {
+    public loadStoredId(periodic?: boolean): Promise<void> {
         return new Promise((resolve, reject) => {
             let nameStorage: string;
 
@@ -40,45 +42,57 @@ export class ObjectifsService {
             this.storage.get(nameStorage).then((id: number) => {
                 if (!id) {
                     id = 1;
-                } else {
-                    id++;
+                    this.storage.set(nameStorage, id);
                 }
 
-                this.storage.set(nameStorage, id);
-                resolve(id);
+                if (periodic) {
+                    this.idPeriodic = id;
+                } else {
+                    this.id = id;
+                }
+
+                resolve();
             });
         });
     }
 
+    private getId(periodic?: boolean): number {
+        if (periodic) {
+            this.idPeriodic++;
+            this.storage.set(AppConstants.storageNames.id.periodic, this.idPeriodic);
+            return this.idPeriodic;
+        } else {
+            this.id++;
+            this.storage.set(AppConstants.storageNames.id.base, this.id);
+            return this.id;
+        }
+    }
+
     public add(objectif: Objectif): void {
         if (objectif.periodicity === 'punctual') {
-            this.getId().then((id: number) => {
-                objectif.id = id;
+            objectif.id = this.getId();
 
-                delete objectif.periodicity;
+            delete objectif.periodicity;
 
-                this.objectifs.push(objectif);
-                this.suggestionsService.save(objectif.title);
-                this.suggestionsService.incrementeCategory(objectif.category);
+            this.objectifs.push(objectif);
+            this.suggestionsService.save(objectif.title);
+            this.suggestionsService.incrementeCategory(objectif.category);
 
-                this.notificationsService.add(objectif);
-                this.saveChanges();
-            });
+            this.notificationsService.add(objectif);
+            this.saveChanges();
         } else {
-            this.getId(true).then((id: number) => {
-                objectif.id = id;
+            objectif.id = this.getId(true);
 
-                this.objectifsPeriodic.push(objectif);
-                this.suggestionsService.save(objectif.title);
-                this.suggestionsService.incrementeCategory(objectif.category);
+            this.objectifsPeriodic.push(objectif);
+            this.suggestionsService.save(objectif.title);
+            this.suggestionsService.incrementeCategory(objectif.category);
 
-                this.saveChanges(true);
+            this.saveChanges(true);
 
-                objectif.idPeriodic = objectif.id;
-                this.generateObjectifsPeriodic(objectif);
+            objectif.idPeriodic = objectif.id;
+            this.generateObjectifsPeriodic(objectif);
 
-                this.saveChanges();
-            });
+            this.saveChanges();
         }
     }
 
@@ -281,7 +295,7 @@ export class ObjectifsService {
         return count ? objectifs.length : objectifs;
     }
 
-    private getDateFilter(filter: Filter) {
+    private getDateFilter(filter: Filter): Date {
         return this.dateService.getDateFromString(
             filter.value.substr(
                 filter.value.indexOf(AppConstants.separator) + AppConstants.separator.length,
