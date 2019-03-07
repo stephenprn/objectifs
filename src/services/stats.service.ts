@@ -21,12 +21,16 @@ export class StatsService {
         return countDone;
     }
 
-    public getStats(objectifs?: Objectif[]): Stats {
+    public getStats(objectifs?: Objectif[], categoriesUsage?: boolean): Stats {
         if (objectifs == null) {
             objectifs = this.objectifsService.getAll();
         }
 
         let stats: Stats = new Stats();
+
+        if (categoriesUsage) {
+            stats.categoriesUsage = {};
+        }
 
         stats.total = objectifs.length;
 
@@ -38,6 +42,22 @@ export class StatsService {
             if (obj.reportCount > 0) {
                 stats.reports += obj.reportCount;
                 stats.reported++;
+            }
+
+            if (categoriesUsage) {
+                if (stats.categoriesUsage.hasOwnProperty(obj.category)) {
+                    stats.categoriesUsage[obj.category].total++;
+                    
+                    if (obj.done) {
+                        stats.categoriesUsage[obj.category].done++;
+                    }
+                } else {
+                    stats.categoriesUsage[obj.category] = { done: 0, total: 1 };
+
+                    if (obj.done) {
+                        stats.categoriesUsage[obj.category].done = 1;
+                    }
+                }
             }
         });
 

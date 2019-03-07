@@ -25,6 +25,7 @@ import { SuggestionsService } from '@servicesPRN/suggestions.service';
 import { UiService } from '@servicesPRN/ui.service';
 import { UtilsService } from '@servicesPRN/utils.service';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { ChartsModule } from 'ng2-charts';
 
 import { MyApp } from './app.component';
 
@@ -44,7 +45,8 @@ registerLocaleData(localeFr, 'fr');
         BrowserModule,
         AutoCompleteModule,
         IonicModule.forRoot(MyApp),
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        ChartsModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

@@ -184,5 +184,5 @@ export class AppConstants {
         { description: 'Vous avez atteint 500 objectifs !', type: AchievementType.NbrObjectifsDone, number: 500, priority: 6 }
     ];
 
-    public static achivementsTitleDialog: string = 'Félicitations !'
+    public static achivementsTitleDialog: string = 'Félicitations !';
 }

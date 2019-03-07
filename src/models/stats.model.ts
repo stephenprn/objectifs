@@ -4,6 +4,7 @@ export class Stats {
     reports: number = 0; //Number of reports made
     reported: number = 0; //Number of objectifs reported at least one time
     weekNbr?: number;
+    categoriesUsage?: any;
 
     getPropDone(): number {
         return Math.round(this.done*100/this.total);

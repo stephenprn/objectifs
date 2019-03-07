@@ -1,5 +1,5 @@
-<ion-card [ngClass]="{ 'cardEmpty': stats.isEmpty(), 'cardFull': !stats.isEmpty() }" *ngIf="stats">
-  <ion-card-header text-center>
+<ion-card [ngClass]="{ 'cardEmpty': (!weekStatsPage && stats.isEmpty()), 'cardFull': (!weekStatsPage && !stats.isEmpty()) }" *ngIf="stats">
+  <ion-card-header text-center *ngIf="!weekStatsPage">
     Stats de la semaine
   </ion-card-header>
   <ion-card-content *ngIf="!stats.isEmpty()">
@@ -30,6 +30,18 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-list *ngIf="categories.length > 0">
+      <ion-item *ngFor="let category of categories">
+          <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }"
+            item-start></ion-icon>
+          <span item-start>
+            {{category.title}}
+          </span>
+          <span item-end>
+            {{category.number.done + '/' + category.number.total}}
+          </span>
+      </ion-item>
+    </ion-list>
   </ion-card-content>
   <ion-card-content *ngIf="stats.isEmpty()">
     Pas de statistiques pour cette semaine.
