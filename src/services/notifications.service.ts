@@ -46,7 +46,7 @@ export class NotificationsService {
                     trigger: { at: date }
                 };
 
-                this.localNotifications.update(notification);
+                this.localNotifications.schedule(notification);
             }
         });
         
