@@ -26,7 +26,7 @@
             
             <ion-item>
                 <button text-capitalize class="importanceButton" *ngFor="let imp of importances" 
-                [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : '') }" [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" 
+                [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : ''), 'border-color': imp.color }" [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" 
                 (click)="selectImportance(imp)" type="button" color="dark" ion-button round>
                 <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
                 {{imp.title}}

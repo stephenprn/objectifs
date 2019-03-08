@@ -37,6 +37,10 @@ export class weekStatsHomeComponent implements OnInit {
             }
         });
 
+        this.sortCategories();
+    }
+
+    private sortCategories() {
         this.categories.sort((a: Category, b: Category) => {
             if (a.number.total > b.number.total) {
                 return -1;

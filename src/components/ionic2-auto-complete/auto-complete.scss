@@ -25,6 +25,7 @@ ion-auto-complete {
   right: 0;
   display: inline-block;
   position: absolute;
+  height: -webkit-fill-available;
 
   ion-searchbar {
     padding: 1px !important;
@@ -36,7 +37,7 @@ ion-auto-complete {
 
   ul {
     position: absolute;
-    margin: 0px 10px 0px 10px;
+    margin: 0px;
     background: color($colors, material-dark, contrast);
     list-style-type: none;
     padding: 0px;

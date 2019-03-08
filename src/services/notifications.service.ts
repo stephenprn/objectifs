@@ -49,6 +49,11 @@ export class NotificationsService {
                 this.localNotifications.update(notification);
             }
         });
+        
+        this.localNotifications.getAll().then((notifs: ILocalNotification[]) => {
+            console.log('Local notifications :');
+            console.log(notifs);
+        });
     }
 
     public delete(objectif: Objectif): void {

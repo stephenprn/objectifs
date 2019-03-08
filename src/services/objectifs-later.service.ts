@@ -67,26 +67,26 @@ export class ObjectifsLaterService {
     }
 
     public remove(id: number): void {
-    const index: number = this.objectifsLater.findIndex((obj: any) => {
-        return obj.id === id;
-    });
+        const index: number = this.objectifsLater.findIndex((obj: any) => {
+            return obj.id === id;
+        });
 
-    if(index >= 0) {
-    this.objectifsLater.splice(index, 1);
-}
+        if (index >= 0) {
+            this.objectifsLater.splice(index, 1);
+        }
 
-this.saveChanges();
+        this.saveChanges();
     }
 
     public getNbr(): string {
-    if (this.objectifsLater.length === 0) {
-        return null;
-    }
+        if (this.objectifsLater.length === 0) {
+            return null;
+        }
 
-    if (this.objectifsLater.length >= 100) {
-        return '99+';
-    }
+        if (this.objectifsLater.length >= 100) {
+            return '99+';
+        }
 
-    return String(this.objectifsLater.length);
-}
+        return String(this.objectifsLater.length);
+    }
 }

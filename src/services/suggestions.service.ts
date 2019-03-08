@@ -12,6 +12,10 @@ export class SuggestionsService implements AutoCompleteService {
     constructor(private storage: Storage) { }
 
     public save(sug: string): void {
+        if (this.suggestions.indexOf(sug) > -1) {
+            return;
+        }
+        
         this.suggestions.push(sug);
         this.storage.set(AppConstants.storageNames.suggestion.suggestion, this.suggestions);
     }
@@ -32,16 +36,13 @@ export class SuggestionsService implements AutoCompleteService {
     }
 
     public getResults(text: string): string[] {
-        console.log('getr');
         const textNormalized = text.normalize('NFD');
 
-        let test = this.suggestions.filter((sug: string) => {
+        return this.suggestions.filter((sug: string) => {
             if (sug.normalize('NFD').includes(textNormalized)) {
                 return sug;
             }
         });
-        console.log(test);
-        return test;
     }
 
     //Functions for the pre-selected category when the user add an objectif

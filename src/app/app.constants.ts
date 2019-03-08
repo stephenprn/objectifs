@@ -150,15 +150,6 @@ export class AppConstants {
         androidTheme: 2
     };
 
-    public static scoresCoef: any = {
-        done: {
-            important: 10,
-            medium: 6,
-            trivial: 3
-        },
-        reported: -1
-    };
-
     public static notificationsDefaultParameters: any = {
         hourOfDay: {
             hours: 18,

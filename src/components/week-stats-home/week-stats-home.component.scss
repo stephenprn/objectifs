@@ -12,15 +12,15 @@ stats-card {
         transition: height 0.8s ease;
     }
     .cardEmpty {
-        height: 10rem;
+        height: 15vh;
     }
 
     .cardFull {
-        height: 20rem;
+        height: 30vh;
     }
 
     ion-icon {
-        margin-left: 0.4rem;
+        margin-left: 0.4vh;
     }
 
     .notCentered {

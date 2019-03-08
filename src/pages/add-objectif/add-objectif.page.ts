@@ -210,11 +210,9 @@ export class AddObjectifPage {
         objectif.done = false;
         objectif.reportCount = 0;
 
-        for (let i = 0; i < this.importances.length; i++) {
-            if (this.importances[i].selected) {
-                objectif.importance = this.importances[i].id;
-            }
-        }
+        objectif.importance = this.importances.find((importance: Importance) => {
+            return importance.selected;
+        }).id;
 
         if (objectif.periodicity !== 'punctual') {
             objectif.dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity);

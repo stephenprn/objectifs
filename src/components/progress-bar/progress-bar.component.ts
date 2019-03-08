@@ -26,7 +26,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
     }
 
     ngOnInit(): void {
-        //To animate when the component is initialiuzed for the first time
+        // To animate when the component is initialized for the first time
         this.width = 0;
         setTimeout(() => {
             this.width = this.progress;
