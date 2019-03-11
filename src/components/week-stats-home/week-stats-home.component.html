@@ -4,7 +4,7 @@
   </ion-card-header>
   <ion-card-content *ngIf="!stats.isEmpty()">
     <ion-grid text-center>
-      <ion-row>
+      <ion-row justify-content-center>
         <ion-col>
           <div class="numberStat">
             {{stats.total}}
@@ -20,7 +20,7 @@
           <div class="labelStat">objectifs atteints</div>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row justify-content-center>
         <ion-col>
           <div class="numberStat">
             {{stats.reports}}

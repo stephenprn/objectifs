@@ -12,7 +12,7 @@ stats-card {
         transition: height 0.8s ease;
     }
     .cardEmpty {
-        height: 15vh;
+        height: 14vh;
     }
 
     .cardFull {
@@ -25,5 +25,17 @@ stats-card {
 
     .notCentered {
         height: auto;
+    }
+
+    ion-grid {
+        height: 100%;
+    }
+
+    ion-row {
+        height: 50%;
+    }
+
+    ion-card-content {
+        height: 80%;
     }
 }

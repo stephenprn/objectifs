@@ -26,17 +26,6 @@ page-add-objectif {
         bottom: 0;
     }
 
-    .bluredHeader {
-        filter: blur(2px);
-        transition: -webkit-filter 200ms linear;
-        overflow: hidden;
-    }
-
-    .unbluredHeader {
-        filter: blur(0px);
-        transition: -webkit-filter 200ms linear;
-    }
-
     .timeButton {
         left:85%; 
         color: color($colors, light);

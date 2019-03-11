@@ -1,4 +1,4 @@
-<ion-content class="noScroll" [ngClass]="{ 'bluredContent': bluredContent, 'unbluredContent': !bluredContent }">
+<ion-content class="noScroll">
   <stats-card [stats]="weekStats" (click)="openWeekStats()"></stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">
@@ -51,9 +51,9 @@
     </ion-slide>
   </ion-slides>
 
-  <ion-fab right bottom #fab class="notBlured">
+  <ion-fab right bottom #fab>
     <ion-badge color="danger">{{nbrLater}}</ion-badge>
-    <button ion-fab (click)="setBluredContent()">
+    <button ion-fab>
       <ion-icon name="flag"></ion-icon>
     </button>
     <ion-fab-list side="top">

@@ -3,7 +3,6 @@ import { Component, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppConstants } from '@appPRN/app.constants';
 import { AutoCompleteComponent } from '@componentsPRN/ionic2-auto-complete';
-import { Keyboard } from '@ionic-native/keyboard';
 import { Category } from '@modelsPRN/category.model';
 import { CustomDayPeriodicity } from '@modelsPRN/custom-day-periodicity.model';
 import { CustomPeriodicity } from '@modelsPRN/custom-periodicity.model';
@@ -27,7 +26,7 @@ import _ from 'lodash';
     templateUrl: 'add-objectif.page.html'
 })
 export class AddObjectifPage {
-    @ViewChild(AutoCompleteComponent) autocomplete: AutoCompleteComponent;
+    @ViewChild('autocomplete') autocomplete: AutoCompleteComponent;
     @ViewChild(Select) select: Select;
 
     categories: Category[];
@@ -37,7 +36,6 @@ export class AddObjectifPage {
     isLaterEmpty: boolean = true;
     importances: Importance[];
     periodicities: Periodicity[];
-    bluredContent: boolean = false;
     periodicityCustom: CustomPeriodicity;
     periodicitiesCustomJson: any = {};
     periodicitiesCustomDays: CustomDayPeriodicity[];
@@ -48,8 +46,8 @@ export class AddObjectifPage {
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
-        private utilsService: UtilsService, private keyboard: Keyboard,
-        private notificationsService: NotificationsService, private achievementsService: AchievementsService) {
+        private utilsService: UtilsService, private notificationsService: NotificationsService, 
+        private achievementsService: AchievementsService) {
         const date: string = this.navParams.get('date');
 
         // Initial category value: relational
@@ -75,10 +73,10 @@ export class AddObjectifPage {
         this.getTitlePeriodicityCustom();
     }
 
-    ionViewDidEnter(): void {
-        // Set focus on the auto-focus at the init of the page
-        this.autocomplete.setFocus();
-        this.keyboard.show();
+    ionViewDidLoad(): void {
+        setTimeout(() => {
+            this.autocomplete.setFocus();
+        }, 100);
     }
 
     dismissModal(): void {
@@ -247,8 +245,6 @@ export class AddObjectifPage {
     }
 
     showAddedForLater(): void {
-        this.bluredContent = true;
-
         const alert = this.alertCtrl.create({
             title: 'Choisissez un objectif',
             enableBackdropDismiss: false,
@@ -291,15 +287,7 @@ export class AddObjectifPage {
             });
         });
 
-        alert.onWillDismiss(() => {
-            this.bluredContent = false;
-        });
-
         alert.present();
-    }
-
-    setBluredContent(status: boolean): void {
-        this.bluredContent = status;
     }
 
     checkWarning(field: string): void {

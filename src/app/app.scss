@@ -16,18 +16,6 @@
 // automatically applied to the <body> element in the app.
 @import "../components/ionic2-auto-complete/auto-complete.scss";
 
-.bluredContent .scroll-content {
-  filter: blur(2px);
-  transition: -webkit-filter 200ms linear;
-  overflow: hidden;
-  pointer-events: none
-}
-
-.unbluredContent .scroll-content {
-  filter: blur(0px);
-  transition: -webkit-filter 200ms linear;
-}
-
 .alert-title {
   color: color($colors, light);
 }

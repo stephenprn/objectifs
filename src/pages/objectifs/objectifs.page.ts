@@ -44,7 +44,6 @@ export class ObjectifsPage {
     importancesJson: any;
     private week1: Date;
     limitDescription: number;
-    bluredContent: boolean = false;
     bigSlides: boolean = true;
     dateFormat: string = AppConstants.dateFormat;
     // It's a string because it can be equal to '99+'
@@ -230,14 +229,6 @@ export class ObjectifsPage {
             buttons: buttons
         });
 
-        actionSheet.onWillDismiss(() => {
-            if (!this.updatingObj) {
-                this.bluredContent = false;
-            }
-        });
-
-        this.bluredContent = true;
-
         actionSheet.present();
     }
 
@@ -253,8 +244,6 @@ export class ObjectifsPage {
         }
 
         modal.onDidDismiss((obj: Objectif) => {
-            this.bluredContent = false;
-
             if (obj != null) {
                 const date: Date = this.dateService.getDateFromString(obj.date);
                 this.initDays(null, null, date);
@@ -303,10 +292,6 @@ export class ObjectifsPage {
             ]
         });
 
-        alert.onWillDismiss(() => {
-            this.bluredContent = false;
-        });
-
         alert.present();
 
         this.keyboard.show();
@@ -321,7 +306,6 @@ export class ObjectifsPage {
                     this.notificationsService.delete(objectif);
                     this.deleteObjectifFromDay(objectif);
                     this.updatingObj = false;
-                    this.bluredContent = false;
                     this.checkWeekStats(true);
                 }
             },
@@ -349,7 +333,6 @@ export class ObjectifsPage {
                     });
 
                     this.updatingObj = false;
-                    this.bluredContent = false;
                     this.checkWeekStats(true);
                 }
             });
@@ -369,7 +352,6 @@ export class ObjectifsPage {
                     });
 
                     this.updatingObj = false;
-                    this.bluredContent = false;
                     this.checkWeekStats(true);
                 }
             });
@@ -389,7 +371,6 @@ export class ObjectifsPage {
                     });
 
                     this.updatingObj = false;
-                    this.bluredContent = false;
                     this.checkWeekStats(true);
                 }
             });
@@ -402,10 +383,6 @@ export class ObjectifsPage {
             subTitle: subTitle,
             enableBackdropDismiss: false,
             buttons: buttons
-        });
-
-        alert.onWillDismiss(() => {
-            this.bluredContent = false;
         });
 
         alert.present();
@@ -438,10 +415,6 @@ export class ObjectifsPage {
                     }
                 }
             ]
-        });
-
-        alert.onWillDismiss(() => {
-            this.bluredContent = false;
         });
 
         alert.present();
@@ -579,10 +552,6 @@ export class ObjectifsPage {
 
     private getCurrentDay(): Day {
         return this.days[this.slides.getActiveIndex()];
-    }
-
-    setBluredContent(): void {
-        this.bluredContent = !this.bluredContent;
     }
 
     trackObjectifsFunction(index: number, objectif: Objectif) {
