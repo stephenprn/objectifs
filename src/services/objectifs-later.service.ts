@@ -59,11 +59,7 @@ export class ObjectifsLaterService {
     }
 
     public isListEmpty(): boolean {
-        if (this.objectifsLater.length > 0) {
-            return true;
-        }
-
-        return false;
+        return !(this.objectifsLater.length > 0);
     }
 
     public remove(id: number): void {
