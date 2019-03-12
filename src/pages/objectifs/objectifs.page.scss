@@ -16,7 +16,8 @@ page-objectifs {
   }
 
   ion-scroll {
-    max-height: 45vh;
+    // 100vh - (card height) - (slide_title height) - (slide_progress_bar height) - margin
+    max-height: calc(100vh - (30vh + 2 * 10px) - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px);
   }
 
   ion-scroll .scroll-content {
