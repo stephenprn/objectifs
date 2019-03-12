@@ -11,6 +11,7 @@ stats-card {
         /* Set our transitions up. */
         transition: height 0.8s ease;
     }
+
     .cardEmpty {
         height: 14vh;
     }
@@ -37,5 +38,9 @@ stats-card {
 
     ion-card-content {
         height: 80%;
+    }
+
+    h1 {
+        margin-bottom: 2rem !important;
     }
 }

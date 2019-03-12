@@ -7,6 +7,15 @@ page-add-objectif {
     margin-left: 0px !important;
   }
 
+  .descriptionField {
+    border-bottom: 1px solid color($colors, darker);
+  }
+
+  .descriptionField > .item-inner {
+    border-bottom-color: unset !important;
+    box-shadow: unset !important;
+  }
+
   ion-card {
     position: relative;
   }
@@ -57,6 +66,7 @@ page-add-objectif {
   }
 
   .importanceIcon {
+    margin-right: 1vw;
     font-size: 1.3rem !important;
   }
 

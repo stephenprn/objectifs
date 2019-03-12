@@ -129,6 +129,7 @@ export class ObjectifsPage {
 
                 this.objectifsService.saveChanges();
                 this.initDays(null, null, date);
+                this.checkWeekStats(true, date);
             },
             (err: any) => {
                 console.error(err);

@@ -23,6 +23,10 @@
         <ion-icon name="time"></ion-icon>
       </button>
 
+      <ion-item class="descriptionField">
+        <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
+      </ion-item>
+
       <ion-item>
         <button text-capitalize class="importanceButton" *ngFor="let imp of importances" [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : ''), 'border-color': imp.color }"
           [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" (click)="selectImportance(imp)" type="button"
@@ -30,10 +34,6 @@
           <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
           {{imp.title}}
         </button>
-      </ion-item>
-
-      <ion-item>
-        <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
       </ion-item>
 
       <ion-item>
