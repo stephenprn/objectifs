@@ -39,7 +39,7 @@ export class MyApp {
                     console.log(`Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
                 }
                 
-                statusBar.styleBlackTranslucent();
+                statusBar.backgroundColorByHexString('#424250');
                 splashScreen.hide();
                 this.rootPage = ObjectifsPage;
             });
