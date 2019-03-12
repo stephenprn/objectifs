@@ -37,7 +37,10 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Date {{formGroup.get('periodicity').value !== 'punctual' ? 'de début': ''}}</ion-label>
+        <ion-label>
+          <ion-icon name="calendar" class="iconField"></ion-icon>
+          <span class="nameField">Date {{formGroup.get('periodicity').value !== 'punctual' ? 'de début': ''}}</span>
+        </ion-label>
         <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
       </ion-item>
       <!-- <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
@@ -45,7 +48,10 @@
             </div> -->
 
       <ion-item>
-        <ion-label>Categorie</ion-label>
+        <ion-label>
+          <ion-icon name="trophy" class="iconField"></ion-icon>
+          <span class="nameField">Categorie</span>
+        </ion-label>
         <ion-select formControlName="category">
           <ion-option [value]="category.id" *ngFor="let category of categories">
             {{category.title}}
@@ -58,12 +64,23 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Répéter</ion-label>
+        <ion-label>
+          <ion-icon name="sync" class="iconField"></ion-icon>
+          <span class="nameField">Répéter</span>
+        </ion-label>
         <ion-select formControlName="periodicity">
           <ion-option [value]="periodicity.id" *ngFor="let periodicity of periodicities">
             {{periodicity.title}}
           </ion-option>
         </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="formGroup.get('periodicity').value !== 'punctual'">
+        <ion-label>
+          <ion-icon name="sync" class="iconField inivisible"></ion-icon>
+          Jusqu'à
+        </ion-label>
+        <ion-datetime formControlName="dateEndPeriodicity" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
       </ion-item>
 
       <button type="button" class="periodicityCustomButton" *ngIf="formGroup.get('periodicity').value === 'custom'"
@@ -74,14 +91,12 @@
           (click)="selectPeriodicityCustomDays(periodicity)" type="button" ion-button round>{{periodicity.title}}</button>
       </ion-item>
 
-      <ion-item *ngIf="formGroup.get('periodicity').value !== 'punctual'">
-        <ion-label>Jusqu'à</ion-label>
-        <ion-datetime formControlName="dateEndPeriodicity" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
-      </ion-item>
-
       <ion-item>
-        <ion-label>Peut être reporté</ion-label>
-        <ion-checkbox checked="true" formControlName="reportable"></ion-checkbox>
+        <ion-label>
+          <ion-icon name="stopwatch" class="iconField"></ion-icon>
+          <span class="nameField">Peut être reporté</span>
+        </ion-label>
+        <ion-toggle checked="true" formControlName="reportable"></ion-toggle>
       </ion-item>
 
       <ion-item>

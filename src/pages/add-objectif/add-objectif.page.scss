@@ -1,73 +1,98 @@
 page-add-objectif {
-    textarea {
-        margin-left: 0px !important;
+  textarea {
+    margin-left: 0px !important;
+  }
+
+  .text-input {
+    margin-left: 0px !important;
+  }
+
+  ion-card {
+    position: relative;
+  }
+
+  .dayButton {
+    width: 13%;
+  }
+
+  .importanceButton {
+    width: 32%;
+  }
+
+  .labelNbrDaysPeriod {
+    position: absolute;
+    right: 15%;
+    top: 0;
+    bottom: 0;
+  }
+
+  .iconField {
+    display: inline-block;
+    vertical-align: middle;
+    color: color($colors, light);
+    font-size: 2rem;
+    margin-right: 1vw;
+  }
+
+  .inivisible {
+      visibility: hidden;
+  }
+
+  .nameField {
+    display: inline-block;
+    vertical-align: middle;
+    color: #999;
+  }
+
+  .timeButton {
+    left: 85%;
+    color: color($colors, light);
+  }
+
+  .periodicityCustomButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+  }
+
+  .importanceIcon {
+    font-size: 1.3rem !important;
+  }
+
+  .warning .searchbar-md .searchbar-input {
+    background-color: color($colors, danger);
+  }
+
+  .warning,
+  .warningSimpleInput>input {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  @keyframes shake {
+
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
     }
 
-    .text-input {
-        margin-left: 0px !important;
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
     }
 
-    ion-card {
-        position: relative;
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
     }
 
-    .dayButton {
-        width: 13%;
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
     }
-
-    .importanceButton {
-        width: 32%;
-    }
-
-    .labelNbrDaysPeriod {
-        position: absolute;
-        right: 15%;
-        top: 0;
-        bottom: 0;
-    }
-
-    .timeButton {
-        left:85%; 
-        color: color($colors, light);
-    }
-
-    .periodicityCustomButton {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 90%;
-    }
-
-    .importanceIcon {
-        font-size: 1.3rem !important;
-    }
-
-    .warning .searchbar-md .searchbar-input {
-        background-color: color($colors, danger);
-    }
-
-    .warning, .warningSimpleInput>input {
-        animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        perspective: 1000px;
-      }
-
-    @keyframes shake {
-        10%, 90% {
-            transform: translate3d(-1px, 0, 0);
-        }
-        
-        20%, 80% {
-            transform: translate3d(2px, 0, 0);
-        }
-      
-        30%, 50%, 70% {
-            transform: translate3d(-4px, 0, 0);
-        }
-      
-        40%, 60% {
-            transform: translate3d(4px, 0, 0);
-        }
-    }
+  }
 }

@@ -81,6 +81,8 @@ $alert-md-radio-label-text-color: color($colors, light);
 $alert-md-radio-icon-border-color: color($colors, light);
 $alert-md-input-border-color: color($colors, dark);
 $badge-md-border-radius: 10px;
+$toggle-md-active-color: color($colors, primary);
+$toggle-md-track-background-color-on: lighten($toggle-md-active-color, 15%);
 
 // App Windows Variables
 // --------------------------------------------------

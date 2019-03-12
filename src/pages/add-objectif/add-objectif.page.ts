@@ -73,12 +73,6 @@ export class AddObjectifPage {
         this.getTitlePeriodicityCustom();
     }
 
-    ionViewDidLoad(): void {
-        setTimeout(() => {
-            this.autocomplete.setFocus();
-        }, 100);
-    }
-
     dismissModal(): void {
         this.viewCtrl.dismiss(null);
     }
