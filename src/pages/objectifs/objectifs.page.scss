@@ -11,6 +11,10 @@ page-objectifs {
     margin-top: 1rem;
   }
 
+  .fabBackDrop {
+    animation: appear 0.5s ease;
+  }
+
   ion-item {
     height: 10vh;
   }
@@ -28,5 +32,15 @@ page-objectifs {
     position: absolute;
     z-index: 1;
     right: 0;
+  }
+
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 0.26;
+    }
   }
 }

@@ -49,6 +49,7 @@ export class ObjectifsPage {
     // It's a string because it can be equal to '99+'
     nbrLater: string;
     updatingObj: boolean = false;
+    backDropDisplayed: boolean = false;
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -474,6 +475,10 @@ export class ObjectifsPage {
         const currentDate: Date = this.dateService.getDateFromString(this.getCurrentDay().date);
         const modal: Modal = this.modalCtrl.create(WeekStatsPage, { date: currentDate });
         modal.present();
+    }
+
+    displayBackDrop() {
+        this.backDropDisplayed = !this.backDropDisplayed;
     }
 
     // UTILS FUNCTIONS

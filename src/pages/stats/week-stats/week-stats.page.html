@@ -17,6 +17,7 @@
       <h1>
         {{weekStat.title}}
       </h1>
+      <progress-bar *ngIf="!weekStat.stats.isEmpty()" [progress]="weekStat.stats.getPropDone()"></progress-bar>
       <stats-card [stats]="weekStat.stats"></stats-card>
     </ion-slide>
   </ion-slides>

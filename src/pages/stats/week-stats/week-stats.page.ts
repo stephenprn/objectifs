@@ -7,7 +7,6 @@ import { ObjectifsService } from '@servicesPRN/objectifs.service';
 import { StatsService } from '@servicesPRN/stats.service';
 import { NavController, NavParams, Slides, ViewController } from 'ionic-angular';
 import _ from 'lodash';
-import { UtilsService } from '@servicesPRN/utils.service';
 
 @Component({
   selector: 'page-week-stats',
@@ -20,8 +19,7 @@ export class WeekStatsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private dateService: DateService, private objectifsService: ObjectifsService,
-    private statsService: StatsService, private viewCtrl: ViewController,
-    private utilsService: UtilsService) {
+    private statsService: StatsService, private viewCtrl: ViewController) {
     this.nbrWeeksDisplayed = AppConstants.nbrWeeksDisplayed;
     this.initWeek(null, null, this.navParams.get('date'), true);
   }
