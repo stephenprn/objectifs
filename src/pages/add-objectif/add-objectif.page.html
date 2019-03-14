@@ -52,7 +52,7 @@
           <ion-icon name="trophy" class="iconField"></ion-icon>
           <span class="nameField">Categorie</span>
         </ion-label>
-        <ion-select formControlName="category">
+        <ion-select interface="popover" formControlName="category">
           <ion-option [value]="category.id" *ngFor="let category of categories">
             {{category.title}}
           </ion-option>
@@ -68,7 +68,7 @@
           <ion-icon name="sync" class="iconField"></ion-icon>
           <span class="nameField">Répéter</span>
         </ion-label>
-        <ion-select formControlName="periodicity">
+        <ion-select interface="popover" formControlName="periodicity">
           <ion-option [value]="periodicity.id" *ngFor="let periodicity of periodicities">
             {{periodicity.title}}
           </ion-option>

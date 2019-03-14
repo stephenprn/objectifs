@@ -49,7 +49,7 @@ export class ObjectifsPage {
     // It's a string because it can be equal to '99+'
     nbrLater: string;
     updatingObj: boolean = false;
-    backDropDisplayed: boolean = false;
+    backDrop: { displayed: boolean, active: boolean, timeOut: any } = { displayed: false, active: false, timeOut: null };
 
     constructor(public navCtrl: NavController, private objectifsService: ObjectifsService,
         public modalCtrl: ModalController, private dateService: DateService,
@@ -240,6 +240,7 @@ export class ObjectifsPage {
         const modal: Modal = this.modalCtrl.create(AddObjectifPage, { date: date });
 
         modal.present();
+        this.setBackDrop(false);
 
         if (fab) {
             fab.close();
@@ -255,7 +256,7 @@ export class ObjectifsPage {
                     this.checkWeekStats(true);
                 }, 100);
             }
-        })
+        });
     }
 
     showUpdate(objectif: Objectif): void {
@@ -420,6 +421,7 @@ export class ObjectifsPage {
         });
 
         alert.present();
+        this.setBackDrop(false);
         fab.close();
     }
 
@@ -477,8 +479,25 @@ export class ObjectifsPage {
         modal.present();
     }
 
-    displayBackDrop() {
-        this.backDropDisplayed = !this.backDropDisplayed;
+    setBackDrop(state?: boolean) {
+        if (!state) {
+            state = !this.backDrop.displayed;
+        }
+
+        this.backDrop.displayed = state;
+
+        if (this.backDrop.timeOut != null) {
+            clearTimeout(this.backDrop.timeOut);
+        }
+
+        if (this.backDrop.displayed) {
+            this.backDrop.active = this.backDrop.displayed;
+        } else {
+            this.backDrop.timeOut = setTimeout(() => {
+                this.backDrop.timeOut = null;
+                this.backDrop.active = this.backDrop.displayed;
+            }, 500);
+        }
     }
 
     // UTILS FUNCTIONS
