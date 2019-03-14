@@ -13,11 +13,13 @@ stats-card {
     }
 
     .cardEmpty {
-        height: 14vh;
+        //(header) + (content) + adjust
+        height: $week-stats-card-empty-height;
     }
 
     .cardFull {
-        height: 30vh;
+        // (header) + padding_top_content + 2*row + padding_top_content + padding_content + adjust_value
+        height: $week-stats-card-full-height;
     }
 
     ion-icon {
@@ -38,6 +40,10 @@ stats-card {
 
     ion-card-content {
         height: 80%;
+    }
+
+    ion-card-header, .card-header-md {
+        padding: 16px 16px 10px 16px;
     }
 
     h1 {
