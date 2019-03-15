@@ -72,6 +72,21 @@ ion-slide {
   display: block !important;
 }
 
+.iconField {
+  display: inline-block;
+  vertical-align: middle;
+  color: color($colors, medium);
+  font-size: 2rem;
+  margin-right: 1vw;
+}
+
+.fullButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
+
 // ion-card {
 //   background-image: linear-gradient(to bottom right, color($colors, material-dark, contrast), color($colors, darker)) !important;
 // }

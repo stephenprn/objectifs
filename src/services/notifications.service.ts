@@ -3,14 +3,18 @@ import { AppConstants } from '@appPRN/app.constants';
 import { ILocalNotification, LocalNotifications } from '@ionic-native/local-notifications';
 import { Objectif } from '@modelsPRN/objectif.model';
 import { DateService } from '@servicesPRN/date.service';
+import { UiService } from './ui.service';
 
 @Injectable()
 export class NotificationsService {
-    constructor(private localNotifications: LocalNotifications, private dateService: DateService) { }
+    constructor(private localNotifications: LocalNotifications, private dateService: DateService,
+        private uiService: UiService) { }
 
     public add(objectif: Objectif): void {
         const id: number = this.getId(objectif);
         let notification: ILocalNotification;
+
+        this.checkPermission();
 
         this.localNotifications.isPresent(id).then((present: boolean) => {
             if (present) {
@@ -30,7 +34,7 @@ export class NotificationsService {
                 });
             } else {
                 let date: Date = this.dateService.getDateFromString(objectif.date);
-                
+
                 date.setHours(
                     AppConstants.notificationsDefaultParameters.hourOfDay.hours,
                     AppConstants.notificationsDefaultParameters.hourOfDay.min,
@@ -61,7 +65,7 @@ export class NotificationsService {
             } else {
                 notification.badge--;
                 notification.title = `Vous avez ${notification.badge} objectifs non-atteints`;
-                
+
                 for (let i = 0; i < notification.text.length; i++) {
                     if (notification.text[i] === objectif.title) {
                         notification.text.slice(i, 1);
@@ -88,12 +92,20 @@ export class NotificationsService {
                     }
                 }
             }
-            
+
             this.localNotifications.update(notification);
         });
     }
 
     private getId(objectif: Objectif): number {
         return Number(objectif.date.replace('/', ''));
-    } 
+    }
+
+    public checkPermission(): void {
+        this.localNotifications.requestPermission().then((status: boolean) => {
+            if (!status) {
+                this.uiService.displayToast('Vous ne recevrez pas de notifications');
+            }
+        });
+    }
 }

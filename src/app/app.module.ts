@@ -27,6 +27,7 @@ import { UtilsService } from '@servicesPRN/utils.service';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+import { SettingsPage } from '@pagesPRN/settings/settings.page';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -37,6 +38,7 @@ registerLocaleData(localeFr, 'fr');
         StatsPage,
         WeekStatsPage,
         AddObjectifPage,
+        SettingsPage,
         ProgressBarComponent,
         weekStatsHomeComponent
     ],
@@ -52,7 +54,8 @@ registerLocaleData(localeFr, 'fr');
         ObjectifsPage,
         StatsPage,
         WeekStatsPage,
-        AddObjectifPage
+        AddObjectifPage,
+        SettingsPage
     ],
     providers: [
         StatusBar,

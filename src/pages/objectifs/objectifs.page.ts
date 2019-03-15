@@ -27,6 +27,7 @@ import {
     Slides,
 } from 'ionic-angular';
 import _ from 'lodash';
+import { SettingsPage } from '@pagesPRN/settings/settings.page';
 
 
 @Component({
@@ -232,6 +233,19 @@ export class ObjectifsPage {
         });
 
         actionSheet.present();
+    }
+
+    closeFab(fab: FabContainer) {
+        fab.close();
+        this.setBackDrop(false);
+    }
+
+    showSettings(event: any, fab: FabContainer) {
+        const modal: Modal = this.modalCtrl.create(SettingsPage);
+
+        modal.present();
+        this.setBackDrop(false);
+        fab.close();
     }
 
     showAdd(event: any, fab: FabContainer): void {

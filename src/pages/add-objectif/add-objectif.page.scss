@@ -35,14 +35,6 @@ page-add-objectif {
     bottom: 0;
   }
 
-  .iconField {
-    display: inline-block;
-    vertical-align: middle;
-    color: color($colors, medium);
-    font-size: 2rem;
-    margin-right: 1vw;
-  }
-
   .inivisible {
       visibility: hidden;
   }
@@ -56,13 +48,6 @@ page-add-objectif {
   .timeButton {
     left: 85%;
     color: color($colors, light);
-  }
-
-  .periodicityCustomButton {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
   }
 
   .importanceIcon {

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Paramètres
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismissModal()">
+        <span ion-text color="primary" showWhen="ios">Annuler</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="noScroll">
+  <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
+    <ion-item-group>
+      <ion-item-divider color="dark">Notifications</ion-item-divider>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="notifications" class="iconField"></ion-icon>
+          <span class="nameField">Rappels d'objectifs non-atteints</span>
+        </ion-label>
+        <ion-toggle (ionChange)="formGroup.get('notifications').value && notificationsCheckPermission()" checked="true" formControlName="notifications"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <ion-icon name="time" class="iconField"></ion-icon>
+          <span class="nameField">Heure des notifications</span>
+        </ion-label>
+        <ion-datetime [disabled]="!formGroup.controls['notifications'].value" displayFormat="HH:mm"
+          formControlName="notificationsHours"></ion-datetime>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider color="dark">Sécurité</ion-item-divider>
+      <ion-item>
+        <ion-label>
+          <ion-icon name="lock" class="iconField"></ion-icon>
+          <span class="nameField">Mot de passe</span>
+        </ion-label>
+        <ion-toggle (ionChange)="formGroup.get('password').value && openPassword()" formControlName="password"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <button type="button" class="fullButton" [disabled]="!formGroup.get('password').value" (click)="openPassword()"
+          ion-button outline>{{password != null && password.length > 0 ? 'Modifier le mot de passe': 'Aucun mot de passe'}}</button>
+      </ion-item>
+    </ion-item-group>
+  </form>
+</ion-content>

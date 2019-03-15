@@ -34,57 +34,57 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #1976D2,
-  secondary:  #32db64,
-  danger:     #A04E4A,
-  light:      #ffffff,
-  medium:     #eaeaf7,
-  dark:       #2e2e38,
-  darker:     #1f1f27,
+  primary:     #1976D2,
+  secondary:   #32db64,
+  danger:      #A04E4A,
+  light:       #ffffff,
+  medium:      #eaeaf7,
+  dark:        #2e2e38,
+  darker:      #1f1f27,
   material-dark: (
-    base:     #424250,
-    contrast: #33333d
+    base:      #424250,
+    contrast:  #33333d
   )
 );
 
-$background-color:      color($colors, material-dark, base);
-$list-background-color: color($colors, material-dark, contrast);
-$toolbar-background:    color($colors, material-dark, contrast);
-$badge-font-size: 1.5rem;
-$week-stats-card-full-height: calc((16px + 1.6rem + 10px) + 5px + 2*(5px + 2.2rem + 1.2rem + 5px) + 5px + 13px + 35px);
+$background-color:             color($colors, material-dark, base);
+$list-background-color:        color($colors, material-dark, contrast);
+$toolbar-background:           color($colors, material-dark, contrast);
+$badge-font-size:              1.5rem;
+$week-stats-card-full-height:  calc((16px + 1.6rem + 10px) + 5px + 2*(5px + 2.2rem + 1.2rem + 5px) + 5px + 13px + 35px);
 $week-stats-card-empty-height: calc((16px + 1.6rem + 16px) + (1.4rem + 14px) + 10px);
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-$card-ios-header-color:      color($colors, light);
-$card-ios-background-color:  color($colors, material-dark, contrast);
-$list-ios-border-color:      color($colors, dark);
-$alert-ios-background-color: color($colors, material-dark, contrast);
-$alert-ios-input-text-color: color($colors, light);
-$alert-ios-sub-title-text-color: color($colors, light);
-$alert-ios-message-text-color: color($colors, light);
-$alert-ios-radio-label-text-color: color($colors, light);
+$card-ios-header-color:             color($colors, light);
+$card-ios-background-color:         color($colors, material-dark, contrast);
+$list-ios-border-color:             color($colors, dark);
+$alert-ios-background-color:        color($colors, material-dark, contrast);
+$alert-ios-input-text-color:        color($colors, light);
+$alert-ios-sub-title-text-color:    color($colors, light);
+$alert-ios-message-text-color:      color($colors, light);
+$alert-ios-radio-label-text-color:  color($colors, light);
 $alert-ios-radio-icon-border-color: color($colors, light);
-$alert-ios-input-border-color: color($colors, dark);
+$alert-ios-input-border-color:      color($colors, dark);
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$card-md-header-color:      color($colors, light);
-$card-md-background-color:  color($colors, material-dark, contrast);
-$list-md-border-color:     color($colors, dark);
-$alert-md-background-color: color($colors, material-dark, contrast);
-$alert-md-input-text-color: color($colors, light);
-$alert-md-sub-title-text-color: color($colors, light);
-$alert-md-message-text-color: color($colors, light);
-$alert-md-radio-label-text-color: color($colors, light);
-$alert-md-radio-icon-border-color: color($colors, light);
-$alert-md-input-border-color: color($colors, dark);
-$badge-md-border-radius: 10px;
-$toggle-md-active-color: color($colors, primary);
+$card-md-header-color:                color($colors, light);
+$card-md-background-color:            color($colors, material-dark, contrast);
+$list-md-border-color:                color($colors, dark);
+$alert-md-background-color:           color($colors, material-dark, contrast);
+$alert-md-input-text-color:           color($colors, light);
+$alert-md-sub-title-text-color:       color($colors, light);
+$alert-md-message-text-color:         color($colors, light);
+$alert-md-radio-label-text-color:     color($colors, light);
+$alert-md-radio-icon-border-color:    color($colors, light);
+$alert-md-input-border-color:         color($colors, dark);
+$badge-md-border-radius:              10px;
+$toggle-md-active-color:              color($colors, primary);
 $toggle-md-track-background-color-on: lighten($toggle-md-active-color, 15%);
 
 // App Windows Variables

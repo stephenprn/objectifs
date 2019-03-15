@@ -16,13 +16,23 @@ page-objectifs {
     opacity: 0.26;
   }
 
+  .settingsButton {
+    position: absolute;
+    right: 10px;
+    color: color($colors, medium);
+  }
+
   ion-item {
     height: 10vh;
   }
 
+  h1 {
+    margin-top:1rem;
+  }
+
   ion-scroll {
     // 100vh - (card height) - (slide_title height) - (slide_progress_bar height) - margin
-    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px);
+    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px);
   }
 
   ion-scroll .scroll-content {
