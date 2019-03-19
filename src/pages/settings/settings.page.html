@@ -21,7 +21,7 @@
           <ion-icon name="notifications" class="iconField"></ion-icon>
           <span class="nameField">Rappels d'objectifs non-atteints</span>
         </ion-label>
-        <ion-toggle (ionChange)="formGroup.get('notifications').value && notificationsCheckPermission()" checked="true" formControlName="notifications"></ion-toggle>
+        <ion-toggle [disabled]="notificationsWorking" (ionChange)="notificationsToggleChange()" checked="true" formControlName="notifications"></ion-toggle>
       </ion-item>
 
       <ion-item>
@@ -29,7 +29,7 @@
           <ion-icon name="time" class="iconField"></ion-icon>
           <span class="nameField">Heure des notifications</span>
         </ion-label>
-        <ion-datetime [disabled]="!formGroup.controls['notifications'].value" displayFormat="HH:mm"
+        <ion-datetime (ionChange)="notificationHoursChange()" [disabled]="notificationsWorking || !formGroup.controls['notifications'].value" displayFormat="HH:mm"
           formControlName="notificationsHours"></ion-datetime>
       </ion-item>
     </ion-item-group>
@@ -40,7 +40,7 @@
           <ion-icon name="lock" class="iconField"></ion-icon>
           <span class="nameField">Mot de passe</span>
         </ion-label>
-        <ion-toggle (ionChange)="formGroup.get('password').value && openPassword()" formControlName="password"></ion-toggle>
+        <ion-toggle (ionChange)="passwordToggleChange()" formControlName="password"></ion-toggle>
       </ion-item>
 
       <ion-item>

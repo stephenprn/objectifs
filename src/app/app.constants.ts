@@ -7,6 +7,7 @@ import { Importance } from '@modelsPRN/importance.model';
 import { Periodicity } from '@modelsPRN/periodicity.model';
 import { ToastOptions } from 'ionic-angular';
 import { DatePickerOptions } from '@ionic-native/date-picker';
+import { Settings } from '@modelsPRN/settings.model';
 
 export class AppConstants {
     public static storageNames: any = {
@@ -24,7 +25,9 @@ export class AppConstants {
             category: 'categoriesUsages',
             suggestion: 'suggestions'
         },
-        achievements: 'achievements'
+        achievements: 'achievements',
+        settings: 'settings',
+        disabledNotifications: 'disabledNotifications'
     };
 
     public static colors: any = {
@@ -157,6 +160,7 @@ export class AppConstants {
             sec: 0,
             ms: 0
         },
+        autoClear: true,
         nbrLinesMax: 5
     };
 
@@ -176,4 +180,11 @@ export class AppConstants {
     ];
 
     public static achivementsTitleDialog: string = 'Félicitations !';
+
+    public static settingsDefault: Settings = {
+        notifications: true,
+        notificationsHours: '18:00',
+        password: false,
+        passwordValue: ''
+    };
 }

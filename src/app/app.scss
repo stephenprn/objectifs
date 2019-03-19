@@ -64,7 +64,7 @@
 }
 
 .alert-sub-title {
-  color: #999;
+  color: color($colors, grey);
 }
 
 ion-slide {
@@ -80,11 +80,22 @@ ion-slide {
   margin-right: 1vw;
 }
 
+.nameField {
+  display: inline-block;
+  vertical-align: middle;
+  color: color($colors, grey);
+}
+
 .fullButton {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 90%;
+}
+
+.noValidationColor > .item-inner {
+  border-bottom-color: transparent !important;
+  box-shadow: unset !important;
 }
 
 // ion-card {

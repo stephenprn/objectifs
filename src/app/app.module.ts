@@ -28,6 +28,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { SettingsPage } from '@pagesPRN/settings/settings.page';
+import { SettingsService } from '@servicesPRN/settings.service';
+import { PasswordPage } from '@pagesPRN/password/password.page';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -35,6 +37,7 @@ registerLocaleData(localeFr, 'fr');
     declarations: [
         MyApp,
         ObjectifsPage,
+        PasswordPage,
         StatsPage,
         WeekStatsPage,
         AddObjectifPage,
@@ -52,6 +55,7 @@ registerLocaleData(localeFr, 'fr');
     entryComponents: [
         MyApp,
         ObjectifsPage,
+        PasswordPage,
         StatsPage,
         WeekStatsPage,
         AddObjectifPage,
@@ -63,6 +67,7 @@ registerLocaleData(localeFr, 'fr');
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         AchievementsService,
         ObjectifsService,
+        SettingsService,
         ObjectifsLaterService,
         SuggestionsService,
         StatsService,

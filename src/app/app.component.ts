@@ -8,6 +8,8 @@ import { AchievementsService } from '@servicesPRN/achievements.service';
 import { ObjectifsLaterService } from '@servicesPRN/objectifs-later.service';
 import { SuggestionsService } from '@servicesPRN/suggestions.service';
 import { UiService } from '@servicesPRN/ui.service';
+import { SettingsService } from '@servicesPRN/settings.service';
+import { PasswordPage } from '@pagesPRN/password/password.page';
 
 @Component({
     templateUrl: 'app.html'
@@ -18,7 +20,7 @@ export class MyApp {
     constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, 
         objectifsService: ObjectifsService, achievementsService: AchievementsService,
         objectifsLaterService: ObjectifsLaterService, suggestionsService: SuggestionsService,
-        uiService: UiService) {
+        uiService: UiService, settingsService: SettingsService) {
         platform.ready().then(() => {
             // Load all stored data before enter in app
             let promises = [];
@@ -32,16 +34,24 @@ export class MyApp {
             promises.push(suggestionsService.loadStored());
             promises.push(objectifsService.loadStoredId(false));
             promises.push(objectifsService.loadStoredId(true));
+            promises.push(settingsService.loadStored());
 
             Promise.all(promises).then(() => {
+                console.log('all promises done');
                 if (isDevMode()) {
                     uiService.displaySimpleAlert('Données chargées', `Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
                     console.log(`Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
                 }
                 
                 statusBar.backgroundColorByHexString('#424250');
+
+                if (settingsService.isPasswordActivated()) {
+                    this.rootPage = PasswordPage;
+                } else {
+                    this.rootPage = ObjectifsPage;
+                }
+
                 splashScreen.hide();
-                this.rootPage = ObjectifsPage;
             });
 
             this.logInfos();
