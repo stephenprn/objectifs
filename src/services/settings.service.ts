@@ -11,7 +11,6 @@ export class SettingsService {
     constructor(private storage: Storage) { }
 
     public loadStored(): Promise<void> {
-        console.log('load stored settings begin');
         return new Promise((resolve, reject) => {
             this.storage.get(AppConstants.storageNames.settings).then((settings: Settings) => {
                 if (!settings) {
@@ -20,7 +19,6 @@ export class SettingsService {
                 } else {
                     this.settings = settings;
                 }
-                console.log('load stored settings ended');
 
                 resolve();
             });

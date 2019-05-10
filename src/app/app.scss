@@ -16,6 +16,10 @@
 // automatically applied to the <body> element in the app.
 @import "../components/ionic2-auto-complete/auto-complete.scss";
 
+.scroll-content {
+  padding-bottom: 0 !important;
+}
+
 .alert-title {
   color: color($colors, light);
 }
@@ -93,7 +97,7 @@ ion-slide {
   width: 90%;
 }
 
-.noValidationColor > .item-inner {
+.noValidationColor>.item-inner {
   border-bottom-color: transparent !important;
   box-shadow: unset !important;
 }

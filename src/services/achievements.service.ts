@@ -84,10 +84,7 @@ export class AchievementsService {
         const achievement: Achievement = achievements.reduce((prev, current) => {
             return (prev.priority > current.priority) ? prev : current;
         });
-
-        console.log('Achievement reached');
-        console.log(achievement);
-
+        
         this.displayAlertDone(achievement);
     }
 

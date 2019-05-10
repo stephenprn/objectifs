@@ -1,52 +1,134 @@
 stats-card {
-    .numberStat {
-        font-size: 2.2rem;
-    }
+  ion-scroll {
+    max-height: calc(100vh - 13.5rem);
+  }
+  ion-scroll .scroll-content {
+    overflow-y: auto !important;
+  }
 
-    .labelStat {
-        font-size: 1.2rem;
-    }
+  ion-item {
+    height: 7vh;
+  }
 
-    ion-card {   
-        /* Set our transitions up. */
-        transition: height 0.8s ease;
-    }
+  .done {
+    text-decoration: line-through;
+    color: #808080;
+  }
 
-    .cardEmpty {
-        //(header) + (content) + adjust
-        height: $week-stats-card-empty-height;
-    }
+  .numberStat {
+    font-size: 2.2rem;
+  }
 
-    .cardFull {
-        // (header) + padding_top_content + 2*row + padding_top_content + padding_content + adjust_value
-        height: $week-stats-card-full-height;
-    }
+  .labelStat {
+    font-size: 1.2rem;
+  }
 
-    ion-icon {
-        margin-left: 0.4vh;
-    }
+  ion-card {
+    /* Set our transitions up. */
+    transition: height 0.8s ease;
+  }
 
-    .notCentered {
-        height: auto;
-    }
+  .cardEmpty {
+    //(header) + (content) + adjust
+    height: $week-stats-card-empty-height;
+  }
 
-    ion-grid {
-        height: 100%;
-    }
+  .cardFull {
+    // (header) + padding_top_content + 2*row + padding_top_content + padding_content + adjust_value
+    height: calc(#{$week-stats-card-full-height} + 20px) !important;
+  }
 
-    ion-row {
-        height: 50%;
-    }
+  ion-icon {
+    margin-left: 0.4vh;
+  }
 
-    ion-card-content {
-        height: 80%;
-    }
+  .notCentered {
+    height: auto;
+  }
 
-    ion-card-header, .card-header-md {
-        padding: 16px 16px 10px 16px;
-    }
+  ion-grid {
+    height: 100%;
+  }
 
-    h1 {
-        margin-bottom: 2rem !important;
-    }
+  ion-row {
+    height: 50%;
+  }
+
+  ion-card-content {
+    height: 80%;
+  }
+
+  ion-card-header,
+  .card-header-md {
+    padding: 16px 16px 10px 16px;
+  }
+
+  ion-card-header {
+    position: relative;
+  }
+
+  h1 {
+    margin-bottom: 2rem !important;
+  }
+
+  .list-button {
+    opacity: 0.5;
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+  }
+
+  /* entire container, keeps perspective */
+  .flip-container {
+    perspective: 1000px;
+  }
+
+  /* flip the pane when hovered */
+  .flip-container.flipped .flipper,
+  .flip-container.flipped .flipper {
+    transform: rotateY(180deg);
+  }
+
+  .front,
+  .back {
+    width: calc(100vw - 20px);
+  }
+
+  .flip-container {
+    height: calc(100vh - 13.5rem);
+  }
+
+  /* flip speed goes here */
+  .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+
+    position: relative;
+  }
+
+  /* hide back of pane during swap */
+  .front,
+  .back {
+    backface-visibility: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* front pane, placed above back */
+  .front {
+    z-index: 2;
+    /* for firefox 31 */
+    transform: rotateY(0deg);
+  }
+
+  /* back, initially hidden pane */
+  .back {
+    transform: rotateY(180deg);
+    max-height: calc(100vh - 13.5rem);
+    margin-top: 10px;
+  }
 }

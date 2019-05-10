@@ -2,7 +2,6 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AutoCompleteModule } from '@componentsPRN/ionic2-auto-complete';
 import { ProgressBarComponent } from '@componentsPRN/progress-bar/progress-bar.component';
 import { weekStatsHomeComponent } from '@componentsPRN/week-stats-home/week-stats-home.component';
 import { DatePicker } from '@ionic-native/date-picker';
@@ -30,6 +29,8 @@ import { MyApp } from './app.component';
 import { SettingsPage } from '@pagesPRN/settings/settings.page';
 import { SettingsService } from '@servicesPRN/settings.service';
 import { PasswordPage } from '@pagesPRN/password/password.page';
+import { AutoCompleteModule } from 'ionic2-auto-complete';
+import { GeneralStatsPage } from '@pagesPRN/stats/general-stats/general-stats.page';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -40,6 +41,7 @@ registerLocaleData(localeFr, 'fr');
         PasswordPage,
         StatsPage,
         WeekStatsPage,
+        GeneralStatsPage,
         AddObjectifPage,
         SettingsPage,
         ProgressBarComponent,
@@ -47,8 +49,10 @@ registerLocaleData(localeFr, 'fr');
     ],
     imports: [
         BrowserModule,
+        IonicModule.forRoot(MyApp, {
+            scrollPadding: true
+        }),
         AutoCompleteModule,
-        IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot()
     ],
     bootstrap: [IonicApp],
@@ -57,6 +61,7 @@ registerLocaleData(localeFr, 'fr');
         ObjectifsPage,
         PasswordPage,
         StatsPage,
+        GeneralStatsPage,
         WeekStatsPage,
         AddObjectifPage,
         SettingsPage

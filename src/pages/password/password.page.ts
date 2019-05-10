@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 export class PasswordPage {
     formGroup: FormGroup;
     @ViewChild('input') input;
+    isFocus: boolean = false;
 
     constructor(private settingsService: SettingsService, private uiService: UiService,
         private navController: NavController, private formBuilder: FormBuilder) {
@@ -20,10 +21,13 @@ export class PasswordPage {
         });
     }
 
-    ionViewDidLoad(): void {
-        setTimeout(() => {
-            this.input.setFocus();
-          },150);
+    ngAfterViewChecked() {
+        if (!this.isFocus) {
+            setTimeout(() => {
+                this.input.setFocus();
+                this.isFocus = true;
+            }, 500);
+        }
     }
 
     submit() {

@@ -1,49 +1,71 @@
-<ion-card [ngClass]="{ 'cardEmpty': (!weekStatsPage && stats.isEmpty()), 'cardFull': (!weekStatsPage && !stats.isEmpty()) }" *ngIf="stats">
-  <ion-card-header text-center *ngIf="!weekStatsPage">
-    Stats de la semaine
-  </ion-card-header>
-  <ion-card-content *ngIf="!stats.isEmpty()">
-    <ion-grid text-center>
-      <ion-row justify-content-center>
-        <ion-col>
-          <div class="numberStat">
-            {{stats.total}}
-            <ion-icon name="flag" [style.color]="colors.blue"></ion-icon>
-          </div>
-          <div class="labelStat">objectifs fixés</div>
-        </ion-col>
-        <ion-col>
-          <div class="numberStat">
-            {{stats.done}}
-            <ion-icon name="checkmark" [style.color]="colors.green"></ion-icon>
-          </div>
-          <div class="labelStat">objectifs atteints</div>
-        </ion-col>
-      </ion-row>
-      <ion-row justify-content-center>
-        <ion-col>
-          <div class="numberStat">
-            {{stats.reports}}
-            <ion-icon name="calendar" [style.color]="colors.orange"></ion-icon>
-          </div>
-          <div class="labelStat">reports</div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-list *ngIf="categories.length > 0">
-      <ion-item *ngFor="let category of categories">
-          <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }"
-            item-start></ion-icon>
-          <span item-start>
-            {{category.title}}
-          </span>
-          <span item-end>
-            {{category.number.done + '/' + category.number.total}}
-          </span>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-  <ion-card-content *ngIf="stats.isEmpty()">
+<div class="flip-container" *ngIf="stats && !stats.isEmpty()" [ngClass]="{ 'flipped': flipped, 'cardFull': stats && !stats.isEmpty() }" (click)="stats.objectifs != null && showListObjectifs()">
+  <div class="flipper">
+    <ion-card class="front">
+      <ion-card-header text-center *ngIf="!weekStatsPage">
+        Stats de la semaine
+      </ion-card-header>
+      <ion-card-content *ngIf="!stats.isEmpty()">
+        <ion-grid text-center>
+          <ion-row justify-content-center>
+            <ion-col>
+              <div class="numberStat">
+                {{stats.total}}
+                <ion-icon name="flag" [style.color]="colors.blue"></ion-icon>
+              </div>
+              <div class="labelStat">objectifs fixés</div>
+            </ion-col>
+            <ion-col>
+              <div class="numberStat">
+                {{stats.done}}
+                <ion-icon name="checkmark" [style.color]="colors.green"></ion-icon>
+              </div>
+              <div class="labelStat">objectifs atteints</div>
+            </ion-col>
+          </ion-row>
+          <ion-row justify-content-center>
+            <ion-col>
+              <div class="numberStat">
+                {{stats.reports}}
+                <ion-icon name="calendar" [style.color]="colors.orange"></ion-icon>
+              </div>
+              <div class="labelStat">reports</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-list *ngIf="categories.length > 0">
+          <ion-item *ngFor="let category of categories">
+            <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }" item-start></ion-icon>
+            <span item-start>
+              {{category.title}}
+            </span>
+            <span item-end>
+              {{category.number.done + '/' + category.number.total}}
+            </span>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="back" *ngIf="stats && stats.objectifs" [style.height]="7 * (stats.objectifs.length) + 'vh'">
+      <ion-scroll [style.height]="7 * (stats.objectifs.length) + 'vh'" scrollY="true">
+        <ion-list>
+          <ion-item *ngFor="let obj of stats.objectifs; trackBy: trackObjectifsFunction;">
+            <ion-icon name="{{categoriesJson[obj.category].icon}}"
+              [ngStyle]="{ color: categoriesJson[obj.category].color }" item-start></ion-icon>
+            <div [ngClass]="{'done': obj.done}">
+              <ion-icon name="{{importancesJson[obj.importance].icon}}"
+                [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+              {{obj.title}}
+            </div>
+            <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </ion-card>
+  </div>
+</div>
+
+<ion-card class="cardEmpty" *ngIf="stats && stats.isEmpty()">
+  <ion-card-content>
     Pas de statistiques pour cette semaine.
   </ion-card-content>
 </ion-card>

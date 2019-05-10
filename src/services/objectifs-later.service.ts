@@ -46,8 +46,12 @@ export class ObjectifsLaterService {
         });
     }
 
-    public saveChanges(): void {
-        this.storage.set(AppConstants.storageNames.objectif.later, this.objectifsLater);
+    public saveChanges(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.storage.set(AppConstants.storageNames.objectif.later, this.objectifsLater).then(() => {
+                resolve();
+            });
+        })
     }
 
     public add(objLater: any): void {

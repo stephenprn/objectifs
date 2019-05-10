@@ -1,30 +1,51 @@
-import { Component, ViewChild } from '@angular/core';
-import { AppConstants } from '@appPRN/app.constants';
-import { Objectif } from '@modelsPRN/objectif.model';
-import { WeekStats } from '@modelsPRN/week-stats.model';
-import { DateService } from '@servicesPRN/date.service';
-import { ObjectifsService } from '@servicesPRN/objectifs.service';
-import { StatsService } from '@servicesPRN/stats.service';
-import { NavController, NavParams, Slides, ViewController } from 'ionic-angular';
-import _ from 'lodash';
+import { Component, ViewChild } from "@angular/core";
+import { AppConstants } from "@appPRN/app.constants";
+import { Objectif } from "@modelsPRN/objectif.model";
+import { WeekStats } from "@modelsPRN/week-stats.model";
+import { DateService } from "@servicesPRN/date.service";
+import { ObjectifsService } from "@servicesPRN/objectifs.service";
+import { StatsService } from "@servicesPRN/stats.service";
+import {
+  NavController,
+  NavParams,
+  Slides,
+  ViewController
+} from "ionic-angular";
+import _ from "lodash";
 
 @Component({
-  selector: 'page-week-stats',
-  templateUrl: 'week-stats.page.html',
+  selector: "page-week-stats",
+  templateUrl: "week-stats.page.html"
 })
 export class WeekStatsPage {
   weekStats: WeekStats[];
   @ViewChild(Slides) slides: Slides;
   nbrWeeksDisplayed: number;
+  modalMode: boolean = false;
+  mondayInit: String;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private dateService: DateService, private objectifsService: ObjectifsService,
-    private statsService: StatsService, private viewCtrl: ViewController) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private dateService: DateService,
+    private objectifsService: ObjectifsService,
+    private statsService: StatsService,
+    private viewCtrl: ViewController
+  ) {
     this.nbrWeeksDisplayed = AppConstants.nbrWeeksDisplayed;
-    this.initWeek(null, null, this.navParams.get('date'), true);
+    this.initWeek(null, null, this.navParams.get("date"), true);
+
+    if (this.navParams.get("modalMode") != null) {
+      this.modalMode = this.navParams.get("modalMode");
+    }
   }
 
-  private initWeek(addBegin: boolean, currentIndex: number, date?: Date, firstInit?: boolean): void {
+  private initWeek(
+    addBegin: boolean,
+    currentIndex: number,
+    date?: Date,
+    firstInit?: boolean
+  ): void {
     if (!date) {
       date = new Date();
     }
@@ -41,7 +62,9 @@ export class WeekStatsPage {
       if (addBegin) {
         date = this.dateService.getDateFromString(this.weekStats[0].monday);
       } else {
-        date = this.dateService.getDateFromString(this.weekStats[this.weekStats.length - 1].monday);
+        date = this.dateService.getDateFromString(
+          this.weekStats[this.weekStats.length - 1].monday
+        );
       }
 
       nbrWeeks = this.nbrWeeksDisplayed;
@@ -67,8 +90,16 @@ export class WeekStatsPage {
     // If we add days at the begining, the index of the current slide changed
     if (addBegin !== null && addBegin === true) {
       setTimeout(() => {
-        this.slides.slideTo(currentIndex.valueOf() + this.nbrWeeksDisplayed, 0, false);
+        this.slides.slideTo(
+          currentIndex.valueOf() + this.nbrWeeksDisplayed,
+          0,
+          false
+        );
       });
+    }
+
+    if (firstInit) {
+      this.mondayInit = this.weekStats[this.nbrWeeksDisplayed - 1].monday;
     }
   }
 
@@ -81,7 +112,10 @@ export class WeekStatsPage {
 
     if (currentIndex < AppConstants.indexTriggerCache) {
       this.initWeek(true, currentIndex);
-    } else if (currentIndex >= this.weekStats.length - AppConstants.indexTriggerCache) {
+    } else if (
+      currentIndex >=
+      this.weekStats.length - AppConstants.indexTriggerCache
+    ) {
       this.initWeek(false, null);
     }
   }
@@ -93,18 +127,40 @@ export class WeekStatsPage {
     sunday.setDate(sunday.getDate() + 6);
 
     const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
-      { criteria: 'date', value: '>=DATE' + AppConstants.separator + this.dateService.getStringFromDate(monday), custom: true },
-      { criteria: 'date', value: '<=DATE' + AppConstants.separator + this.dateService.getStringFromDate(sunday), custom: true }
+      {
+        criteria: "date",
+        value:
+          ">=DATE" +
+          AppConstants.separator +
+          this.dateService.getStringFromDate(monday),
+        custom: true
+      },
+      {
+        criteria: "date",
+        value:
+          "<=DATE" +
+          AppConstants.separator +
+          this.dateService.getStringFromDate(sunday),
+        custom: true
+      }
     ]);
 
     let weekStats: WeekStats = new WeekStats();
 
-    weekStats.stats = this.statsService.getStats(objectifs, true);
+    weekStats.stats = this.statsService.getStats(objectifs, true, true);
     weekStats.monday = this.dateService.getStringFromDate(monday);
 
     this.dateService.checkCloseWeek(weekStats);
 
     return weekStats;
+  }
+
+  slideToCurrentWeek(): void {
+    this.weekStats.forEach((weekStat: WeekStats, index: number) => {
+      if (weekStat.monday === this.mondayInit) {
+        this.slides.slideTo(index);
+      }
+    });
   }
 
   dismissModal(): void {

@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header *ngIf="modalMode">
   <ion-toolbar>
     <ion-title>
-      Statistiques
+      Statistiques générales
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismissModal()">
@@ -11,9 +11,6 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content class="noScroll">
-  <ion-tabs>
-    <ion-tab *ngFor="let tab of tabs" tabTitle="{{tab.title}}" [root]="tab.page">
-    </ion-tab>
-  </ion-tabs>
+<ion-content>
+  <stats-card [stats]="stats"></stats-card>
 </ion-content>

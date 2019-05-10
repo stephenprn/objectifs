@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="modalMode">
   <ion-toolbar>
     <ion-title>
       Statistiques par semaine
@@ -14,7 +14,7 @@
 <ion-content>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrWeeksDisplayed - 1}}">
     <ion-slide *ngFor="let weekStat of weekStats">
-      <h1>
+      <h1 (click)="slideToCurrentWeek()">
         {{weekStat.title}}
       </h1>
       <progress-bar *ngIf="!weekStat.stats.isEmpty()" [progress]="weekStat.stats.getPropDone()"></progress-bar>

@@ -1,6 +1,6 @@
 <ion-content class="noScroll">
   <ion-backdrop (click)="closeFab(fab)" class="fabBackDrop" [ngClass]="{'fabBackDropHidden': !backDrop.displayed}" [style.z-index]="backDrop.active ? '500' : '-999'" [style.opacity]="backDrop.displayed ? '0.26' : '0'"></ion-backdrop>
-  <stats-card [stats]="weekStats" (click)="openWeekStats()"></stats-card>
+  <stats-card [objectifs]="objectifsWeek" [stats]="weekStats" (click)="openWeekStats()"></stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">
       <h1 (click)="goToDay(day.date)">
@@ -66,6 +66,9 @@
       </button>
       <button ion-fab (click)="showSettings($event, fab)">
         <ion-icon name="settings"></ion-icon>
+      </button>
+      <button ion-fab (click)="showStats($event, fab)">
+        <ion-icon name="trending-up"></ion-icon>
       </button>
     </ion-fab-list>
   </ion-fab>

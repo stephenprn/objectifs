@@ -10,6 +10,7 @@ import { SuggestionsService } from '@servicesPRN/suggestions.service';
 import { UiService } from '@servicesPRN/ui.service';
 import { SettingsService } from '@servicesPRN/settings.service';
 import { PasswordPage } from '@pagesPRN/password/password.page';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @Component({
     templateUrl: 'app.html'
@@ -39,7 +40,7 @@ export class MyApp {
             Promise.all(promises).then(() => {
                 console.log('all promises done');
                 if (isDevMode()) {
-                    uiService.displaySimpleAlert('Données chargées', `Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
+                    // uiService.displaySimpleAlert('Données chargées', `Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
                     console.log(`Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
                 }
                 

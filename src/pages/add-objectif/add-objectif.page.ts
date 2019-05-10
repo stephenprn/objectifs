@@ -40,6 +40,7 @@ export class AddObjectifPage {
     periodicitiesCustomJson: any = {};
     periodicitiesCustomDays: CustomDayPeriodicity[];
     document: Document;
+    isFocus: boolean = false;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
         private objectifsService: ObjectifsService, private dateService: DateService,
@@ -73,10 +74,13 @@ export class AddObjectifPage {
         this.getTitlePeriodicityCustom();
     }
 
-    ionViewDidLoad(): void {
-        setTimeout(() => {
-            this.autocomplete.setFocus();
-          },150);
+    ngAfterViewChecked() {
+        if (!this.isFocus) {
+            setTimeout(() => {
+                this.autocomplete.setFocus();
+                this.isFocus = true;
+            }, 500);
+        }
     }
 
     dismissModal(): void {

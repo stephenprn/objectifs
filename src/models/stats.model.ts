@@ -1,3 +1,5 @@
+import { Objectif } from '@modelsPRN/objectif.model';
+
 export class Stats {
     total: number = 0; //Number of objectives
     done: number = 0;
@@ -5,6 +7,7 @@ export class Stats {
     reported: number = 0; //Number of objectifs reported at least one time
     weekNbr?: number;
     categoriesUsage?: any;
+    objectifs: Objectif[];
 
     getPropDone(): number {
         return Math.round(this.done*100/this.total);

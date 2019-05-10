@@ -108,6 +108,9 @@ export class AppConstants {
     public static statsPages: any = {
         weekStats: {
             title: 'Semaines'
+        },
+        generalStats: {
+            title: 'Général'
         }
     };
 

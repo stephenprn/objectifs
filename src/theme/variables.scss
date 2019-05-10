@@ -14,6 +14,15 @@ $app-direction: ltr;
 
 @import "ionic.globals";
 
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.dark";
+
 
 // Shared Variables
 // --------------------------------------------------
@@ -53,7 +62,10 @@ $list-background-color:        color($colors, material-dark, contrast);
 $toolbar-background:           color($colors, material-dark, contrast);
 $badge-font-size:              1.5rem;
 $week-stats-card-full-height:  calc((16px + 1.6rem + 10px) + 5px + 2*(5px + 2.2rem + 1.2rem + 5px) + 5px + 13px + 35px);
-$week-stats-card-empty-height: calc((16px + 1.6rem + 16px) + (1.4rem + 14px) + 10px);
+$week-stats-card-empty-height: calc((16px + 1.6rem + 16px) + (1.4rem + 14px) - 20px);
+$tabs-background:              color($colors, material-dark, contrast);
+$tabs-tab-color-inactive:      color($colors, light);
+$tabs-tab-color-active:        color($colors, light);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -69,6 +81,7 @@ $alert-ios-message-text-color:      color($colors, light);
 $alert-ios-radio-label-text-color:  color($colors, light);
 $alert-ios-radio-icon-border-color: color($colors, light);
 $alert-ios-input-border-color:      color($colors, dark);
+$tabs-ios-tab-font-size:             1.4rem;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -87,22 +100,11 @@ $alert-md-input-border-color:         color($colors, dark);
 $badge-md-border-radius:              10px;
 $toggle-md-active-color:              color($colors, primary);
 $toggle-md-track-background-color-on: lighten($toggle-md-active-color, 15%);
-
+$tabs-md-tab-font-size:               1.5rem;
+$tabs-md-tab-font-size-active:        1.8rem;
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
-
-// App Theme
-// --------------------------------------------------
-// Ionic apps can have different themes applied, which can
-// then be future customized. This import comes last
-// so that the above variables are used and Ionic's
-// default are overridden.
-
-@import "ionic.theme.dark";
 
 
 // Ionicons

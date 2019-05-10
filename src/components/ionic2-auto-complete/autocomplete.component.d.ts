@@ -1,5 +1,6 @@
 import { EventEmitter, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+
 export declare class AutoCompleteComponent implements ControlValueAccessor {
     dataProvider: any;
     options: any;
