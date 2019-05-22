@@ -1,3 +1,4 @@
+import { Filter } from "./../../models/filter.model";
 import { UtilsService } from "./../../services/utils.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
@@ -5,6 +6,7 @@ import { Stats } from "@modelsPRN/stats.model";
 import { Category } from "@modelsPRN/category.model";
 import _ from "lodash";
 import { Objectif } from "@modelsPRN/objectif.model";
+import { ObjectifsService } from "@servicesPRN/objectifs.service";
 
 @Component({
   selector: "stats-card",
@@ -12,9 +14,7 @@ import { Objectif } from "@modelsPRN/objectif.model";
 })
 export class weekStatsHomeComponent implements OnInit {
   @Input("stats") stats: Stats;
-
-  @Input()
-  objectifs: Objectif[];
+  @Input("weekStatsTab") weekStatsTab: boolean;
 
   colors: any;
   categories: Category[] = [];
@@ -22,8 +22,22 @@ export class weekStatsHomeComponent implements OnInit {
   flipped: boolean = false;
   categoriesJson: any;
   importancesJson: any;
+  objectifsFiltered: any = {
+    category: {}
+  };
+  objectifs;
+  objectifsDisplayed: any = {
+    list: [],
+    title: null,
+    categoryMode: false,
+    icon: null,
+    color: null
+  };
 
-  constructor(private utilsService: UtilsService) {
+  constructor(
+    private utilsService: UtilsService,
+    private objectifsService: ObjectifsService
+  ) {
     this.colors = AppConstants.colors;
   }
 
@@ -44,8 +58,85 @@ export class weekStatsHomeComponent implements OnInit {
     }
   }
 
-  showListObjectifs(): void {
-    this.flipped = !this.flipped;
+  showListObjectifs(
+    type: "all" | "done" | "reportCount" | "category",
+    category?: Category
+  ): void {
+    this.objectifsDisplayed.categoryMode = type === "category";
+
+    if (type !== "category" && this.objectifsFiltered[type] != null) {
+      this.objectifsDisplayed.list = this.objectifsFiltered[type];
+      this.objectifsDisplayed.title = AppConstants.statsFilters[type].title;
+      this.objectifsDisplayed.icon = AppConstants.statsFilters[type].icon;
+      this.objectifsDisplayed.color = AppConstants.statsFilters[type].color;
+      
+      this.flipped = true;
+      return;
+    } else if (
+      type === "category" &&
+      this.objectifsFiltered[type][category.id] != null
+    ) {
+      this.objectifsDisplayed.list = this.objectifsFiltered[type][category.id];
+      this.objectifsDisplayed.title = category.title;
+      this.objectifsDisplayed.icon = category.icon;
+      this.objectifsDisplayed.color = category.color;
+      this.flipped = true;
+      return;
+    }
+
+    let filter: Filter;
+
+    switch (type) {
+      case "all": {
+        this.objectifsFiltered["all"] = this.stats.objectifs;
+        this.objectifsDisplayed.list = this.objectifsFiltered["all"];
+        break;
+      }
+      case "done": {
+        filter = { criteria: "done", value: true };
+        break;
+      }
+      case "reportCount": {
+        filter = {
+          criteria: "reportCount",
+          value: ">=NUMBER" + AppConstants.separator + "1",
+          custom: true
+        };
+        break;
+      }
+      case "category": {
+        filter = { criteria: "category", value: category.id };
+      }
+    }
+
+    if (type !== "category") {
+      this.objectifsDisplayed.title = AppConstants.statsFilters[type].title;
+      this.objectifsDisplayed.icon = AppConstants.statsFilters[type].icon;
+      this.objectifsDisplayed.color = AppConstants.statsFilters[type].color;
+
+      if (type != "all") {
+        this.objectifsFiltered[type] = this.objectifsService.filterObjectifs(
+          [filter],
+          this.stats.objectifs
+        );
+      }
+
+      this.objectifsDisplayed.list = this.objectifsFiltered[type];
+    } else if (type === "category") {
+      this.objectifsDisplayed.title = category.title;
+      this.objectifsDisplayed.icon = category.icon;
+      this.objectifsDisplayed.color = category.color;
+      this.objectifsFiltered[type][
+        category.id
+      ] = this.objectifsService.filterObjectifs([filter], this.stats.objectifs);
+      this.objectifsDisplayed.list = this.objectifsFiltered[type][category.id];
+    }
+
+    this.flipped = true;
+  }
+
+  hideListObjectifs(): void {
+    this.flipped = false;
   }
 
   private constructCategories() {

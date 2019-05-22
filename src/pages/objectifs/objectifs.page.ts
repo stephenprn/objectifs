@@ -1,3 +1,4 @@
+import { UiService } from '@servicesPRN/ui.service';
 import { Component, ViewChild } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
 import { DatePicker, DatePickerOptions } from "@ionic-native/date-picker";
@@ -69,7 +70,8 @@ export class ObjectifsPage {
     private objectifsLaterService: ObjectifsLaterService,
     private utilsService: UtilsService,
     private keyboard: Keyboard,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private uiService: UiService
   ) {
     // Useful for checkWeekStats()
     this.week1 = new Date(new Date().getFullYear(), 0, 4);
@@ -216,7 +218,7 @@ export class ObjectifsPage {
     let buttons: ActionSheetButton[] = [
       {
         text: "Supprimer",
-        cssClass: "buttonDeleteActionSheet",
+        cssClass: "redText",
         handler: () => {
           this.updatingObj = true;
           this.showDelete(obj);
@@ -350,6 +352,11 @@ export class ObjectifsPage {
         {
           text: "Sauvegarder",
           handler: (data: any) => {
+            if (data.title == null || data.title == "") {
+              this.uiService.displayToast('Vous devez entrer un titre')
+              return false;
+            }
+
             const oldTitle: string = _.cloneDeep(objectif.title);
 
             objectif.title = data.title;
@@ -371,6 +378,7 @@ export class ObjectifsPage {
     let buttons: AlertButton[] = [
       {
         text: "Supprimer",
+        cssClass: 'redText',
         handler: () => {
           this.objectifsService.delete(objectif);
           this.notificationsService.delete(objectif);
@@ -393,6 +401,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Tous les obj. associés",
+        cssClass: 'redText',
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic }
@@ -411,6 +420,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Les obj. associés à venir",
+        cssClass: 'redText',
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic },
@@ -434,6 +444,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Les obj. associés passés",
+        cssClass: 'redText',
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic },

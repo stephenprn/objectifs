@@ -287,6 +287,7 @@ export class ObjectifsService {
     filters.forEach((filter: Filter) => {
       let filterFunction;
       let dateFilter: Date;
+      let numberValue: number;
 
       if (filter.custom) {
         const type: string = filter.value.substr(
@@ -307,6 +308,36 @@ export class ObjectifsService {
             dateFilter = this.getDateFilter(filter);
             filterFunction = (obj: Objectif) => {
               if (this.dateService.getDateFromString(obj.date) <= dateFilter) {
+                return obj;
+              }
+            };
+            break;
+          case ">=NUMBER":
+            numberValue = Number(
+              filter.value.substr(
+                filter.value.indexOf(AppConstants.separator) +
+                  AppConstants.separator.length,
+                filter.value.length - 1
+              )
+            );
+
+            filterFunction = (obj: Objectif) => {
+              if (obj[filter.criteria] >= numberValue) {
+                return obj;
+              }
+            };
+            break;
+          case "<=NUMBER":
+            numberValue = Number(
+              filter.value.substr(
+                filter.value.indexOf(AppConstants.separator) +
+                  AppConstants.separator.length,
+                filter.value.length - 1
+              )
+            );
+
+            filterFunction = (obj: Objectif) => {
+              if (obj[filter.criteria] <= numberValue) {
                 return obj;
               }
             };

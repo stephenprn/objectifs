@@ -1,6 +1,8 @@
 <ion-content class="noScroll">
-  <ion-backdrop (click)="closeFab(fab)" class="fabBackDrop" [ngClass]="{'fabBackDropHidden': !backDrop.displayed}" [style.z-index]="backDrop.active ? '500' : '-999'" [style.opacity]="backDrop.displayed ? '0.26' : '0'"></ion-backdrop>
-  <stats-card [objectifs]="objectifsWeek" [stats]="weekStats" (click)="openWeekStats()"></stats-card>
+  <ion-backdrop (click)="closeFab(fab)" class="fabBackDrop" [ngClass]="{'fabBackDropHidden': !backDrop.displayed}"
+    [style.z-index]="backDrop.active ? '500' : '-999'" [style.opacity]="backDrop.displayed ? '0.26' : '0'">
+  </ion-backdrop>
+  <stats-card [stats]="weekStats"></stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">
       <h1 (click)="goToDay(day.date)">
@@ -13,13 +15,14 @@
           <ion-scroll [style.height]="10 * (day.objectifs.length) + 'vh'" scrollY="true">
             <ion-list>
               <ion-item (click)="showActions(obj)" *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;">
-                <ion-icon name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
-                  item-start></ion-icon>
+                <ion-icon name="{{categoriesJson[obj.category].icon}}"
+                  [ngStyle]="{ color: categoriesJson[obj.category].color }" item-start></ion-icon>
                 <div [ngClass]="{'done': obj.done}">
                   {{obj.title}}
                 </div>
                 <p>
-                  <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+                  <ion-icon name="{{importancesJson[obj.importance].icon}}"
+                    [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
                   <span *ngIf="obj.description === '' || obj.description == null">
                     Importance {{importancesJson[obj.importance].title}}
                   </span>
@@ -30,27 +33,26 @@
                     {{obj.description | slice:0:limitDescription}}...
                   </span>
                 </p>
-                <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}</ion-badge>
+                <ion-badge item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">{{obj.reportCount}}
+                </ion-badge>
               </ion-item>
             </ion-list>
           </ion-scroll>
         </ion-card>
       </div>
-      <div *ngIf="day.objectifs.length === 0">
-        <ion-card>
-          <ion-card-header>
-            Aucun objectif pour le moment !
-          </ion-card-header>
-          <ion-card-content>
-            <div>
-              Vous n'avez fixé aucun objectif pour ce jour.
-            </div>
-            <button class="buttonAddObj" ion-button outline (click)="showAdd()">Ajouter un objectif</button>
-          </ion-card-content>
-        </ion-card>
+      <div class="nothing-container" *ngIf="day.objectifs.length === 0">
+        <img class="nothing-logo" src="assets/imgs/logo.png">
+        <div class="nothing-text">
+          Vous n'avez fixé aucun objectif pour ce jour.
+        </div>
       </div>
     </ion-slide>
   </ion-slides>
+
+  <button class="button-add" ion-button icon-start full (click)="showAdd($event, fab)">
+    <ion-icon name="add"></ion-icon>
+    Ajouter un objectif
+  </button>
 
   <ion-fab right bottom #fab>
     <ion-badge color="danger">{{nbrLater}}</ion-badge>
@@ -58,9 +60,6 @@
       <ion-icon name="flag"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button ion-fab (click)="showAdd($event, fab)">
-        <ion-icon name="add"></ion-icon>
-      </button>
       <button ion-fab (click)="showAddLater($event, fab)">
         <ion-icon name="time"></ion-icon>
       </button>

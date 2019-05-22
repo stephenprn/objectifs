@@ -63,8 +63,8 @@
   margin-top: 10px;
 }
 
-.buttonDeleteActionSheet {
-  background-color: color($colors, danger) !important;
+.redText {
+  color: color($colors, danger) !important;
 }
 
 .alert-sub-title {
@@ -101,7 +101,6 @@ ion-slide {
   border-bottom-color: transparent !important;
   box-shadow: unset !important;
 }
-
 // ion-card {
 //   background-image: linear-gradient(to bottom right, color($colors, material-dark, contrast), color($colors, darker)) !important;
 // }

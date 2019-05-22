@@ -1,4 +1,5 @@
-<div class="flip-container" *ngIf="stats && !stats.isEmpty()" [ngClass]="{ 'flipped': flipped, 'cardFull': stats && !stats.isEmpty() }" (click)="stats.objectifs != null && showListObjectifs()">
+<div class="flip-container" *ngIf="stats && !stats.isEmpty()"
+  [ngClass]="{ 'flipped': flipped, 'cardFull': stats && !stats.isEmpty() }">
   <div class="flipper">
     <ion-card class="front">
       <ion-card-header text-center *ngIf="!weekStatsPage">
@@ -7,14 +8,14 @@
       <ion-card-content *ngIf="!stats.isEmpty()">
         <ion-grid text-center>
           <ion-row justify-content-center>
-            <ion-col>
+            <ion-col (click)="stats.objectifs != null && showListObjectifs('all')">
               <div class="numberStat">
                 {{stats.total}}
                 <ion-icon name="flag" [style.color]="colors.blue"></ion-icon>
               </div>
               <div class="labelStat">objectifs fixés</div>
             </ion-col>
-            <ion-col>
+            <ion-col (click)="stats.objectifs != null && stats.done != 0 && showListObjectifs('done')">
               <div class="numberStat">
                 {{stats.done}}
                 <ion-icon name="checkmark" [style.color]="colors.green"></ion-icon>
@@ -22,7 +23,8 @@
               <div class="labelStat">objectifs atteints</div>
             </ion-col>
           </ion-row>
-          <ion-row justify-content-center>
+          <ion-row justify-content-center
+            (click)="stats.objectifs != null && stats.reports != 0 && showListObjectifs('reportCount')">
             <ion-col>
               <div class="numberStat">
                 {{stats.reports}}
@@ -32,24 +34,33 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <ion-list *ngIf="categories.length > 0">
-          <ion-item *ngFor="let category of categories">
-            <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }" item-start></ion-icon>
-            <span item-start>
-              {{category.title}}
-            </span>
-            <span item-end>
-              {{category.number.done + '/' + category.number.total}}
-            </span>
-          </ion-item>
-        </ion-list>
+        <ion-scroll scrollY="true" [style.height]="'calc(' + (7 * (categories.length)) + 'vh)'" [ngClass]="{ 'weekStatsTabCategory': weekStatsTab }" *ngIf="categories.length > 0">
+          <ion-list>
+            <ion-item *ngFor="let category of categories"
+              (click)="stats.objectifs != null && showListObjectifs('category', category)">
+              <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }" item-start></ion-icon>
+              <span item-start>
+                {{category.title}}
+              </span>
+              <span item-end>
+                {{category.number.done + '/' + category.number.total}}
+              </span>
+            </ion-item>
+          </ion-list>
+        </ion-scroll>
       </ion-card-content>
     </ion-card>
-    <ion-card class="back" *ngIf="stats && stats.objectifs" [style.height]="7 * (stats.objectifs.length) + 'vh'">
-      <ion-scroll [style.height]="7 * (stats.objectifs.length) + 'vh'" scrollY="true">
+    <ion-card (click)="hideListObjectifs()" class="back" *ngIf="stats && stats.objectifs"
+      [style.height]="'calc(' + 7 * (objectifsDisplayed.list.length) + 'vh + 40px)'">
+      <ion-card-title>
+        <ion-icon name="{{objectifsDisplayed.icon}}" [style.color]="objectifsDisplayed.color"></ion-icon>
+        {{objectifsDisplayed.title}}
+      </ion-card-title>
+      <ion-scroll [ngClass]="{ 'weekStatsTab': weekStatsTab }"
+        [style.height]="7 * (objectifsDisplayed.list.length) + 'vh'" scrollY="true">
         <ion-list>
-          <ion-item *ngFor="let obj of stats.objectifs; trackBy: trackObjectifsFunction;">
-            <ion-icon name="{{categoriesJson[obj.category].icon}}"
+          <ion-item *ngFor="let obj of objectifsDisplayed.list; trackBy: trackObjectifsFunction;">
+            <ion-icon *ngIf="!objectifsDisplayed.categoryMode" name="{{categoriesJson[obj.category].icon}}"
               [ngStyle]="{ color: categoriesJson[obj.category].color }" item-start></ion-icon>
             <div [ngClass]="{'done': obj.done}">
               <ion-icon name="{{importancesJson[obj.importance].icon}}"

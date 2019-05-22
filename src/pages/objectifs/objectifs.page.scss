@@ -27,12 +27,12 @@ page-objectifs {
   }
 
   h1 {
-    margin-top:1rem;
+    margin-top: 1rem;
   }
 
   ion-scroll {
     // 100vh - (card height) - (slide_title height) - (slide_progress_bar height) - margin
-    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px);
+    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height});
   }
 
   ion-scroll .scroll-content {
@@ -52,6 +52,33 @@ page-objectifs {
 
     100% {
       opacity: 0.26;
+    }
+  }
+
+  ion-fab {
+    bottom: calc(12px + #{$button-add-height}) !important;
+  }
+
+  .button-add {
+    position: absolute;
+    bottom: 0;
+    height: $button-add-height;
+    margin-bottom: 0;
+    z-index: 3;
+  }
+
+  .nothing-container {
+    text-align: center;
+    top: 13%;
+    position: absolute;
+
+    &>.nothing-logo {
+      width: 40vw;
+      filter: opacity(20%);
+    }
+
+    &>.nothing-text {
+      padding: 20px 30px;
     }
   }
 }

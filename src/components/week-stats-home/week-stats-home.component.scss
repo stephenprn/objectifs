@@ -1,9 +1,18 @@
 stats-card {
-  ion-scroll {
-    max-height: calc(100vh - 13.5rem);
+  ion-scroll:not(.weekStatsTab):not(.weekStatsTabCategory) {
+    max-height: calc(100vh - 13.5rem - 40px);
   }
-  ion-scroll .scroll-content {
+
+  ion-scroll:not(.weekStatsTab):not(.weekStatsTabCategory) .scroll-content {
     overflow-y: auto !important;
+  }
+
+  .weekStatsTab {
+    max-height: calc(100vh - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px);
+  }
+
+  .weekStatsTabCategory {
+    max-height: calc(100vh - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px - 120px);
   }
 
   ion-item {
@@ -25,12 +34,12 @@ stats-card {
 
   ion-card {
     /* Set our transitions up. */
-    transition: height 0.8s ease;
+    // transition: height 0.8s ease;
   }
 
   .cardEmpty {
     //(header) + (content) + adjust
-    height: $week-stats-card-empty-height;
+    //height: $week-stats-card-empty-height;
   }
 
   .cardFull {
@@ -47,7 +56,7 @@ stats-card {
   }
 
   ion-grid {
-    height: 100%;
+    height: 140px;
   }
 
   ion-row {
@@ -127,8 +136,23 @@ stats-card {
 
   /* back, initially hidden pane */
   .back {
+    &>ion-scroll {
+      position: initial !important;
+
+      &>.scroll-content {
+        margin-top: 50px;
+      }
+    }
+
     transform: rotateY(180deg);
     max-height: calc(100vh - 13.5rem);
     margin-top: 10px;
+
+    &>ion-card-title {
+      text-align: center;
+      color: #fff;
+      font-size: 2.1rem;
+      height: 40px;
+    }
   }
 }
