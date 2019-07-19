@@ -19,7 +19,11 @@ export class StatsPage {
     private viewCtrl: ViewController
   ) {
     this.tabs = [
-      { page: WeekStatsPage, title: AppConstants.statsPages.weekStats.title },
+      {
+        page: WeekStatsPage,
+        title: AppConstants.statsPages.weekStats.title,
+        params: { date: this.navParams.get("date") }
+      },
       {
         page: GeneralStatsPage,
         title: AppConstants.statsPages.generalStats.title

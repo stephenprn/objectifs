@@ -13,7 +13,7 @@
 </ion-header>
 <ion-content class="noScroll">
   <ion-tabs>
-    <ion-tab *ngFor="let tab of tabs" tabTitle="{{tab.title}}" [root]="tab.page">
+    <ion-tab *ngFor="let tab of tabs" tabTitle="{{tab.title}}" [root]="tab.page" [rootParams]="tab.params">
     </ion-tab>
   </ion-tabs>
 </ion-content>

@@ -17,6 +17,7 @@ export class UiService {
     public displaySimpleAlert(title: string, subTitle: string, message?: string) {
         const alert: Alert = this.alertCtrl.create({
             title: title,
+            enableBackdropDismiss: true,
             subTitle: subTitle,
             message: message,
             buttons: ['OK']

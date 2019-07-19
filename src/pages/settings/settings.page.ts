@@ -60,6 +60,7 @@ export class SettingsPage {
         let alert: Alert = this.alertCtrl.create({
             title: 'Mot de passe',
             inputs: inputs,
+            enableBackdropDismiss: true,
             buttons: [
                 {
                     text: 'Annuler',

@@ -1,36 +1,45 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="saveDraft()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
-      Ajouter un objectif
+      {{ updateMode ? 'Modifier un objectif': 'Ajouter un objectif'}}
     </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismissModal()">
-        <span ion-text color="primary" showWhen="ios">Annuler</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="displayConfirmationDismiss()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="submit()">
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="noScroll">
-  <form [formGroup]="formGroup" validate (ngSubmit)="submit()">
+  <form [formGroup]="formGroup" validate>
     <ion-card>
       <ion-auto-complete (tap)="checkWarning('title')" [ngClass]="{ 'warning': errorsAfterSubmit.title }"
-        [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title" #autocomplete></ion-auto-complete>
+        [dataProvider]="suggestionsService" [options]="{ placeholder : 'Titre' }" formControlName="title" #autocomplete>
+      </ion-auto-complete>
 
-      <button class="timeButton" [style.visibility]="isLaterEmpty ? 'hidden': ''" type="button" (click)="showAddedForLater()"
-        ion-button icon-only clear>
-        <ion-icon name="time"></ion-icon>
+      <button class="timeButton" [style.visibility]="isLaterEmpty || updateId != null ? 'hidden': ''" type="button"
+        (click)="showAddedForLater()" ion-button icon-only clear>
+        <ion-icon name="document"></ion-icon>
       </button>
 
       <ion-item class="descriptionField noValidationColor">
-        <ion-textarea placeholder="Description" formControlName="description"></ion-textarea>
+        <ion-textarea maxlength="300" placeholder="Description" formControlName="description"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <button text-capitalize class="importanceButton" *ngFor="let imp of importances" [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : ''), 'border-color': imp.color }"
-          [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" (click)="selectImportance(imp)" type="button"
-          color="dark" ion-button round>
+        <button text-capitalize class="importanceButton" *ngFor="let imp of importances"
+          [ngStyle]="{ 'color': (imp.selected ? '#33333d' : imp.color), 'background-color': (imp.selected ? imp.color : ''), 'border-color': imp.color }"
+          [ngClass]="{ 'button-outline button-outline-md': !imp.selected }" (click)="selectImportance(imp)"
+          type="button" color="dark" ion-button round>
           <ion-icon class="importanceIcon" name="{{imp.icon}}"></ion-icon>
           {{imp.title}}
         </button>
@@ -41,7 +50,8 @@
           <ion-icon name="calendar" class="iconField"></ion-icon>
           <span class="nameField">Date {{formGroup.get('periodicity').value !== 'punctual' ? 'de début': ''}}</span>
         </ion-label>
-        <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+        <ion-datetime [min]="minYear" [max]="maxDate" formControlName="date" displayFormat="DDD DD/MM/YYYY"
+          pickerFormat="DD MM YYYY" [cancelText]="'annuler'" [doneText]="'ok'"></ion-datetime>
       </ion-item>
       <!-- <div class="errorMsg animated fadeInDown faster" *ngIf="formGroup.controls['date'].invalid && (formGroup.controls['date'].dirty || submitAttempted)">
                 Date requise
@@ -52,23 +62,24 @@
           <ion-icon name="trophy" class="iconField"></ion-icon>
           <span class="nameField">Categorie</span>
         </ion-label>
-        <ion-select formControlName="category">
+        <ion-select [cancelText]="'annuler'" [interface]="'action-sheet'" formControlName="category">
           <ion-option [value]="category.id" *ngFor="let category of categories">
             {{category.title}}
           </ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="formGroup.controls['category'].value === 'other'">
-        <ion-input class="simpleInput" type="text" placeholder="Autre" formControlName="customCategory" clearInput></ion-input>
+      <ion-item class="otherCategoryField noValidationColor" *ngIf="formGroup.controls['category'].value === 'other'">
+        <ion-input class="simpleInput" type="text" placeholder="Autre" formControlName="customCategory" clearInput>
+        </ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="updateId == null">
         <ion-label>
           <ion-icon name="sync" class="iconField"></ion-icon>
           <span class="nameField">Répéter</span>
         </ion-label>
-        <ion-select formControlName="periodicity">
+        <ion-select [cancelText]="'annuler'" [interface]="'action-sheet'" formControlName="periodicity">
           <ion-option [value]="periodicity.id" *ngFor="let periodicity of periodicities">
             {{periodicity.title}}
           </ion-option>
@@ -80,15 +91,19 @@
           <ion-icon name="sync" class="iconField inivisible"></ion-icon>
           Jusqu'à
         </ion-label>
-        <ion-datetime formControlName="dateEndPeriodicity" displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY"></ion-datetime>
+        <ion-datetime [min]="minYear" [max]="maxDate" formControlName="dateEndPeriodicity"
+          displayFormat="DDD DD/MM/YYYY" pickerFormat="DD MM YYYY" [cancelText]="'annuler'" [doneText]="'ok'">
+        </ion-datetime>
       </ion-item>
 
       <button type="button" class="fullButton" *ngIf="formGroup.get('periodicity').value === 'custom'"
         (click)="openPeriodicity()" ion-button outline>{{periodicityCustom.text}}</button>
 
       <ion-item *ngIf="formGroup.get('periodicity').value === 'customDays'">
-        <button class="dayButton" *ngFor="let periodicity of periodicitiesCustomDays" [ngClass]="{ 'button-outline button-outline-md': !periodicity.selected }"
-          (click)="selectPeriodicityCustomDays(periodicity)" type="button" ion-button round>{{periodicity.title}}</button>
+        <button class="dayButton" *ngFor="let day of periodicitiesCustomDays"
+          [ngClass]="{ 'button-outline button-outline-md': !day.selected }"
+          (click)="selectPeriodicityCustomDays(day)" type="button" ion-button
+          round>{{day.title}}</button>
       </ion-item>
 
       <ion-item>
@@ -97,10 +112,6 @@
           <span class="nameField">Peut être reporté</span>
         </ion-label>
         <ion-toggle checked="true" formControlName="reportable"></ion-toggle>
-      </ion-item>
-
-      <ion-item>
-        <button type="submit" ion-button clear item-end>Valider</button>
       </ion-item>
     </ion-card>
   </form>

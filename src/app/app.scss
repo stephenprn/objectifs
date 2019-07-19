@@ -30,10 +30,14 @@
 
 .action-sheet-button {
   color: color($colors, light) !important;
-}
 
-.action-sheet-button.activated {
-  background-color: color($colors, material-dark, contrast) !important;
+  &.action-sheet-cancel {
+    color: color($colors, medium-grey) !important;
+  }
+
+  &.activated {
+    background-color: color($colors, material-dark, contrast) !important;
+  }
 }
 
 .action-sheet-title {
@@ -101,6 +105,12 @@ ion-slide {
   border-bottom-color: transparent !important;
   box-shadow: unset !important;
 }
+
+.action-sheet-selected {
+  color: color($colors, primary) !important;
+  background-color: color($colors, material-dark, medium) !important;
+}
+
 // ion-card {
 //   background-image: linear-gradient(to bottom right, color($colors, material-dark, contrast), color($colors, darker)) !important;
 // }

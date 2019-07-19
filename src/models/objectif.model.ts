@@ -14,4 +14,8 @@ export class Objectif {
     dateEndPeriodicity?: string;
     periodicityCustomNumber?: number;
     periodicityCustomDays?: number[];
+    count?: number;
+    countDone?: number;
+    countColor?: string;
+    selected?: boolean;
 }

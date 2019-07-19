@@ -1,0 +1,15 @@
+page-settings {
+  .settings-card {
+    padding: 0;
+  }
+
+  .modify-password-button {
+    width: 99%;
+    //border: none;
+    //background-color: color($colors, primary);
+
+    &>.button-inner {
+      color: color($colors, primary);
+    }
+  }
+}

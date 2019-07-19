@@ -27,7 +27,7 @@ export class DateService {
         str += '/' + date.getFullYear();
 
         if (reformat) {
-            str = this.formatDateString(str);
+            str = this.formatDateString(str, true);
         }
 
         return str;

@@ -212,7 +212,9 @@ export class AppConstants {
   public static ionFormat: string = "DD/MM/YYYY";
 
   public static toastDefaultConfig: ToastOptions = {
-    duration: 3000
+    duration: 3000,
+    showCloseButton: true,
+    closeButtonText: "OK"
   };
 
   // androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK

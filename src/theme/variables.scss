@@ -46,13 +46,17 @@ $colors: (
   primary:     #1976D2,
   secondary:   #32db64,
   danger:      #A04E4A,
+  danger-clear:rgb(206, 65, 58),
+  orange:      rgb(212, 148, 50),
   light:       #ffffff,
   medium:      #eaeaf7,
+  medium-grey: #C1C1C8,
   grey:        #999,
   dark:        #2e2e38,
   darker:      #1f1f27,
   material-dark: (
     base:      #424250,
+    medium:    #2C4362,
     contrast:  #33333d
   )
 );

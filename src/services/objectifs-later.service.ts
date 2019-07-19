@@ -24,7 +24,7 @@ export class ObjectifsLaterService {
     }
 
     public getAll(): any[] {
-        return this.objectifsLater;
+        return this.objectifsLater.reverse();
     }
 
     public loadStored(): Promise<any[]> {
@@ -55,11 +55,11 @@ export class ObjectifsLaterService {
     }
 
     public add(objLater: any): void {
-        objLater.id = this.getId();
-
-        this.objectifsLater.push(objLater);
-
-        this.saveChanges();
+        this.getId().then((id: number) => {
+            objLater.id = id;
+            this.objectifsLater.push(objLater);
+            this.saveChanges();
+        });
     }
 
     public isListEmpty(): boolean {

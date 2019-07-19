@@ -1,4 +1,10 @@
 page-objectifs {
+  .later-counter-badge {
+    background-color: #ffffff;
+    color: color($colors, primary);
+    margin-right: 10px;
+  }
+
   .done {
     text-decoration: line-through;
     color: #808080;
@@ -24,15 +30,19 @@ page-objectifs {
 
   ion-item {
     height: 10vh;
+
+    &.selected {
+      background-color: color($colors, material-dark, medium);
+    }
   }
 
   h1 {
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   ion-scroll {
     // 100vh - (card height) - (slide_title height) - (slide_progress_bar height) - margin
-    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height});
+    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height});
   }
 
   ion-scroll .scroll-content {

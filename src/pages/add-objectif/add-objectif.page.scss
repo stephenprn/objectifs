@@ -1,4 +1,8 @@
 page-add-objectif {
+  ion-auto-complete {
+    width: calc(100vw - 20px);
+  }
+
   textarea {
     margin-left: 0px !important;
   }
@@ -11,7 +15,12 @@ page-add-objectif {
     border-bottom: 1px solid color($colors, darker);
   }
 
-  .descriptionField > .item-inner {
+  .otherCategoryField {
+    border-bottom: 1px solid color($colors, darker);
+    border-top: 1px solid color($colors, darker);
+  }
+
+  .descriptionField>.item-inner {
     border-bottom-color: unset !important;
     box-shadow: unset !important;
   }
@@ -36,9 +45,9 @@ page-add-objectif {
   }
 
   .inivisible {
-      visibility: hidden;
+    visibility: hidden;
   }
-  
+
   .timeButton {
     left: 85%;
     color: color($colors, light);

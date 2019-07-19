@@ -31,6 +31,7 @@ import { SettingsService } from '@servicesPRN/settings.service';
 import { PasswordPage } from '@pagesPRN/password/password.page';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { GeneralStatsPage } from '@pagesPRN/stats/general-stats/general-stats.page';
+import { LongPressModule } from 'ionic-long-press';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -50,9 +51,11 @@ registerLocaleData(localeFr, 'fr');
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp, {
-            scrollPadding: true
+            scrollPadding: true,
+            dayShortNames: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.' ]
         }),
         AutoCompleteModule,
+        LongPressModule,
         IonicStorageModule.forRoot()
     ],
     bootstrap: [IonicApp],

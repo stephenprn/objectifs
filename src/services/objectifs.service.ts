@@ -16,6 +16,7 @@ export class ObjectifsService {
   objectifsPeriodic: Objectif[];
   id: number;
   idPeriodic: number;
+  colors = AppConstants.progressBarColors;
 
   constructor(
     private suggestionsService: SuggestionsService,
@@ -23,7 +24,7 @@ export class ObjectifsService {
     private uiService: UiService,
     private notificationsService: NotificationsService,
     private storage: Storage
-  ) {}
+  ) { }
 
   public getAll(periodic?: boolean): Objectif[] {
     if (periodic) {
@@ -101,18 +102,26 @@ export class ObjectifsService {
   }
 
   public update(objectif: Objectif): void {
-    const objectifs: Objectif[] = this.filterObjectifs([
-      { criteria: "id", value: objectif.id }
-    ]);
+    let oldObjectif = null;
 
-    if (objectifs == null || objectifs.length === 0) {
+    for (let i = 0; i < this.objectifs.length; i++) {
+      if (this.objectifs[i].id === objectif.id) {
+        oldObjectif = _.cloneDeep(this.objectifs[i]);
+        this.objectifs[i] = _.cloneDeep(objectif);
+        break;
+      }
+    }
+
+    if (oldObjectif == null) {
       this.uiService.displayToast(
         "Erreur lors de la modification de cet objectif, veuillez relancer l'application"
       );
       return;
     }
 
-    objectifs[0] = _.cloneDeep(objectif);
+    this.notificationsService.delete(oldObjectif).then(() => {
+      this.notificationsService.add(objectif);
+    });
 
     this.saveChanges();
   }
@@ -276,13 +285,16 @@ export class ObjectifsService {
   public filterObjectifs(
     filters: Filter[],
     objectifs?: Objectif[],
-    count?: boolean
+    count?: boolean,
+    noClone?: boolean
   ): any {
     if (!objectifs) {
       objectifs = this.objectifs;
     }
 
-    objectifs = _.cloneWith(objectifs);
+    if (!noClone) {
+      objectifs = _.cloneWith(objectifs);
+    }
 
     filters.forEach((filter: Filter) => {
       let filterFunction;
@@ -316,7 +328,7 @@ export class ObjectifsService {
             numberValue = Number(
               filter.value.substr(
                 filter.value.indexOf(AppConstants.separator) +
-                  AppConstants.separator.length,
+                AppConstants.separator.length,
                 filter.value.length - 1
               )
             );
@@ -331,7 +343,7 @@ export class ObjectifsService {
             numberValue = Number(
               filter.value.substr(
                 filter.value.indexOf(AppConstants.separator) +
-                  AppConstants.separator.length,
+                AppConstants.separator.length,
                 filter.value.length - 1
               )
             );
@@ -360,7 +372,7 @@ export class ObjectifsService {
     return this.dateService.getDateFromString(
       filter.value.substr(
         filter.value.indexOf(AppConstants.separator) +
-          AppConstants.separator.length,
+        AppConstants.separator.length,
         filter.value.length - 1
       )
     );
@@ -385,9 +397,61 @@ export class ObjectifsService {
         ) {
           return 1;
         } else {
-          return a.title.localeCompare(b.title);
+          return a.title.localeCompare(b.title, 'fr', { 'sensitivity': 'base' });
         }
       }
     });
+  }
+
+  public manageDuplicates(objectifs: Objectif[], importancesJson: any): Objectif[] {
+    let objectifsCopy = _.cloneDeep(objectifs);
+    let counts: any = {};
+
+    for (let i = objectifsCopy.length - 1; i >= 0; i--) {
+      const obj = objectifsCopy[i];
+
+      if (counts[obj.title] != null) {
+        counts[obj.title].count++;
+
+        if (obj.done) {
+          counts[obj.title].done++;
+        }
+
+        objectifsCopy.splice(i, 1);
+      } else {
+        counts[obj.title] = {};
+        counts[obj.title].count = 1;
+
+        if (obj.done) {
+          counts[obj.title].done = 1;
+        } else {
+          counts[obj.title].done = 0;
+        }
+      }
+    }
+
+    objectifsCopy.forEach((obj: Objectif) => {
+      obj.count = counts[obj.title].count;
+      obj.countDone = counts[obj.title].done;
+
+      if (obj.count > 1) {
+        if (obj.count != obj.countDone) {
+          obj.done = false;
+        }
+
+        const progress = (obj.countDone / obj.count) * 100;
+
+        for (let i = 0; i < this.colors.length; i++) {
+          if (progress <= this.colors[i].value) {
+            obj.countColor = this.colors[i].color;
+            break;
+          }
+        }
+      }
+    });
+
+    this.orderObjectives(objectifsCopy, importancesJson);
+
+    return objectifsCopy;
   }
 }

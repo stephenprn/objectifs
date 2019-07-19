@@ -1,6 +1,6 @@
 import { Filter } from "./../../models/filter.model";
 import { UtilsService } from "./../../services/utils.service";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
 import { Stats } from "@modelsPRN/stats.model";
 import { Category } from "@modelsPRN/category.model";
@@ -12,9 +12,19 @@ import { ObjectifsService } from "@servicesPRN/objectifs.service";
   selector: "stats-card",
   templateUrl: "week-stats-home.component.html"
 })
-export class weekStatsHomeComponent implements OnInit {
+export class weekStatsHomeComponent implements OnInit, OnChanges {
   @Input("stats") stats: Stats;
   @Input("weekStatsTab") weekStatsTab: boolean;
+  @Input("selectionMode") selectionMode: boolean;
+
+  @Output()
+  deleteSelection = new EventEmitter<void>();
+
+  @Output()
+  reportSelection = new EventEmitter<void>();
+
+  @Output()
+  cancelSelection = new EventEmitter<void>();
 
   colors: any;
   categories: Category[] = [];
@@ -41,6 +51,14 @@ export class weekStatsHomeComponent implements OnInit {
     this.colors = AppConstants.colors;
   }
 
+  ngOnChanges(): void {
+    if (this.selectionMode) {
+      this.flipped = true;
+    } else {
+      this.flipped = false;
+    }
+  }
+
   ngOnInit(): void {
     this.constructCategories();
 
@@ -58,6 +76,20 @@ export class weekStatsHomeComponent implements OnInit {
     }
   }
 
+  reportSelect(): void {
+    this.reportSelection.emit();
+  }
+
+  deleteSelect(): void {
+    this.deleteSelection.emit();
+  }
+
+  cancelSelect(): void {
+    setTimeout(() => {
+      this.cancelSelection.emit();
+    }, 50);
+  }
+
   showListObjectifs(
     type: "all" | "done" | "reportCount" | "category",
     category?: Category
@@ -65,18 +97,24 @@ export class weekStatsHomeComponent implements OnInit {
     this.objectifsDisplayed.categoryMode = type === "category";
 
     if (type !== "category" && this.objectifsFiltered[type] != null) {
-      this.objectifsDisplayed.list = this.objectifsFiltered[type];
+      this.objectifsDisplayed.list = this.objectifsService.manageDuplicates(
+        this.objectifsFiltered[type],
+        this.importancesJson
+      );
       this.objectifsDisplayed.title = AppConstants.statsFilters[type].title;
       this.objectifsDisplayed.icon = AppConstants.statsFilters[type].icon;
       this.objectifsDisplayed.color = AppConstants.statsFilters[type].color;
-      
+
       this.flipped = true;
       return;
     } else if (
       type === "category" &&
       this.objectifsFiltered[type][category.id] != null
     ) {
-      this.objectifsDisplayed.list = this.objectifsFiltered[type][category.id];
+      this.objectifsDisplayed.list = this.objectifsService.manageDuplicates(
+        this.objectifsFiltered[type][category.id],
+        this.importancesJson
+      );
       this.objectifsDisplayed.title = category.title;
       this.objectifsDisplayed.icon = category.icon;
       this.objectifsDisplayed.color = category.color;
@@ -89,7 +127,10 @@ export class weekStatsHomeComponent implements OnInit {
     switch (type) {
       case "all": {
         this.objectifsFiltered["all"] = this.stats.objectifs;
-        this.objectifsDisplayed.list = this.objectifsFiltered["all"];
+        this.objectifsDisplayed.list = this.objectifsService.manageDuplicates(
+          this.objectifsFiltered["all"],
+          this.importancesJson
+        );
         break;
       }
       case "done": {
@@ -106,6 +147,7 @@ export class weekStatsHomeComponent implements OnInit {
       }
       case "category": {
         filter = { criteria: "category", value: category.id };
+        break;
       }
     }
 
@@ -121,7 +163,10 @@ export class weekStatsHomeComponent implements OnInit {
         );
       }
 
-      this.objectifsDisplayed.list = this.objectifsFiltered[type];
+      this.objectifsDisplayed.list = this.objectifsService.manageDuplicates(
+        this.objectifsFiltered[type],
+        this.importancesJson
+      );
     } else if (type === "category") {
       this.objectifsDisplayed.title = category.title;
       this.objectifsDisplayed.icon = category.icon;
@@ -129,7 +174,10 @@ export class weekStatsHomeComponent implements OnInit {
       this.objectifsFiltered[type][
         category.id
       ] = this.objectifsService.filterObjectifs([filter], this.stats.objectifs);
-      this.objectifsDisplayed.list = this.objectifsFiltered[type][category.id];
+      this.objectifsDisplayed.list = this.objectifsService.manageDuplicates(
+        this.objectifsFiltered[type][category.id],
+        this.importancesJson
+      );
     }
 
     this.flipped = true;

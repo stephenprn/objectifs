@@ -19,9 +19,9 @@ export class NotificationsService {
     private uiService: UiService,
     private settingsService: SettingsService,
     private storage: Storage
-  ) {}
+  ) { }
 
-  public add(objectif: Objectif): void {
+  public add(objectif: Objectif, number = 1): void {
     const id: number = this.getId(objectif);
     let notification: ILocalNotification;
 
@@ -35,22 +35,20 @@ export class NotificationsService {
           this.get(id).then((notificationBase: ILocalNotification) => {
             notification = notificationBase;
 
-            notification.badge++;
-            notification.title = `Vous avez ${
-              notification.badge
-            } objectifs non-atteints`;
+            notification.badge += number;
 
-            // notification.text += ", " + objectif.title;
-            // if (typeof notification.text === "string") {
-            //   notification.text = [notification.text, objectif.title];
-            // } else if (
-            //   notification.text.length <
-            //   AppConstants.notificationsDefaultParameters.nbrLinesMax
-            // ) {
-            //   notification.text.push(objectif.title);
-            // }
 
-            this.update(notification).then(() => {});
+            if (notification.badge === 1) {
+              notification.title = "Objectif en attente"
+              notification.text = "Vous avez un objectif non-atteint";
+            } else {
+              notification.title = "Objectifs en attente"
+              notification.text = `Vous avez ${
+                notification.badge
+                } objectifs non-atteints`;
+            }
+
+            this.update(notification).then(() => { });
           });
         } else {
           let date: Date = this.dateService.getDateFromString(objectif.date);
@@ -59,6 +57,9 @@ export class NotificationsService {
             min: number;
           } = this.getHoursSettings();
 
+          // const dateTest = new Date();
+          // dateTest.setMinutes(dateTest.getMinutes() + 2);
+
           date.setHours(
             hoursSettings.hour,
             hoursSettings.min,
@@ -66,16 +67,29 @@ export class NotificationsService {
             AppConstants.notificationsDefaultParameters.hourOfDay.ms
           );
 
+          let text: string;
+          let title: string;
+
+          if (number === 1) {
+            text = "Vous avez un objectif non-atteint";
+            title = "Objectif en attente";
+          } else {
+            text = `Vous avez ${number} objectifs non-atteints`;
+            title = "Objectifs en attente";
+          }
+
           notification = {
             id: id,
-            title: "Vous avez un objectif non-atteint",
-            badge: 1,
+            title: title,
+            text: text,
+            badge: number,
             autoClear: AppConstants.notificationsDefaultParameters.autoClear,
             trigger: { at: date },
-            smallIcon: "file://assets/imgs/logo-small.png"
+            smallIcon: "res://n_icon.png",
+            color: '#1976D2'
           };
 
-          this.schedule(notification).then(() => {});
+          this.schedule(notification).then(() => { });
         }
       });
     });
@@ -96,7 +110,7 @@ export class NotificationsService {
           date.setMinutes(hoursSettings.min);
 
           notification.trigger.at = date;
-          this.update(notification).then(() => {});
+          this.update(notification).then(() => { });
         });
 
         resolve();
@@ -146,32 +160,31 @@ export class NotificationsService {
     };
   }
 
-  public delete(objectif: Objectif): void {
-    const id: number = this.getId(objectif);
+  public delete(objectif: Objectif, number = 1): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const id: number = this.getId(objectif);
 
-    this.get(id).then((notification: ILocalNotification) => {
-      if (notification.badge === 1) {
-        this.cancel(id).then((res: any) => {});
-      } else {
-        notification.badge--;
-        notification.title = `Vous avez ${
-          notification.badge
-        } objectifs non-atteints`;
+      this.get(id).then((notification: ILocalNotification) => {
+        if (notification.badge === number) {
+          this.cancel(id).then((res: any) => { });
+        } else {
+          notification.badge = notification.badge - number;
 
-        //let notificationText: string = notification.text.toString();
+          if (notification.badge === 1) {
+            notification.title = "Objectif en attente"
+            notification.text = "Vous avez un objectif non-atteint";
+          } else {
+            notification.title = "Objectifs en attente"
+            notification.text = `Vous avez ${
+              notification.badge
+              } objectifs non-atteints`;
+          }
 
-        //notificationText.replace(", " + objectif.title, "");
-
-        //notification.text = notificationText;
-        // for (let i = 0; i < notification.text.length; i++) {
-        //   if (notification.text[i] === objectif.title) {
-        //     notification.text.slice(i, 1);
-        //     break;
-        //   }
-        // }
-
-        this.update(notification).then(() => {});
-      }
+          this.update(notification).then(() => {
+            resolve();
+          });
+        }
+      });
     });
   }
 

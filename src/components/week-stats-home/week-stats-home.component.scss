@@ -1,6 +1,6 @@
 stats-card {
   ion-scroll:not(.weekStatsTab):not(.weekStatsTabCategory) {
-    max-height: calc(100vh - 13.5rem - 40px);
+    max-height: calc(100vh - 13.3rem - 40px);
   }
 
   ion-scroll:not(.weekStatsTab):not(.weekStatsTabCategory) .scroll-content {
@@ -8,11 +8,11 @@ stats-card {
   }
 
   .weekStatsTab {
-    max-height: calc(100vh - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px);
+    max-height: calc(100vh - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px);
   }
 
   .weekStatsTabCategory {
-    max-height: calc(100vh - (1rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px - 120px);
+    max-height: calc(100vh - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height} - 135px - 120px + 10px);
   }
 
   ion-item {
@@ -45,6 +45,10 @@ stats-card {
   .cardFull {
     // (header) + padding_top_content + 2*row + padding_top_content + padding_content + adjust_value
     height: calc(#{$week-stats-card-full-height} + 20px) !important;
+  }
+
+  .edition-card {
+    height: calc(#{$week-stats-card-full-height} + 10px) !important;
   }
 
   ion-icon {
@@ -106,7 +110,7 @@ stats-card {
   }
 
   .flip-container {
-    height: calc(100vh - 13.5rem);
+    height: calc(100vh - 13.3rem);
   }
 
   /* flip speed goes here */
@@ -145,7 +149,7 @@ stats-card {
     }
 
     transform: rotateY(180deg);
-    max-height: calc(100vh - 13.5rem);
+    max-height: calc(100vh - 13.3rem);
     margin-top: 10px;
 
     &>ion-card-title {
@@ -154,5 +158,45 @@ stats-card {
       font-size: 2.1rem;
       height: 40px;
     }
+  }
+
+  .title-icon {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .edition-button-cancel {
+    margin-top: 15px;
+    color: color($colors, medium);
+    font-size: 1.2rem;
+  }
+
+  .edition-button {
+    width: 100%;
+    border: none;
+
+    &.report {
+      background-color: color($colors, orange);
+    }
+
+    &.delete {
+      background-color: color($colors, danger-clear);
+    }
+
+    &>.button-inner {
+      color: color($colors, medium);
+    }
+  }
+
+  .no-stats-icon {
+    font-size: 8rem;
+    color: #676773;
+  }
+
+  .no-stats-content {
+    justify-content: space-around;
+    flex-direction: column;
+    height: 100%;
+    display: flex;
   }
 }

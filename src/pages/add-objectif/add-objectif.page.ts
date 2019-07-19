@@ -41,29 +41,40 @@ export class AddObjectifPage {
     periodicitiesCustomDays: CustomDayPeriodicity[];
     document: Document;
     isFocus: boolean = false;
+    updateId: number;
+    minYear: number;
+    maxDate: string;
+    objectifUpdated: Objectif;
 
     constructor(public viewCtrl: ViewController, public formBuilder: FormBuilder,
         private objectifsService: ObjectifsService, private dateService: DateService,
         public suggestionsService: SuggestionsService, private navParams: NavParams,
         private alertCtrl: AlertController, private uiService: UiService,
         private objectifsLaterService: ObjectifsLaterService, @Inject(DOCUMENT) document,
-        private utilsService: UtilsService, private notificationsService: NotificationsService, 
+        private utilsService: UtilsService, private notificationsService: NotificationsService,
         private achievementsService: AchievementsService) {
-        const date: string = this.navParams.get('date');
+        let date: string;
+        this.importances = _.cloneDeep(AppConstants.importances);
 
-        // Initial category value: relational
-        this.formGroup = formBuilder.group({
-            title: ['', [Validators.required]],
-            date: [date, [Validators.required]],
-            category: [this.suggestionsService.getCategoryMostUsed(), [Validators.required]],
-            customCategory: ['', []],
-            description: ['', []],
-            reportable: [true, [Validators.required]],
-            periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
-            dateEndPeriodicity: [this.dateService.initDatePeriodic(date), [Validators.required]]
-        });
+        if (this.navParams.get('objectif') == null) {
+            date = this.navParams.get('date');
 
-        this.importances = AppConstants.importances;
+            // Initial category value: relational
+            this.formGroup = formBuilder.group({
+                title: ['', [Validators.required]],
+                date: [date, [Validators.required]],
+                category: [this.suggestionsService.getCategoryMostUsed(), [Validators.required]],
+                customCategory: ['', []],
+                description: ['', []],
+                reportable: [true, [Validators.required]],
+                periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
+                dateEndPeriodicity: [this.dateService.initDatePeriodic(date), [Validators.required]]
+            });
+        } else {
+            const objectif: Objectif = this.navParams.get('objectif');
+            this.patchForm(objectif);
+        }
+
         this.categories = AppConstants.categories;
         this.periodicities = AppConstants.periodicities;
         this.isLaterEmpty = this.objectifsLaterService.isListEmpty();
@@ -72,6 +83,7 @@ export class AddObjectifPage {
         this.periodicityCustom = _.cloneDeep(AppConstants.initialCustomPeriodicity);
         this.periodicitiesCustomDays = _.cloneDeep(AppConstants.customDaysPeriodicities);
         this.getTitlePeriodicityCustom();
+        this.initMinMaxDates();
     }
 
     ngAfterViewChecked() {
@@ -79,8 +91,77 @@ export class AddObjectifPage {
             setTimeout(() => {
                 this.autocomplete.setFocus();
                 this.isFocus = true;
-            }, 500);
+            }, 200);
         }
+    }
+
+    private patchForm(objectif: Objectif, laterMode?: boolean) {
+        const date = this.dateService.formatDateString(objectif.date, true);
+
+        let dateEndPeriodicity;
+
+        if (laterMode && objectif.dateEndPeriodicity != null) {
+            dateEndPeriodicity = this.dateService.formatDateString(objectif.dateEndPeriodicity, true);
+        }
+
+        this.formGroup = this.formBuilder.group({
+            title: [objectif.title, [Validators.required]],
+            date: [date, [Validators.required]],
+            category: [objectif.category, [Validators.required]],
+            customCategory: [objectif.customCategory != null ? objectif.customCategory : '', []],
+            description: [objectif.description, []],
+            reportable: [objectif.reportable, [Validators.required]],
+            periodicity: [laterMode ? objectif.periodicity : AppConstants.initialPeriodicity, [Validators.required]],
+            dateEndPeriodicity: [(laterMode && objectif.dateEndPeriodicity) ? dateEndPeriodicity : this.dateService.initDatePeriodic(date), [Validators.required]]
+        });
+
+        if (!laterMode) {
+            this.updateId = objectif.id;
+        } else {
+            this.idLater = objectif.id;
+
+            if (objectif.periodicity === 'customDays') {
+                for (const id of objectif.periodicityCustomDays) {
+                    const day = this.periodicitiesCustomDays.find(d => d.id === id);
+
+                    if (day != null) {
+                        day.selected = true;
+                    }
+                }
+            }
+        }
+
+        this.importances.forEach((imp: Importance) => {
+            imp.id === objectif.importance ? imp.selected = true : imp.selected = false;
+        });
+    }
+
+    displayConfirmationDismiss(): void {
+        if (!this.formGroup.dirty) {
+            this.dismissModal();
+            return;
+        }
+
+        let alert: Alert = this.alertCtrl.create({
+            title: "Abandonner l'objectif ?",
+            subTitle: "Cet objectif sera supprimé définitivement.",
+            enableBackdropDismiss: true,
+            buttons: [
+                {
+                    text: "Annuler",
+                    role: "destructive"
+                },
+                {
+                    text: "Supprimer",
+                    cssClass: 'redText',
+                    handler: () => {
+                        this.dismissModal();
+                    }
+                }
+            ]
+        });
+
+        alert.present();
     }
 
     dismissModal(): void {
@@ -91,7 +172,7 @@ export class AddObjectifPage {
         const alert: Alert = this.alertCtrl.create({
             title: 'Intervalle personnalisé',
             subTitle: 'Répéter cet objectif tou(te)s les :',
-            enableBackdropDismiss: false,
+            enableBackdropDismiss: true,
             inputs: [
             ],
             buttons: [
@@ -116,7 +197,7 @@ export class AddObjectifPage {
                         } else if (nbr > AppConstants.limitNbrPeriodicity) {
                             this.uiService.displayToast('Le nombre entré est trop élevé');
                             return false;
-                        } 
+                        }
 
                         this.periodicityCustom.number = nbr;
                         this.periodicityCustom.type = type;
@@ -169,12 +250,19 @@ export class AddObjectifPage {
             this.periodicitiesCustomJson[this.periodicityCustom.type].title;
     }
 
-    submit(): void {
+    saveDraft(): void {
+        const objectif = this.submit(true);
+        this.objectifsLaterService.add(objectif);
+        this.dismissModal();
+        this.uiService.displayToast('Brouillon sauvegardé');
+    }
+
+    submit(draft?: boolean): void | Objectif {
         this.formGroup.patchValue({
             title: this.autocomplete.keyword
         });
 
-        if (!this.formGroup.valid) {
+        if (!draft && !this.formGroup.valid) {
             if (!this.formGroup.get('title').valid) {
                 this.errorsAfterSubmit.title = true;
             }
@@ -186,21 +274,21 @@ export class AddObjectifPage {
         if ((this.formGroup.get('periodicity').value !== 'punctual')) {
             const beginDate: Date = this.dateService.getDateFromString(this.formGroup.value.date, true);
             const endDate: Date = this.dateService.getDateFromString(this.formGroup.value.dateEndPeriodicity, true);
-            
-            if (beginDate >= endDate) {
+
+            if (!draft && beginDate >= endDate) {
                 this.uiService.displayToast('La date de début doit être antérieure à la date de fin');
                 return;
             }
         }
 
         let selectedDays: CustomDayPeriodicity[];
-        
+
         if (this.formGroup.get('periodicity').value === 'customDays') {
             selectedDays = this.periodicitiesCustomDays.filter((day: CustomDayPeriodicity) => {
                 return day.selected;
             });
 
-            if (selectedDays.length === 0) {
+            if (!draft && selectedDays.length === 0) {
                 this.uiService.displayToast('Vous devez sélectionner au moins un jour de la semaine');
                 return;
             }
@@ -237,13 +325,24 @@ export class AddObjectifPage {
             objectif.customCategory = this.formGroup.controls['customCategory'].value;
         }
 
-        this.objectifsService.add(objectif);
-        this.achievementsService.checkAchievements();
-        this.notificationsService.add(objectif);
-
         if (this.idLater) {
             this.objectifsLaterService.remove(this.idLater);
         }
+
+        if (draft) {
+            return objectif;
+        }
+
+        if (this.updateId != null) {
+            objectif.id = this.updateId;
+            this.objectifsService.update(objectif);
+        } else {
+            this.objectifsService.add(objectif);
+        }
+
+        this.achievementsService.checkAchievements();
+
+        this.notificationsService.add(objectif);
 
         this.viewCtrl.dismiss(objectif);
     }
@@ -251,7 +350,7 @@ export class AddObjectifPage {
     showAddedForLater(): void {
         const alert = this.alertCtrl.create({
             title: 'Choisissez un objectif',
-            enableBackdropDismiss: false,
+            enableBackdropDismiss: true,
             buttons: [
                 {
                     text: 'Annuler',
@@ -267,10 +366,10 @@ export class AddObjectifPage {
                             return false;
                         }
 
-                        this.formGroup.patchValue({ title: data.title });
-                        this.formGroup.patchValue({ description: data.description });
+                        this.patchForm(data, true);
+                        // this.formGroup.patchValue({ title: data.title });
+                        // this.formGroup.patchValue({ description: data.description });
 
-                        this.idLater = data.id;
                     }
                 }
             ]
@@ -287,7 +386,14 @@ export class AddObjectifPage {
                 type: 'radio',
                 label: obj.title,
                 value: obj,
-                checked: selected
+                checked: selected,
+                handler: (radio: any) => {
+                    const data = radio.value;
+
+                    this.patchForm(data, true);
+
+                    alert.dismiss();
+                }
             });
         });
 
@@ -298,8 +404,8 @@ export class AddObjectifPage {
         this.errorsAfterSubmit[field] = false;
     }
 
-    selectPeriodicityCustomDays(periodicity: CustomDayPeriodicity): void {
-        periodicity.selected = !periodicity.selected;
+    selectPeriodicityCustomDays(day: CustomDayPeriodicity): void {
+        day.selected = !day.selected;
     }
 
     selectImportance(importance: Importance): void {
@@ -314,5 +420,14 @@ export class AddObjectifPage {
                 imp.selected = false;
             }
         });
+    }
+
+    private initMinMaxDates(): void {
+        const today: Date = new Date();
+
+        this.minYear = today.getFullYear() - 2;
+
+        today.setFullYear(today.getFullYear() + 20);
+        this.maxDate = this.dateService.getStringFromDate(today, true);
     }
 }
