@@ -24,7 +24,7 @@ export class ObjectifsLaterService {
     }
 
     public getAll(): any[] {
-        return this.objectifsLater.reverse();
+        return this.objectifsLater;
     }
 
     public loadStored(): Promise<any[]> {
@@ -54,11 +54,14 @@ export class ObjectifsLaterService {
         })
     }
 
-    public add(objLater: any): void {
-        this.getId().then((id: number) => {
-            objLater.id = id;
-            this.objectifsLater.push(objLater);
-            this.saveChanges();
+    public add(objLater: any): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.getId().then((id: number) => {
+                objLater.id = id;
+                this.objectifsLater.push(objLater);
+                this.saveChanges();
+                resolve(id);
+            });
         });
     }
 

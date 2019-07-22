@@ -379,6 +379,10 @@ export class ObjectifsPage {
       }
 
       this.nbrLater = this.objectifsLaterService.getNbr();
+
+      setTimeout(() => {
+        this.nbrLater = this.objectifsLaterService.getNbr();
+      }, AppConstants.draftToastDuration);
     });
   }
 
@@ -568,8 +572,9 @@ export class ObjectifsPage {
         {
           text: "Sauvegarder",
           handler: (data: any) => {
-            this.objectifsLaterService.add(data);
-            this.nbrLater = this.objectifsLaterService.getNbr();
+            this.objectifsLaterService.add(data).then(() => {
+              this.nbrLater = this.objectifsLaterService.getNbr();
+            });
           }
         }
       ]

@@ -217,6 +217,8 @@ export class AppConstants {
     closeButtonText: "OK"
   };
 
+  public static draftToastDuration: number = 5000;
+
   // androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
   public static datepickerDefaultConfig: DatePickerOptions = {
     date: null,

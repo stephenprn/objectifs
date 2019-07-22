@@ -107,8 +107,18 @@ ion-slide {
 }
 
 .action-sheet-selected {
-  color: color($colors, primary) !important;
+  color: color($colors, medium) !important;
   background-color: color($colors, material-dark, medium) !important;
+}
+
+.toast-remove {
+  &>.toast-wrapper {
+    &>.toast-container {
+      &>.toast-button {
+        color: color($colors, danger);
+      }
+    }
+  }
 }
 
 // ion-card {

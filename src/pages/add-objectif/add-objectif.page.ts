@@ -251,10 +251,14 @@ export class AddObjectifPage {
     }
 
     saveDraft(): void {
-        const objectif = this.submit(true);
-        this.objectifsLaterService.add(objectif);
+        if (this.formGroup.dirty) {
+            const objectif = this.submit(true);
+            this.objectifsLaterService.add(objectif).then((id: number) => {
+                this.uiService.displayToastDraft(id);
+            });
+        }
+
         this.dismissModal();
-        this.uiService.displayToast('Brouillon sauvegardé');
     }
 
     submit(draft?: boolean): void | Objectif {
@@ -375,7 +379,9 @@ export class AddObjectifPage {
             ]
         });
 
-        this.objectifsLaterService.getAll().forEach((obj: any) => {
+        const objLater = _.cloneDeep(this.objectifsLaterService.getAll()).reverse();
+
+        objLater.forEach((obj: any) => {
             let selected: boolean = false;
 
             if (this.idLater !== null && this.idLater === obj.id) {
@@ -384,7 +390,7 @@ export class AddObjectifPage {
 
             alert.addInput({
                 type: 'radio',
-                label: obj.title,
+                label: obj.title != null && obj.title != '' ? obj.title + ' - ' + obj.date : '(sans titre) - ' + obj.date,
                 value: obj,
                 checked: selected,
                 handler: (radio: any) => {
