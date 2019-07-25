@@ -16,6 +16,22 @@
 // automatically applied to the <body> element in the app.
 @import "../components/ionic2-auto-complete/auto-complete.scss";
 
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slideUp {
+  animation: slide-up 0.3s linear;
+}
+
 .scroll-content {
   padding-bottom: 0 !important;
 }

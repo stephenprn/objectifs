@@ -1,4 +1,4 @@
-<ion-content class="noScroll">
+<ion-content class="noScroll slideUp">
   <ion-backdrop (click)="closeFab(fab)" class="fabBackDrop" [ngClass]="{'fabBackDropHidden': !backDrop.displayed}"
     [style.z-index]="backDrop.active ? '500' : '-999'" [style.opacity]="backDrop.displayed ? '0.26' : '0'">
   </ion-backdrop>
@@ -14,22 +14,24 @@
       <div *ngIf="day.objectifs.length > 0">
         <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
         <ion-card>
-          <ion-scroll [style.height]="10 * (day.objectifs.length) + 'vh'" scrollY="true">
+          <ion-scroll [style.height]="60 * (day.objectifs.length) + 'px'" scrollY="true">
             <ion-list>
               <ion-item [ngClass]="{ 'selected': obj.selected }" ion-long-press (onPressStart)="select(obj)"
                 *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;">
-                <ion-icon (click)="select(obj)"
+                <div class="importance" [ngStyle]="{ 'background-color': importancesJson[obj.importance].color }">
+                </div>
+                <ion-icon class="category-icon" (click)="select(obj)"
                   name="{{obj.selected ? 'checkmark-circle': categoriesJson[obj.category].icon}}"
                   [ngStyle]="{ color: categoriesJson[obj.category].color }" item-start></ion-icon>
                 <div (click)="objectifClicked(obj)" [ngClass]="{'done': obj.done}">
                   {{obj.title}}
                 </div>
                 <p (click)="objectifClicked(obj)">
-                  <ion-icon name="{{importancesJson[obj.importance].icon}}"
-                    [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+                  <!-- <ion-icon name="{{importancesJson[obj.importance].icon}}"
+                    ></ion-icon>
                   <span *ngIf="obj.description === '' || obj.description == null">
                     Importance {{importancesJson[obj.importance].title}}
-                  </span>
+                  </span> -->
                   <span *ngIf="obj.description.length <= limitDescription">
                     {{obj.description}}
                   </span>
@@ -72,6 +74,9 @@
       <!-- <button ion-fab (click)="showAddLater($event, fab)">
         <ion-icon name="document"></ion-icon>
       </button> -->
+      <button ion-fab (click)="showDrafts($event, fab)">
+        <ion-icon name="copy"></ion-icon>
+      </button>
       <button ion-fab (click)="showSettings($event, fab)">
         <ion-icon name="settings"></ion-icon>
       </button>

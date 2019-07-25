@@ -1,4 +1,6 @@
 page-objectifs {
+  $importance-width: 7px;
+
   .later-counter-badge {
     background-color: #ffffff;
     color: color($colors, primary);
@@ -28,8 +30,20 @@ page-objectifs {
     color: color($colors, medium);
   }
 
+  .importance {
+    width: $importance-width;
+    height: 70%;
+    position: absolute;
+    left: 0;
+    top: 15%;
+    border-radius: 0 20px 20px 0;
+    opacity: 0.7;
+  }
+
   ion-item {
-    height: 10vh;
+    height: $item-height;
+    position: relative;
+    padding-left: calc(#{$importance-width} + 20px) !important;
 
     &.selected {
       background-color: color($colors, material-dark, medium);
@@ -47,6 +61,18 @@ page-objectifs {
 
   ion-scroll .scroll-content {
     overflow-y: auto !important;
+  }
+
+  .category-icon {
+    margin-right: 0 !important;
+  }
+
+  ion-label {
+    height: calc(100% - 26px);
+    display: flex;
+    /* align-items: center; */
+    flex-direction: column;
+    justify-content: center;
   }
 
   ion-badge {
@@ -88,7 +114,7 @@ page-objectifs {
     }
 
     &>.nothing-text {
-      padding: 20px 30px;
+      padding: 20px 40px;
     }
   }
 }

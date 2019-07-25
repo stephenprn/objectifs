@@ -1,3 +1,4 @@
+import { DraftsPage } from '@pagesPRN/drafts/drafts.page';
 import { UiService } from '@servicesPRN/ui.service';
 import { Component, ViewChild } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
@@ -303,6 +304,15 @@ export class ObjectifsPage {
   closeFab(fab: FabContainer) {
     fab.close();
     this.setBackDrop(false);
+  }
+
+  showDrafts(event: any, fab: FabContainer) {
+    this.deselectAll();
+    const modal: Modal = this.modalCtrl.create(DraftsPage);
+
+    this.setBackDrop(false);
+    modal.present();
+    fab.close();
   }
 
   showSettings(event: any, fab: FabContainer) {

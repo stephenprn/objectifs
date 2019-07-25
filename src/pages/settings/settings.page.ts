@@ -15,9 +15,14 @@ export class SettingsPage {
     password: string = '';
     notificationsWorking: boolean = false;
 
-    constructor(private viewCtrl: ViewController, formBuilder: FormBuilder,
-        private alertCtrl: AlertController, private uiService: UiService,
-        private notificationsService: NotificationsService, private settingsService: SettingsService) {
+    constructor(
+        private viewCtrl: ViewController,
+        formBuilder: FormBuilder,
+        private alertCtrl: AlertController,
+        private uiService: UiService,
+        private notificationsService: NotificationsService,
+        private settingsService: SettingsService
+    ) {
         // Initial category value: relational
         this.formGroup = formBuilder.group({
             notifications: [this.settingsService.get('notifications'), [Validators.required]],
@@ -49,7 +54,7 @@ export class SettingsPage {
             }
         ];
 
-        if (this.password != null && this.password  !== '') {
+        if (this.password != null && this.password !== '') {
             inputs.unshift({
                 name: 'oldPassword',
                 placeholder: 'ancien mot de passe',

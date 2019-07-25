@@ -61,6 +61,8 @@ $colors: (
   )
 );
 
+$item-height: 60px;
+
 $background-color:             color($colors, material-dark, base);
 $list-background-color:        color($colors, material-dark, contrast);
 $toolbar-background:           color($colors, material-dark, contrast);

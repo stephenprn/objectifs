@@ -69,13 +69,17 @@ export class ObjectifsLaterService {
         return !(this.objectifsLater.length > 0);
     }
 
-    public remove(id: number): void {
-        const index: number = this.objectifsLater.findIndex((obj: any) => {
-            return obj.id === id;
-        });
+    public remove(id: number | number[]): void {
+        if (typeof id === 'number') {
+            const index: number = this.objectifsLater.findIndex((obj: any) => {
+                return obj.id === id;
+            });
 
-        if (index >= 0) {
-            this.objectifsLater.splice(index, 1);
+            if (index >= 0) {
+                this.objectifsLater.splice(index, 1);
+            }
+        } else {
+            id.forEach(i => this.remove(i));
         }
 
         this.saveChanges();

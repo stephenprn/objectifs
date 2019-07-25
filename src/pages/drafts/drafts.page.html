@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons class="selection-buttons" left *ngIf="selectMode">
+      <button ion-button icon-only (click)="displayConfirmationDelete()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title class="title" [ngClass]="{ 'select-mode': selectMode }">
+      Brouillons
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismissModal()">
+        <span ion-text color="primary" showWhen="ios">Annuler</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-item [ngClass]="{ 'selected': draft.selected }" ion-long-press (onPressStart)="select(draft)" class="draft" ion-item
+        *ngFor="let draft of drafts">
+        <ion-icon class="category-icon" (click)="select(draft)"
+          name="{{draft.selected ? 'checkmark-circle': categoriesJson[draft.category].icon}}"
+          [ngStyle]="{ color: categoriesJson[draft.category].color }" item-start></ion-icon>
+        <div (click)="draftClicked(draft)">
+          {{draft.title != null && draft.title != '' ? draft.title : '(sans titre)'}}
+        </div>
+        <p (click)="draftClicked(draft)">
+          <span *ngIf="draft.description.length <= limitDescription">
+            {{draft.description}}
+          </span>
+          <span *ngIf="draft.description.length > limitDescription">
+            {{draft.description | slice:0:limitDescription}}...
+          </span>
+        </p>
+        <div item-end class="date">
+          {{draft.date}}
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

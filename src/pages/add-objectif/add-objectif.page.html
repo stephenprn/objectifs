@@ -28,7 +28,7 @@
 
       <button class="timeButton" [style.visibility]="isLaterEmpty || updateId != null ? 'hidden': ''" type="button"
         (click)="showAddedForLater()" ion-button icon-only clear>
-        <ion-icon name="document"></ion-icon>
+        <ion-icon name="copy"></ion-icon>
       </button>
 
       <ion-item class="descriptionField noValidationColor">
@@ -101,9 +101,8 @@
 
       <ion-item *ngIf="formGroup.get('periodicity').value === 'customDays'">
         <button class="dayButton" *ngFor="let day of periodicitiesCustomDays"
-          [ngClass]="{ 'button-outline button-outline-md': !day.selected }"
-          (click)="selectPeriodicityCustomDays(day)" type="button" ion-button
-          round>{{day.title}}</button>
+          [ngClass]="{ 'button-outline button-outline-md': !day.selected }" (click)="selectPeriodicityCustomDays(day)"
+          type="button" ion-button round>{{day.title}}</button>
       </ion-item>
 
       <ion-item>

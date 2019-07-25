@@ -1,0 +1,31 @@
+page-drafts {
+  .draft {
+    height: $item-height;
+
+    &.selected {
+      background-color: color($colors, material-dark, medium);
+    }
+  }
+
+  .date {
+    color: color($colors, medium-grey);
+    font-size: 1.4rem;
+  }
+
+  .title {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 10px;
+    transition: all 0.3s linear;
+
+    &.select-mode {
+      left: 40px;
+    }
+  }
+
+  .selection-buttons {
+    margin-left: 10px;
+    animation: slide-up 0.3s linear;
+  }
+}
