@@ -33,7 +33,7 @@
             </ion-label>
             <ion-datetime (ionChange)="notificationHoursChange()"
               [disabled]="notificationsWorking || !formGroup.controls['notifications'].value" displayFormat="HH:mm"
-              formControlName="notificationsHours"></ion-datetime>
+              formControlName="notificationsHours" [cancelText]="'annuler'" [doneText]="'ok'"></ion-datetime>
           </ion-item>
         </ion-item-group>
         <ion-item-group>

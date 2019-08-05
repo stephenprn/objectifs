@@ -14,7 +14,7 @@
       <div *ngIf="day.objectifs.length > 0">
         <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
         <ion-card>
-          <ion-scroll [style.height]="60 * (day.objectifs.length) + 'px'" scrollY="true">
+          <ion-scroll [style.height]="75 * (day.objectifs.length) + 'px'" scrollY="true">
             <ion-list>
               <ion-item [ngClass]="{ 'selected': obj.selected }" ion-long-press (onPressStart)="select(obj)"
                 *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;">

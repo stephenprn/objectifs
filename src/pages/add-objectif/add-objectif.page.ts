@@ -41,7 +41,7 @@ export class AddObjectifPage {
     periodicitiesCustomDays: CustomDayPeriodicity[];
     document: Document;
     isFocus: boolean = false;
-    updateId: number;
+    updateId: number = null;
     minYear: number;
     maxDate: string;
     objectifUpdated: Objectif;
@@ -91,7 +91,7 @@ export class AddObjectifPage {
             setTimeout(() => {
                 this.autocomplete.setFocus();
                 this.isFocus = true;
-            }, 200);
+            }, 400);
         }
     }
 
@@ -251,7 +251,14 @@ export class AddObjectifPage {
     }
 
     saveDraft(): void {
-        if (this.formGroup.dirty) {
+        if (
+            this.updateId == null &&
+            this.formGroup.dirty &&
+            (
+                (this.formGroup.value.title != null && this.formGroup.value.title != '') ||
+                (this.formGroup.value.description != null && this.formGroup.value.description != '')
+            )
+        ) {
             const objectif = this.submit(true);
             this.objectifsLaterService.add(objectif).then((id: number) => {
                 this.uiService.displayToastDraft(id);
