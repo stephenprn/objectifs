@@ -137,6 +137,23 @@ ion-slide {
   }
 }
 
+.nothing-container {
+  text-align: center;
+  top: 13%;
+  position: absolute;
+
+  &>.nothing-logo {
+    width: 40vw;
+    font-size: 40vw;
+    filter: opacity(20%);
+  }
+
+  &>.nothing-text {
+    font-size: 18px;
+    padding: 20px 40px;
+  }
+}
+
 // ion-card {
 //   background-image: linear-gradient(to bottom right, color($colors, material-dark, contrast), color($colors, darker)) !important;
 // }

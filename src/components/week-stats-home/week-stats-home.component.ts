@@ -26,6 +26,9 @@ export class weekStatsHomeComponent implements OnInit, OnChanges {
   @Output()
   cancelSelection = new EventEmitter<void>();
 
+  @Output()
+  checkSelection = new EventEmitter<void>();
+
   colors: any;
   categories: Category[] = [];
   weekStatsPage: boolean = false;
@@ -82,6 +85,10 @@ export class weekStatsHomeComponent implements OnInit, OnChanges {
 
   deleteSelect(): void {
     this.deleteSelection.emit();
+  }
+
+  checkSelect(): void {
+    this.checkSelection.emit();
   }
 
   cancelSelect(): void {

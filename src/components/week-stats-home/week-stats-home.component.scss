@@ -183,6 +183,10 @@ stats-card {
       background-color: color($colors, danger-clear);
     }
 
+    &.check {
+      background-color: color($colors, green);
+    }
+
     &>.button-inner {
       color: color($colors, medium);
     }

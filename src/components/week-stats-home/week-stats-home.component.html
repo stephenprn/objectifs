@@ -1,5 +1,4 @@
-<div class="flip-container" *ngIf="stats && !stats.isEmpty()"
-  [ngClass]="{ 'flipped': flipped, 'cardFull': stats && !stats.isEmpty() }">
+<div class="flip-container" *ngIf="stats && !stats.isEmpty()" [ngClass]="{ 'flipped': flipped, 'cardFull': stats && !stats.isEmpty() }">
   <div class="flipper">
     <ion-card class="front">
       <ion-card-header text-center *ngIf="!weekStatsPage">
@@ -23,8 +22,7 @@
               <div class="labelStat">objectifs atteints</div>
             </ion-col>
           </ion-row>
-          <ion-row justify-content-center
-            (click)="stats.objectifs != null && stats.reports != 0 && showListObjectifs('reportCount')">
+          <ion-row justify-content-center (click)="stats.objectifs != null && stats.reports != 0 && showListObjectifs('reportCount')">
             <ion-col>
               <div class="numberStat">
                 {{stats.reports}}
@@ -34,11 +32,10 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <ion-scroll scrollY="true" [style.height]="'calc(' + (7 * (categories.length)) + 'vh)'"
-          [ngClass]="{ 'weekStatsTabCategory': weekStatsTab }" *ngIf="categories.length > 0">
+        <ion-scroll scrollY="true" [style.height]="'calc(' + (7 * (categories.length)) + 'vh)'" [ngClass]="{ 'weekStatsTabCategory': weekStatsTab }"
+          *ngIf="categories.length > 0">
           <ion-list>
-            <ion-item *ngFor="let category of categories"
-              (click)="stats.objectifs != null && showListObjectifs('category', category)">
+            <ion-item *ngFor="let category of categories" (click)="stats.objectifs != null && showListObjectifs('category', category)">
               <ion-icon name="{{category.icon}}" [ngStyle]="{ color: category.color }" item-start></ion-icon>
               <span item-start>
                 {{category.title}}
@@ -56,20 +53,17 @@
         <ion-icon name="{{objectifsDisplayed.icon}}" [style.color]="objectifsDisplayed.color"></ion-icon>
         {{objectifsDisplayed.title}}
       </ion-card-title>
-      <ion-scroll [ngClass]="{ 'weekStatsTab': weekStatsTab }"
-        [ngStyle]="{ 'height': 'calc(' + 7 * (objectifsDisplayed.list.length) + 'vh + 5px)' }" scrollY="true">
+      <ion-scroll [ngClass]="{ 'weekStatsTab': weekStatsTab }" [ngStyle]="{ 'height': 'calc(' + 7 * (objectifsDisplayed.list.length) + 'vh + 5px)' }"
+        scrollY="true">
         <ion-list>
           <ion-item *ngFor="let obj of objectifsDisplayed.list; trackBy: trackObjectifsFunction;">
-            <ion-icon class="title-icon" *ngIf="!objectifsDisplayed.categoryMode"
-              name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
+            <ion-icon class="title-icon" *ngIf="!objectifsDisplayed.categoryMode" name="{{categoriesJson[obj.category].icon}}" [ngStyle]="{ color: categoriesJson[obj.category].color }"
               item-start></ion-icon>
             <div>
-              <ion-icon name="{{importancesJson[obj.importance].icon}}"
-                [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
+              <ion-icon name="{{importancesJson[obj.importance].icon}}" [ngStyle]="{ color: importancesJson[obj.importance].color }"></ion-icon>
               {{obj.title}}
             </div>
-            <ion-badge [ngStyle]="{ 'background-color': obj.countColor }" item-end
-              *ngIf="(obj.count != obj.countDone) && !(obj.count == 1 && obj.done == 0)">
+            <ion-badge [ngStyle]="{ 'background-color': obj.countColor }" item-end *ngIf="(obj.count != obj.countDone) && !(obj.count == 1 && obj.done == 0)">
               {{obj.countDone + '/' + obj.count}}</ion-badge>
             <span item-end *ngIf="obj.count == obj.countDone">
               {{obj.count != 1 ? obj.count: ''}}
@@ -84,21 +78,25 @@
       </ion-scroll>
     </ion-card>
     <ion-card class="back edition-card" *ngIf="!(stats && stats.objectifs)">
-      <ion-card-header>
+      <ion-card-header text-center>
         Editer la sélection
       </ion-card-header>
       <ion-card-content>
-        <button (click)="reportSelect()" class="edition-button report" round outline ion-button icon-start>
+        <button (click)="checkSelect(); $event.stopPropagation();" class="edition-button check" round outline ion-button icon-start>
+          <ion-icon name="checkmark"></ion-icon>
+          Valider
+        </button>
+        <button (click)="reportSelect(); $event.stopPropagation();" class="edition-button report" round outline ion-button icon-start>
           <ion-icon name="calendar"></ion-icon>
           Reporter
         </button>
-        <button (click)="deleteSelect()" class="edition-button delete" round outline ion-button icon-start>
+        <button (click)="deleteSelect(); $event.stopPropagation();" class="edition-button delete" round outline ion-button icon-start>
           <ion-icon name="trash"></ion-icon>
           Supprimer
         </button>
-        <button (click)="cancelSelect()" class="edition-button-cancel" clear ion-button float-right>
+        <!-- <button (click)="cancelSelect()" class="edition-button-cancel" clear ion-button float-right>
           Annuler
-        </button>
+        </button> -->
       </ion-card-content>
     </ion-card>
   </div>

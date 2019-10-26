@@ -3,7 +3,7 @@
     [style.z-index]="backDrop.active ? '500' : '-999'" [style.opacity]="backDrop.displayed ? '0.26' : '0'">
   </ion-backdrop>
   <stats-card [stats]="weekStats" (click)="selectMode ? null : showStats(null, null)" [selectionMode]="selectMode"
-    (deleteSelection)="deleteSelection()" (reportSelection)="reportSelection()" (cancelSelection)="deselectAll()">
+    (deleteSelection)="deleteSelection()" (checkSelection)="checkSelection()" (reportSelection)="reportSelection()" (cancelSelection)="deselectAll()">
   </stats-card>
   <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
     <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">

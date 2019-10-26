@@ -29,10 +29,10 @@ import { MyApp } from './app.component';
 import { SettingsPage } from '@pagesPRN/settings/settings.page';
 import { SettingsService } from '@servicesPRN/settings.service';
 import { PasswordPage } from '@pagesPRN/password/password.page';
-import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { GeneralStatsPage } from '@pagesPRN/stats/general-stats/general-stats.page';
 import { LongPressModule } from 'ionic-long-press';
 import { DraftsPage } from '@pagesPRN/drafts/drafts.page';
+import { AutoCompleteModule } from '@componentsPRN/ionic2-auto-complete';
 
 registerLocaleData(localeFr, 'fr');
 

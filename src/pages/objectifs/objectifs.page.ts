@@ -794,6 +794,16 @@ export class ObjectifsPage {
     this.objectifs.forEach(obj => obj.selected = false);
   }
 
+  checkSelection(): void {
+    const objectifs = this.objectifs.filter(obj => obj.selected);
+    
+    for (const obj of objectifs) {
+      this.setDone(obj, true);
+    }
+    
+    this.deselectAll();
+  }
+
   deleteSelection(): void {
     let alert: Alert = this.alertCtrl.create({
       title: "Supprimer la sélection",

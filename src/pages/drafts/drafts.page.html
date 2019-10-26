@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card *ngIf="drafts.length > 0">
     <ion-list>
       <ion-item [ngClass]="{ 'selected': draft.selected }" ion-long-press (onPressStart)="select(draft)" class="draft" ion-item
         *ngFor="let draft of drafts">
@@ -42,4 +42,10 @@
       </ion-item>
     </ion-list>
   </ion-card>
+  <div class="nothing-container" *ngIf="drafts.length === 0">
+    <ion-icon class="nothing-logo" name="copy"></ion-icon>
+    <div class="nothing-text">
+      Vous n'avez aucun brouillon pour le moment.
+    </div>
+  </div>
 </ion-content>

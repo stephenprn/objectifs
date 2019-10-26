@@ -102,19 +102,4 @@ page-objectifs {
     margin-bottom: 0;
     z-index: 3;
   }
-
-  .nothing-container {
-    text-align: center;
-    top: 13%;
-    position: absolute;
-
-    &>.nothing-logo {
-      width: 40vw;
-      filter: opacity(20%);
-    }
-
-    &>.nothing-text {
-      padding: 20px 40px;
-    }
-  }
 }
