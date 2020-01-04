@@ -18,4 +18,5 @@ export class Objectif {
     countDone?: number;
     countColor?: string;
     selected?: boolean;
+    slide?: boolean;
 }

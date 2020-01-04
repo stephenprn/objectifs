@@ -218,6 +218,13 @@ export class ObjectifsPage {
       this.importancesJson
     );
     this.objectifsService.saveChanges();
+
+    
+    obj.slide = true;
+    
+    setTimeout(() => {
+      delete obj.slide;
+    }, 500);
   }
 
   objectifClicked(obj: Objectif): void {

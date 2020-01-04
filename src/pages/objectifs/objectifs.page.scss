@@ -1,5 +1,6 @@
 page-objectifs {
   $importance-width: 7px;
+  $check-button-size: 30px;
 
   .later-counter-badge {
     background-color: #ffffff;
@@ -7,8 +8,24 @@ page-objectifs {
     margin-right: 10px;
   }
 
-  .done {
-    text-decoration: line-through;
+  .title.done {
+    position: relative;
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #808080;
+      animation-name: strike;
+      animation-duration: 0.5s;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards; 
+    }
+
     color: #808080;
   }
 
@@ -47,6 +64,10 @@ page-objectifs {
 
     &.selected {
       background-color: color($colors, material-dark, medium);
+    }
+
+    &.slide {
+      animation: slide 0.5s linear;
     }
   }
 
@@ -91,6 +112,10 @@ page-objectifs {
     }
   }
 
+  @keyframes slide {
+    100% { left: 0; }
+  }
+
   ion-fab {
     bottom: calc(12px + #{$button-add-height}) !important;
   }
@@ -101,5 +126,50 @@ page-objectifs {
     height: $button-add-height;
     margin-bottom: 0;
     z-index: 3;
+  }
+
+  .text-button-container {
+    display: flex;
+    align-items: center;
+
+    &>.check-button {
+      border-color: color($colors, dark-grey);
+      color: color($colors, dark-grey);
+      background-color: color($colors, dark-medium);
+      height: $check-button-size;
+      width: $check-button-size;
+      border-radius: calc(#{$check-button-size}/2);
+      margin-left: 10px;
+
+      &.done {
+        background-color: color($colors, green);
+        border-color: color($colors, medium);
+        color: color($colors, medium);
+      }
+    }
+
+    &>.text-container {
+      overflow: hidden;
+      flex-grow: 1;
+      width: calc(100% - 100px);
+    }
+  }
+
+  @keyframes strike{
+    0%   { width : 0; }
+    100% { width: 100%; }
+  }
+
+
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
