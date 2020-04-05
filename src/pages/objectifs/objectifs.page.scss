@@ -12,7 +12,7 @@ page-objectifs {
     position: relative;
 
     &::after {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: 50%;
       left: 0;
@@ -23,7 +23,7 @@ page-objectifs {
       animation-duration: 0.5s;
       animation-timing-function: linear;
       animation-iteration-count: 1;
-      animation-fill-mode: forwards; 
+      animation-fill-mode: forwards;
     }
 
     color: #808080;
@@ -77,7 +77,10 @@ page-objectifs {
 
   ion-scroll {
     // 100vh - (card height) - (slide_title height) - (slide_progress_bar height) - margin
-    max-height: calc(100vh - (#{$week-stats-card-full-height} + 2 * 10px) - (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height});
+    max-height: calc(
+      100vh - (#{$week-stats-card-full-height} + 2 * 10px) -
+        (2rem + 1rem + 2.6rem) - (3vh + 3vh + 2.2rem) - 15px - #{$button-add-height}
+    );
   }
 
   ion-scroll .scroll-content {
@@ -100,6 +103,7 @@ page-objectifs {
     position: absolute;
     z-index: 1;
     right: 0;
+    margin: 0 55px 0 0;
   }
 
   @keyframes appear {
@@ -113,7 +117,9 @@ page-objectifs {
   }
 
   @keyframes slide {
-    100% { left: 0; }
+    100% {
+      left: 0;
+    }
   }
 
   ion-fab {
@@ -132,34 +138,35 @@ page-objectifs {
     display: flex;
     align-items: center;
 
-    &>.check-button {
+    & > .check-button {
       border-color: color($colors, dark-grey);
-      color: color($colors, dark-grey);
+      color: color($colors, medium);
       background-color: color($colors, dark-medium);
       height: $check-button-size;
       width: $check-button-size;
-      border-radius: calc(#{$check-button-size}/2);
+      border-radius: calc(#{$check-button-size}/ 2);
       margin-left: 10px;
 
       &.done {
         background-color: color($colors, green);
-        border-color: color($colors, medium);
-        color: color($colors, medium);
       }
     }
 
-    &>.text-container {
+    & > .text-container {
       overflow: hidden;
       flex-grow: 1;
       width: calc(100% - 100px);
     }
   }
 
-  @keyframes strike{
-    0%   { width : 0; }
-    100% { width: 100%; }
+  @keyframes strike {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
   }
-
 
   @keyframes slide-up {
     0% {
@@ -171,5 +178,9 @@ page-objectifs {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  ion-icon.calendar {
+    margin-right: 4px;
   }
 }

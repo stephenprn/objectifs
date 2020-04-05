@@ -1,12 +1,11 @@
-import { Filter } from "./../../models/filter.model";
-import { UtilsService } from "./../../services/utils.service";
 import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
 import { Stats } from "@modelsPRN/stats.model";
 import { Category } from "@modelsPRN/category.model";
 import _ from "lodash";
-import { Objectif } from "@modelsPRN/objectif.model";
 import { ObjectifsService } from "@servicesPRN/objectifs.service";
+import { UtilsService } from "@servicesPRN/utils.service";
+import { Filter } from "@modelsPRN/filter.model";
 
 @Component({
   selector: "stats-card",

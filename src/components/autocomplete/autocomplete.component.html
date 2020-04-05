@@ -1,0 +1,38 @@
+<div id="autocomplete-container">
+  <input
+    id="input"
+    placeholder="Titre"
+    [(ngModel)]="text"
+    (ngModelChange)="textChanged()"
+    (blur)="blured()"
+    type="text"
+  />
+
+  <button
+    id="draft-button"
+    [style.visibility]="isLaterEmpty || updateId != null ? 'hidden' : ''"
+    *ngIf="draftsButtonShowed"
+    type="button"
+    (click)="draftClicked()"
+    ion-button
+    icon-only
+    clear
+  >
+    <ion-icon name="copy"></ion-icon>
+  </button>
+  <div class="suggestions" *ngIf="suggestions.length > 0">
+    <div
+      (click)="select(sug)"
+      class="suggestion"
+      *ngFor="let sug of suggestions"
+    >
+      <div class="suggestion-text">
+        {{ sug }}
+      </div>
+
+      <button class="delete-button" ion-button icon-only clear (click)="deleteSuggestion(sug)">
+        <ion-icon class="delete-icon" name="trash"></ion-icon>
+      </button>
+    </div>
+  </div>
+</div>

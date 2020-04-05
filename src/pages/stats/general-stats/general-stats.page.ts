@@ -1,17 +1,10 @@
-import { Component, ViewChild } from "@angular/core";
-import { AppConstants } from "@appPRN/app.constants";
-import { Objectif } from "@modelsPRN/objectif.model";
-import { WeekStats } from "@modelsPRN/week-stats.model";
-import { DateService } from "@servicesPRN/date.service";
-import { ObjectifsService } from "@servicesPRN/objectifs.service";
+import { Component } from "@angular/core";
 import { StatsService } from "@servicesPRN/stats.service";
 import {
   NavController,
   NavParams,
-  Slides,
   ViewController
 } from "ionic-angular";
-import _ from "lodash";
 import { Stats } from "@modelsPRN/stats.model";
 
 @Component({

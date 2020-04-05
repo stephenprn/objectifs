@@ -1,0 +1,26 @@
+<ion-content>
+  <div class="splashcreen-container">
+    <img
+      *ngIf="elementsShowed.logo.showed"
+      class="logo"
+      src="assets/imgs/logo.png"
+    />
+    <div class="mountains">
+      <img
+        *ngIf="elementsShowed.mountain1.showed"
+        class="montain one"
+        src="assets/splashcreen/mountain1.png"
+      />
+      <img
+        *ngIf="elementsShowed.mountain2.showed"
+        class="montain two"
+        src="assets/splashcreen/mountain2.png"
+      />
+      <img
+        *ngIf="elementsShowed.mountain3.showed"
+        class="montain three"
+        src="assets/splashcreen/mountain3.png"
+      />
+    </div>
+  </div>
+</ion-content>

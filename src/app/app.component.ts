@@ -1,17 +1,15 @@
 import { Component, isDevMode } from "@angular/core";
-import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
 import { ObjectifsPage } from "@pagesPRN/objectifs/objectifs.page";
 import { ObjectifsService } from "@servicesPRN/objectifs.service";
-import { Platform } from "ionic-angular";
+import { Platform, ModalController } from "ionic-angular";
 import { AchievementsService } from "@servicesPRN/achievements.service";
 import { ObjectifsLaterService } from "@servicesPRN/objectifs-later.service";
 import { SuggestionsService } from "@servicesPRN/suggestions.service";
-import { UiService } from "@servicesPRN/ui.service";
 import { SettingsService } from "@servicesPRN/settings.service";
 import { PasswordPage } from "@pagesPRN/password/password.page";
-import { Keyboard } from "@ionic-native/keyboard";
-import { Meta } from "@angular/platform-browser";
+import { SplashscreenPage } from "@pagesPRN/splashscreen/splashscreen.page";
+import { SplashScreen } from "@ionic-native/splash-screen";
 
 @Component({
   templateUrl: "app.html"
@@ -22,16 +20,19 @@ export class MyApp {
   constructor(
     private platform: Platform,
     statusBar: StatusBar,
-    splashScreen: SplashScreen,
     objectifsService: ObjectifsService,
     achievementsService: AchievementsService,
     objectifsLaterService: ObjectifsLaterService,
     suggestionsService: SuggestionsService,
-    uiService: UiService,
     settingsService: SettingsService,
-    private metaService: Meta
+    modalCtrl: ModalController,
+    public splashScreen: SplashScreen
   ) {
+    this.splashScreen.hide();
     platform.ready().then(() => {
+      let splash = modalCtrl.create(SplashscreenPage);
+      splash.present();
+
       // Load all stored data before enter in app
       let promises = [];
       const time = new Date().getTime();
@@ -64,7 +65,7 @@ export class MyApp {
           this.rootPage = ObjectifsPage;
         }
 
-        splashScreen.hide();
+        // splashScreen.hide();
       });
 
       this.logInfos();

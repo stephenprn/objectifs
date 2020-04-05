@@ -14,7 +14,6 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-@import "../components/ionic2-auto-complete/auto-complete.scss";
 
 @keyframes slide-up {
   0% {
@@ -157,3 +156,9 @@ ion-slide {
 // ion-card {
 //   background-image: linear-gradient(to bottom right, color($colors, material-dark, contrast), color($colors, darker)) !important;
 // }
+.modal-wrapper {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}

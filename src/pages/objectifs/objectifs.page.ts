@@ -1,5 +1,5 @@
-import { DraftsPage } from '@pagesPRN/drafts/drafts.page';
-import { UiService } from '@servicesPRN/ui.service';
+import { DraftsPage } from "@pagesPRN/drafts/drafts.page";
+import { UiService } from "@servicesPRN/ui.service";
 import { Component, ViewChild } from "@angular/core";
 import { AppConstants } from "@appPRN/app.constants";
 import { DatePicker, DatePickerOptions } from "@ionic-native/date-picker";
@@ -164,7 +164,7 @@ export class ObjectifsPage {
         (date: Date) => {
           obj.reportCount++;
 
-          this.notificationsService.delete(obj).then(() => { });
+          this.notificationsService.delete(obj).then(() => {});
           obj.date = this.dateService.getStringFromDate(date);
           this.notificationsService.add(obj);
 
@@ -205,7 +205,7 @@ export class ObjectifsPage {
     if (done) {
       this.getCurrentDay().stats.done++;
       this.weekStats.done++;
-      this.notificationsService.delete(obj).then(() => { });
+      this.notificationsService.delete(obj).then(() => {});
     } else {
       this.getCurrentDay().stats.done--;
       this.weekStats.done--;
@@ -219,9 +219,8 @@ export class ObjectifsPage {
     );
     this.objectifsService.saveChanges();
 
-    
     obj.slide = true;
-    
+
     setTimeout(() => {
       delete obj.slide;
     }, 500);
@@ -315,7 +314,20 @@ export class ObjectifsPage {
 
   showDrafts(event: any, fab: FabContainer) {
     this.deselectAll();
+
     const modal: Modal = this.modalCtrl.create(DraftsPage);
+    modal.onDidDismiss((draft: any) => {
+      console.log(draft);
+      if (draft == null) {
+        return;
+      }
+
+      this.modalCtrl
+        .create(AddObjectifPage, {
+          objectif: draft
+        })
+        .present();
+    });
 
     this.setBackDrop(false);
     modal.present();
@@ -353,7 +365,9 @@ export class ObjectifsPage {
   openUpdateModale(objectif: Objectif): void {
     let objectifCopy = _.cloneDeep(objectif);
 
-    const modal: Modal = this.modalCtrl.create(AddObjectifPage, { objectif: objectifCopy });
+    const modal: Modal = this.modalCtrl.create(AddObjectifPage, {
+      objectif: objectifCopy
+    });
 
     modal.present();
 
@@ -439,7 +453,7 @@ export class ObjectifsPage {
           text: "Sauv.",
           handler: (data: any) => {
             if (data.title == null || data.title == "") {
-              this.uiService.displayToast('Vous devez entrer un titre')
+              this.uiService.displayToast("Vous devez entrer un titre");
               return false;
             }
 
@@ -464,10 +478,10 @@ export class ObjectifsPage {
     let buttons: AlertButton[] = [
       {
         text: "Supprimer",
-        cssClass: 'redText',
+        cssClass: "redText",
         handler: () => {
           this.objectifsService.delete(objectif);
-          this.notificationsService.delete(objectif).then(() => { });
+          this.notificationsService.delete(objectif).then(() => {});
           this.deleteObjectifFromDay(objectif);
           this.updatingObj = false;
           this.checkWeekStats(true);
@@ -487,7 +501,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Tous les obj. associés",
-        cssClass: 'redText',
+        cssClass: "redText",
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic }
@@ -495,7 +509,7 @@ export class ObjectifsPage {
 
           objectifs.forEach((obj: Objectif) => {
             this.objectifsService.delete(obj);
-            this.notificationsService.delete(objectif).then(() => { });
+            this.notificationsService.delete(objectif).then(() => {});
             this.deleteObjectifFromAllDays(obj);
           });
 
@@ -506,7 +520,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Les obj. associés à venir",
-        cssClass: 'redText',
+        cssClass: "redText",
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic },
@@ -519,7 +533,7 @@ export class ObjectifsPage {
 
           objectifs.forEach((obj: Objectif) => {
             this.objectifsService.delete(obj);
-            this.notificationsService.delete(objectif).then(() => { });
+            this.notificationsService.delete(objectif).then(() => {});
             this.deleteObjectifFromAllDays(obj);
           });
 
@@ -530,7 +544,7 @@ export class ObjectifsPage {
 
       buttons.unshift({
         text: "Les obj. associés passés",
-        cssClass: 'redText',
+        cssClass: "redText",
         handler: () => {
           const objectifs: Objectif[] = this.objectifsService.filterObjectifs([
             { criteria: "idPeriodic", value: objectif.idPeriodic },
@@ -543,7 +557,7 @@ export class ObjectifsPage {
 
           objectifs.forEach((obj: Objectif) => {
             this.objectifsService.delete(obj);
-            this.notificationsService.delete(objectif).then(() => { });
+            this.notificationsService.delete(objectif).then(() => {});
             this.deleteObjectifFromAllDays(obj);
           });
 
@@ -635,7 +649,7 @@ export class ObjectifsPage {
         ((date.getTime() - this.week1.getTime()) / 86400000 -
           3 +
           ((this.week1.getDay() + 6) % 7)) /
-        7
+          7
       );
 
     if (!reset && this.weekStats && this.weekStats.weekNbr === weekNbr) {
@@ -798,16 +812,16 @@ export class ObjectifsPage {
 
   deselectAll(): void {
     this.selectMode = false;
-    this.objectifs.forEach(obj => obj.selected = false);
+    this.objectifs.forEach(obj => (obj.selected = false));
   }
 
   checkSelection(): void {
     const objectifs = this.objectifs.filter(obj => obj.selected);
-    
+
     for (const obj of objectifs) {
       this.setDone(obj, true);
     }
-    
+
     this.deselectAll();
   }
 
@@ -823,7 +837,7 @@ export class ObjectifsPage {
         },
         {
           text: "Supprimer",
-          cssClass: 'redText',
+          cssClass: "redText",
           handler: () => {
             const objectifs = this.objectifs.filter(obj => obj.selected);
 
@@ -831,7 +845,9 @@ export class ObjectifsPage {
               return;
             }
 
-            this.notificationsService.delete(objectifs[0], objectifs.length).then(() => { });
+            this.notificationsService
+              .delete(objectifs[0], objectifs.length)
+              .then(() => {});
 
             for (const obj of objectifs) {
               this.objectifsService.delete(obj);
@@ -873,9 +889,11 @@ export class ObjectifsPage {
             obj.date = dateStr;
           }
 
-          this.notificationsService.delete(objectifs[0], objectifs.length).then(() => {
-            this.notificationsService.add(objectifs[0], objectifs.length);
-          });
+          this.notificationsService
+            .delete(objectifs[0], objectifs.length)
+            .then(() => {
+              this.notificationsService.add(objectifs[0], objectifs.length);
+            });
 
           this.objectifsService.saveChanges().then(() => {
             this.deselectAll();
@@ -885,7 +903,6 @@ export class ObjectifsPage {
               this.checkWeekStats(true);
             }, 100);
           });
-
         },
         (err: any) => {
           console.error(err);

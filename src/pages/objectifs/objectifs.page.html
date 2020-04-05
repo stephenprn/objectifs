@@ -1,33 +1,66 @@
 <ion-content class="noScroll slideUp">
-  <ion-backdrop (click)="closeFab(fab)" class="fabBackDrop" [ngClass]="{'fabBackDropHidden': !backDrop.displayed}" [style.z-index]="backDrop.active ? '500' : '-999'"
-    [style.opacity]="backDrop.displayed ? '0.26' : '0'">
+  <ion-backdrop
+    (click)="closeFab(fab)"
+    class="fabBackDrop"
+    [ngClass]="{'fabBackDropHidden': !backDrop.displayed}"
+    [style.z-index]="backDrop.active ? '500' : '-999'"
+    [style.opacity]="backDrop.displayed ? '0.26' : '0'"
+  >
   </ion-backdrop>
-  <stats-card [stats]="weekStats" (click)="selectMode ? null : showStats(null, null)" [selectionMode]="selectMode" (deleteSelection)="deleteSelection()"
-    (checkSelection)="checkSelection()" (reportSelection)="reportSelection()" (cancelSelection)="deselectAll()">
+  <stats-card
+    [stats]="weekStats"
+    (click)="selectMode ? null : showStats(null, null)"
+    [selectionMode]="selectMode"
+    (deleteSelection)="deleteSelection()"
+    (checkSelection)="checkSelection()"
+    (reportSelection)="reportSelection()"
+    (cancelSelection)="deselectAll()"
+  >
   </stats-card>
-  <ion-slides (ionSlideDidChange)="slideDidChange()" initialSlide="{{nbrDaysDisplayed - 1}}">
+  <ion-slides
+    (ionSlideDidChange)="slideDidChange()"
+    initialSlide="{{nbrDaysDisplayed - 1}}"
+  >
     <ion-slide *ngFor="let day of days; trackBy: trackDaysFunction;">
       <h1 (click)="goToDay(day.date)">
         <span *ngIf="day.name">{{day.name}}</span>
         <span *ngIf="!day.name">{{day.dateObject | date: dateFormat}}</span>
       </h1>
       <div *ngIf="day.objectifs.length > 0">
-        <progress-bar *ngIf="day.stats != null" [progress]="day.stats.getPropDone()"></progress-bar>
+        <progress-bar
+          *ngIf="day.stats != null"
+          [progress]="day.stats.getPropDone()"
+        ></progress-bar>
         <ion-card>
-          <ion-scroll [style.height]="75 * (day.objectifs.length) + 'px'" scrollY="true">
+          <ion-scroll
+            [style.height]="75 * (day.objectifs.length) + 'px'"
+            scrollY="true"
+          >
             <ion-list>
-              <ion-item [ngClass]="{ 'selected': obj.selected, 'done': obj.done, 'slide': obj.slide }" ion-long-press (onPressStart)="select(obj)"
-                *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;">
-                <div class="importance" [ngStyle]="{ 'background-color': importancesJson[obj.importance].color }">
-                </div>
-                <ion-icon class="category-icon" (click)="select(obj)" name="{{obj.selected ? 'checkmark-circle': categoriesJson[obj.category].icon}}"
-                  [ngStyle]="{ color: categoriesJson[obj.category].color }" item-start></ion-icon>
+              <ion-item
+                (click)="objectifClicked(obj)"
+                [ngClass]="{ 'selected': obj.selected, 'done': obj.done, 'slide': obj.slide }"
+                ion-long-press
+                (onPressStart)="select(obj)"
+                *ngFor="let obj of day.objectifs; trackBy: trackObjectifsFunction;"
+              >
+                <div
+                  class="importance"
+                  [ngStyle]="{ 'background-color': importancesJson[obj.importance].color }"
+                ></div>
+                <ion-icon
+                  class="category-icon"
+                  (click)="select(obj); $event.stopPropagation();"
+                  name="{{obj.selected ? 'checkmark-circle': categoriesJson[obj.category].icon}}"
+                  [ngStyle]="{ color: categoriesJson[obj.category].color }"
+                  item-start
+                ></ion-icon>
                 <div class="text-button-container">
                   <div class="text-container">
-                    <span class="title" (click)="objectifClicked(obj)" [ngClass]="{'done': obj.done}">
+                    <span class="title" [ngClass]="{'done': obj.done}">
                       {{obj.title}}
                     </span>
-                    <p (click)="objectifClicked(obj)">
+                    <p>
                       <span *ngIf="obj.description.length <= limitDescription">
                         {{obj.description}}
                       </span>
@@ -36,13 +69,22 @@
                       </span>
                     </p>
                   </div>
-                  <button (click)="setDone(obj, !obj.done)" class="check-button" [ngClass]="{'done': obj.done}" ion-button color="light" outline
-                    icon-only>
+                  <button
+                    (click)="setDone(obj, !obj.done); $event.stopPropagation();"
+                    class="check-button"
+                    [ngClass]="{'done': obj.done}"
+                    ion-button
+                    color="light"
+                    outline
+                    icon-only
+                  >
                     <ion-icon name="checkmark"></ion-icon>
                   </button>
                 </div>
-                <ion-badge (click)="objectifClicked(obj)" item-end *ngIf="obj.reportCount != null && obj.reportCount != 0">
-                  <ion-icon name="calendar"></ion-icon>
+                <ion-badge
+                  *ngIf="obj.reportCount != null && obj.reportCount != 0"
+                >
+                  <ion-icon class="calendar" name="calendar"></ion-icon>
                   {{obj.reportCount}}
                 </ion-badge>
               </ion-item>
@@ -51,7 +93,7 @@
         </ion-card>
       </div>
       <div class="nothing-container" *ngIf="day.objectifs.length === 0">
-        <img class="nothing-logo" src="assets/imgs/logo.png">
+        <img class="nothing-logo" src="assets/imgs/logo.png" />
         <div class="nothing-text">
           Vous n'avez fixé aucun objectif pour ce jour.
         </div>
@@ -59,10 +101,19 @@
     </ion-slide>
   </ion-slides>
 
-  <button class="button-add" ion-button icon-start full (click)="showAdd($event, fab)">
+  <button
+    class="button-add"
+    ion-button
+    icon-start
+    full
+    (click)="showAdd($event, fab)"
+  >
     <ion-icon name="add"></ion-icon>
     Ajouter un objectif
-    <ion-badge class="later-counter-badge" *ngIf="nbrLater != null && nbrLater > 0">
+    <ion-badge
+      class="later-counter-badge"
+      *ngIf="nbrLater != null && nbrLater > 0"
+    >
       {{nbrLater}}
     </ion-badge>
   </button>
@@ -72,9 +123,6 @@
       <ion-icon name="flag"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <!-- <button ion-fab (click)="showAddLater($event, fab)">
-        <ion-icon name="document"></ion-icon>
-      </button> -->
       <button ion-fab (click)="showDrafts($event, fab)">
         <ion-icon name="copy"></ion-icon>
       </button>

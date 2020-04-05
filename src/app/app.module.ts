@@ -32,7 +32,8 @@ import { PasswordPage } from '@pagesPRN/password/password.page';
 import { GeneralStatsPage } from '@pagesPRN/stats/general-stats/general-stats.page';
 import { LongPressModule } from 'ionic-long-press';
 import { DraftsPage } from '@pagesPRN/drafts/drafts.page';
-import { AutoCompleteModule } from '@componentsPRN/ionic2-auto-complete';
+import { AutocompleteComponent } from '@componentsPRN/autocomplete/autocomplete.component';
+import { SplashscreenPage } from '@pagesPRN/splashscreen/splashscreen.page';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -40,6 +41,7 @@ registerLocaleData(localeFr, 'fr');
     declarations: [
         MyApp,
         ObjectifsPage,
+        SplashscreenPage,
         PasswordPage,
         StatsPage,
         WeekStatsPage,
@@ -48,6 +50,7 @@ registerLocaleData(localeFr, 'fr');
         SettingsPage,
         ProgressBarComponent,
         weekStatsHomeComponent,
+        AutocompleteComponent,
         DraftsPage
     ],
     imports: [
@@ -56,7 +59,6 @@ registerLocaleData(localeFr, 'fr');
             scrollPadding: true,
             dayShortNames: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.']
         }),
-        AutoCompleteModule,
         LongPressModule,
         IonicStorageModule.forRoot()
     ],
@@ -70,7 +72,8 @@ registerLocaleData(localeFr, 'fr');
         WeekStatsPage,
         AddObjectifPage,
         SettingsPage,
-        DraftsPage
+        DraftsPage,
+        SplashscreenPage
     ],
     providers: [
         StatusBar,

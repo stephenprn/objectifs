@@ -1,9 +1,9 @@
-import { Component, ViewChild, Input, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { SettingsService } from "@servicesPRN/settings.service";
 import { UiService } from "@servicesPRN/ui.service";
 import { NavController } from "ionic-angular";
 import { ObjectifsPage } from "@pagesPRN/objectifs/objectifs.page";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 
 @Component({
   selector: "page-password",
@@ -20,7 +20,7 @@ export class PasswordPage implements OnInit {
     private settingsService: SettingsService,
     private uiService: UiService,
     private navController: NavController,
-    private formBuilder: FormBuilder
+    formBuilder: FormBuilder
   ) {
     this.formGroup = formBuilder.group({
       password: ["", [Validators.required]]

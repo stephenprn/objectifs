@@ -3,7 +3,6 @@ import { AppConstants } from "@appPRN/app.constants";
 import {
   ILocalNotification,
   LocalNotifications,
-  ILocalNotificationActionType
 } from "@ionic-native/local-notifications";
 import { Objectif } from "@modelsPRN/objectif.model";
 import { DateService } from "@servicesPRN/date.service";
