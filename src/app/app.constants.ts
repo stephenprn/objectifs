@@ -321,4 +321,9 @@ export class AppConstants {
     password: false,
     passwordValue: ""
   };
+
+  public static SPLASHSCREEN_CONFIG = {
+    INTERVAL_DURATION: 750,
+    INTERVAL_NBR: 5
+  }
 }

@@ -17,7 +17,7 @@ page-drafts {
     height: 100%;
     top: 0;
     left: 10px;
-    transition: all 0.3s linear;
+    transition: all 0.2s linear;
 
     &.select-mode {
       left: 40px;
@@ -26,6 +26,6 @@ page-drafts {
 
   .selection-buttons {
     margin-left: 10px;
-    animation: slide-up 0.3s linear;
+    animation: slide-up 0.2s linear;
   }
 }

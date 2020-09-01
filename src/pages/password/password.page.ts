@@ -7,14 +7,16 @@ import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 
 @Component({
   selector: "page-password",
-  templateUrl: "password.page.html"
+  templateUrl: "password.page.html",
 })
 export class PasswordPage implements OnInit {
   formGroup: FormGroup;
   @ViewChild("input") input;
   isFocus: boolean = false;
-  shouldHeight = document.body.clientHeight + 'px' ;
+  shouldHeight = document.body.clientHeight + "px";
 
+  // for ux purpose
+  locked = true;
 
   constructor(
     private settingsService: SettingsService,
@@ -23,7 +25,7 @@ export class PasswordPage implements OnInit {
     formBuilder: FormBuilder
   ) {
     this.formGroup = formBuilder.group({
-      password: ["", [Validators.required]]
+      password: ["", [Validators.required]],
     });
   }
 
@@ -47,11 +49,15 @@ export class PasswordPage implements OnInit {
     if (
       this.settingsService.checkPassword(this.formGroup.get("password").value)
     ) {
-      this.navController.setRoot(
-        ObjectifsPage,
-        {},
-        { animate: true, direction: "forward" }
-      );
+      this.locked = false;
+
+      setTimeout(() => {
+        this.navController.setRoot(
+          ObjectifsPage,
+          {},
+          { animate: true, direction: "forward" }
+        );
+      }, 300);
     } else {
       this.uiService.displayToast("Mot de passe incorrect");
     }

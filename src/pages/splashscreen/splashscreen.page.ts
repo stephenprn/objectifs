@@ -1,19 +1,19 @@
+import { AppConstants } from "@appPRN/app.constants";
 import { Component } from "@angular/core";
 import { ViewController } from "ionic-angular";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
 @Component({
   selector: "page-splashcreen",
-  templateUrl: "splashscreen.page.html"
+  templateUrl: "splashscreen.page.html",
 })
 export class SplashscreenPage {
   elementsShowed = {
     mountain1: { showed: false, index: 0 },
     mountain2: { showed: false, index: 1 },
     mountain3: { showed: false, index: 2 },
-    logo: { showed: false, index: 3 }
+    logo: { showed: false, index: 3 },
   };
-  INTERVAL_DURATION = 750;
 
   constructor(
     public viewCtrl: ViewController,
@@ -23,7 +23,7 @@ export class SplashscreenPage {
       console.log(elt);
       setTimeout(() => {
         this.elementsShowed[elt].showed = true;
-      }, this.elementsShowed[elt].index * this.INTERVAL_DURATION);
+      }, this.elementsShowed[elt].index * AppConstants.SPLASHSCREEN_CONFIG.INTERVAL_DURATION);
     }
   }
 
@@ -32,6 +32,6 @@ export class SplashscreenPage {
 
     setTimeout(() => {
       this.viewCtrl.dismiss();
-    }, this.INTERVAL_DURATION * 5);
+    }, AppConstants.SPLASHSCREEN_CONFIG.INTERVAL_DURATION * AppConstants.SPLASHSCREEN_CONFIG.INTERVAL_NBR);
   }
 }

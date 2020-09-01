@@ -10,9 +10,10 @@ import { SettingsService } from "@servicesPRN/settings.service";
 import { PasswordPage } from "@pagesPRN/password/password.page";
 import { SplashscreenPage } from "@pagesPRN/splashscreen/splashscreen.page";
 import { SplashScreen } from "@ionic-native/splash-screen";
+import { AppConstants } from "./app.constants";
 
 @Component({
-  templateUrl: "app.html"
+  templateUrl: "app.html",
 })
 export class MyApp {
   rootPage: any;
@@ -46,26 +47,28 @@ export class MyApp {
       promises.push(objectifsService.loadStoredId(false));
       promises.push(objectifsService.loadStoredId(true));
       promises.push(settingsService.loadStored());
-      
+
       Promise.all(promises).then(() => {
         console.log("all promises done");
         if (isDevMode()) {
-          // uiService.displaySimpleAlert('Données chargées', `Les données stockées ont été chargées en ${new Date().getTime() - time} ms`);
           console.log(
-            `Les données stockées ont été chargées en ${new Date().getTime() -
-              time} ms`
+            `Data has been loaded in ${
+              new Date().getTime() - time
+            } ms`
           );
         }
 
         statusBar.backgroundColorByHexString("#424250");
+        this.rootPage = SplashscreenPage;
 
-        if (settingsService.isPasswordActivated()) {
-          this.rootPage = PasswordPage;
-        } else {
-          this.rootPage = ObjectifsPage;
-        }
-
-        // splashScreen.hide();
+        // We wait for the splashcreen animation to be finished
+        setTimeout(() => {
+          if (settingsService.isPasswordActivated()) {
+            this.rootPage = PasswordPage;
+          } else {
+            this.rootPage = ObjectifsPage;
+          }
+        }, AppConstants.SPLASHSCREEN_CONFIG.INTERVAL_DURATION * AppConstants.SPLASHSCREEN_CONFIG.INTERVAL_NBR);
       });
 
       this.logInfos();

@@ -316,15 +316,17 @@ export class ObjectifsPage {
     this.deselectAll();
 
     const modal: Modal = this.modalCtrl.create(DraftsPage);
+
     modal.onDidDismiss((draft: any) => {
-      console.log(draft);
       if (draft == null) {
         return;
       }
 
+      console.log(draft);
       this.modalCtrl
         .create(AddObjectifPage, {
-          objectif: draft
+          objectif: draft,
+          draft: true
         })
         .present();
     });

@@ -20,13 +20,24 @@
 <ion-content>
   <ion-card *ngIf="drafts.length > 0">
     <ion-list>
-      <ion-item [ngClass]="{ 'selected': draft.selected }" ion-long-press (onPressStart)="select(draft)" class="draft" ion-item
-        *ngFor="let draft of drafts">
-        <ion-icon class="category-icon" (click)="select(draft)"
+      <ion-item
+        [ngClass]="{ 'selected': draft.selected }"
+        ion-long-press
+        (onPressStart)="select(draft)"
+        class="draft"
+        ion-item
+        *ngFor="let draft of drafts"
+      >
+        <ion-icon
+          class="category-icon"
+          (click)="select(draft)"
           name="{{draft.selected ? 'checkmark-circle': categoriesJson[draft.category].icon}}"
-          [ngStyle]="{ color: categoriesJson[draft.category].color }" item-start></ion-icon>
+          [ngStyle]="{ color: categoriesJson[draft.category].color }"
+          item-start
+        ></ion-icon>
         <div (click)="draftClicked(draft)">
-          {{draft.title != null && draft.title != '' ? draft.title : '(sans titre)'}}
+          {{draft.title != null && draft.title != '' ? draft.title : '(sans
+          titre)'}}
         </div>
         <p (click)="draftClicked(draft)">
           <span *ngIf="draft.description.length <= limitDescription">
@@ -36,16 +47,12 @@
             {{draft.description | slice:0:limitDescription}}...
           </span>
         </p>
-        <div item-end class="date">
-          {{draft.date}}
-        </div>
+        <div item-end class="date">{{draft.date}}</div>
       </ion-item>
     </ion-list>
   </ion-card>
   <div class="nothing-container" *ngIf="drafts.length === 0">
     <ion-icon class="nothing-logo" name="copy"></ion-icon>
-    <div class="nothing-text">
-      Vous n'avez aucun brouillon pour le moment.
-    </div>
+    <div class="nothing-text">Vous n'avez aucun brouillon pour le moment.</div>
   </div>
 </ion-content>

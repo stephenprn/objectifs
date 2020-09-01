@@ -21,14 +21,14 @@ import {
   AlertController,
   NavParams,
   Select,
-  ViewController
+  ViewController,
 } from "ionic-angular";
 import { AlertInputOptions } from "ionic-angular/umd/components/alert/alert-options";
 import _ from "lodash";
 
 @Component({
   selector: "page-add-objectif",
-  templateUrl: "add-objectif.page.html"
+  templateUrl: "add-objectif.page.html",
 })
 export class AddObjectifPage {
   @ViewChild(Select) select: Select;
@@ -50,6 +50,7 @@ export class AddObjectifPage {
   maxDate: string;
   objectifUpdated: Objectif;
   isLaterEmpty: boolean;
+  draft: boolean;
 
   constructor(
     public viewCtrl: ViewController,
@@ -80,7 +81,7 @@ export class AddObjectifPage {
         date: [date, [Validators.required]],
         category: [
           this.suggestionsService.getCategoryMostUsed(),
-          [Validators.required]
+          [Validators.required],
         ],
         customCategory: ["", []],
         description: ["", []],
@@ -88,8 +89,8 @@ export class AddObjectifPage {
         periodicity: [AppConstants.initialPeriodicity, [Validators.required]],
         dateEndPeriodicity: [
           this.dateService.initDatePeriodic(date),
-          [Validators.required]
-        ]
+          [Validators.required],
+        ],
       });
     } else {
       const objectif: Objectif = this.navParams.get("objectif");
@@ -97,6 +98,7 @@ export class AddObjectifPage {
       this.title = objectif.title;
     }
 
+    this.draft = !!this.navParams.get("draft");
     this.categories = AppConstants.categories;
     this.periodicities = AppConstants.periodicities;
     this.document = document;
@@ -131,20 +133,20 @@ export class AddObjectifPage {
       category: [objectif.category, [Validators.required]],
       customCategory: [
         objectif.customCategory != null ? objectif.customCategory : "",
-        []
+        [],
       ],
       description: [objectif.description, []],
       reportable: [objectif.reportable, [Validators.required]],
       periodicity: [
         laterMode ? objectif.periodicity : AppConstants.initialPeriodicity,
-        [Validators.required]
+        [Validators.required],
       ],
       dateEndPeriodicity: [
         laterMode && objectif.dateEndPeriodicity
           ? dateEndPeriodicity
           : this.dateService.initDatePeriodic(date),
-        [Validators.required]
-      ]
+        [Validators.required],
+      ],
     });
 
     if (!laterMode) {
@@ -154,7 +156,7 @@ export class AddObjectifPage {
 
       if (objectif.periodicity === "customDays") {
         for (const id of objectif.periodicityCustomDays) {
-          const day = this.periodicitiesCustomDays.find(d => d.id === id);
+          const day = this.periodicitiesCustomDays.find((d) => d.id === id);
 
           if (day != null) {
             day.selected = true;
@@ -183,16 +185,20 @@ export class AddObjectifPage {
       buttons: [
         {
           text: "Annuler",
-          role: "destructive"
+          role: "destructive",
         },
         {
           text: "Supprimer",
           cssClass: "redText",
           handler: () => {
+            if (this.draft) {
+              this.objectifsLaterService.remove(this.updateId);
+            }
+
             this.dismissModal();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     alert.present();
@@ -211,7 +217,7 @@ export class AddObjectifPage {
       buttons: [
         {
           text: "Annuler",
-          role: "cancel"
+          role: "cancel",
         },
         {
           text: "Ok",
@@ -237,16 +243,16 @@ export class AddObjectifPage {
             this.periodicityCustom.number = nbr;
             this.periodicityCustom.type = type;
             this.getTitlePeriodicityCustom();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     AppConstants.customPeriodicities.forEach((periodicity: any) => {
       let input: AlertInputOptions = {
         type: "radio",
         label: periodicity.title,
-        value: periodicity.id
+        value: periodicity.id,
       };
 
       if (periodicity.id === this.periodicityCustom.type) {
@@ -290,10 +296,14 @@ export class AddObjectifPage {
 
   saveDraft(): void {
     this.formGroup.patchValue({
-      title: this.title
+      title: this.title,
     });
 
-    if (
+    if (this.draft) {
+      const objectif = this.submit(true);
+      this.objectifsLaterService.update(objectif);
+      this.uiService.displayToastDraft(this.updateId);
+    } else if (
       this.updateId == null &&
       ((this.formGroup.value.title != null &&
         this.formGroup.value.title != "") ||
@@ -311,11 +321,8 @@ export class AddObjectifPage {
 
   submit(draft?: boolean): void | Objectif {
     this.formGroup.patchValue({
-      title: this.title
+      title: this.title,
     });
-
-    console.log(this.title);
-    console.log(this.formGroup);
 
     if (!draft && !this.formGroup.valid) {
       if (!this.formGroup.get("title").valid) {
@@ -406,15 +413,19 @@ export class AddObjectifPage {
 
     if (this.updateId != null) {
       objectif.id = this.updateId;
-      this.objectifsService.update(objectif);
+
+      if (this.draft) {
+        this.objectifsLaterService.remove(this.updateId);
+        this.objectifsService.add(objectif);
+      } else {
+        this.objectifsService.update(objectif);
+      }
     } else {
       this.objectifsService.add(objectif);
     }
 
     this.achievementsService.checkAchievements();
-
     this.notificationsService.add(objectif);
-
     this.viewCtrl.dismiss(objectif);
   }
 
@@ -427,7 +438,7 @@ export class AddObjectifPage {
           text: "Annuler",
           handler: () => {
             this.idLater = null;
-          }
+          },
         },
         {
           text: "Valider",
@@ -440,9 +451,9 @@ export class AddObjectifPage {
             }
 
             this.patchForm(data, true);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     const objLater = _.cloneDeep(this.objectifsLaterService.getAll()).reverse();
@@ -468,7 +479,7 @@ export class AddObjectifPage {
           this.patchForm(data, true);
 
           alert.dismiss();
-        }
+        },
       });
     });
 
