@@ -33,7 +33,7 @@
     "@ionic-native/status-bar": "~4.15.0",
     "@ionic/storage": "^2.2.0",
     "cordova-android": "7.1.4",
-    "cordova-browser": "5.0.4",
+    "cordova-browser": "6.0.0",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.3",
